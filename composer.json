@@ -1,0 +1,35 @@
+{
+    "name": "meuhmeuhconcept/profile-bundle",
+    "license": "MIT",
+    "type": "bundle",
+    "description": "Profile bundle",
+    "authors": [
+        {
+            "name": "Jean-Noël Germon",
+            "email": "jn.germon@meuhmeuhconcept.com"
+        },
+        {
+            "name": "Loic Dousselain",
+            "email": "l.dousselain@meuhmeuhconcept.com"
+        },
+        {
+            "name": "Matthieu Deblaise",
+            "email": "m.deblaise@meuhmeuhconcept.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "MMC\\Profile\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "MMC\\Profile\\": "tests/"
+        }
+    },
+    "require": {
+        "php": "~7.0"
+    },
+    "require-dev": {
+    }
+}
