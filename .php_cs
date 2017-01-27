@@ -2,6 +2,7 @@
 
 $finder = Symfony\CS\Finder\DefaultFinder::create()
    ->in([__DIR__ . '/src'])
+   ->notPath('Bundle/ProfileBundle/Features/Fixtures/app/cache/')
 ;
 
 return Symfony\CS\Config\Config::create()

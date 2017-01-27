@@ -1,0 +1,8 @@
+framework:
+  secret: ThisIsVerySecret!
+  test: ~
+  validation:      { enable_annotations: true }
+
+services:
+    doctrine:
+        class: Symfony\Bridge\Doctrine\RegistryInterface
