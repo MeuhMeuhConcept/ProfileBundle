@@ -1,0 +1,22 @@
+default:
+    extensions:
+        Behat\Symfony2Extension:
+            kernel:
+                env: "test"
+                debug: "true"
+                path: src/Bundle/ProfileBundle/Features/Fixtures/app/AppKernel.php
+                bootstrap: src/Bundle/ProfileBundle/Features/Fixtures/app/bootstrap.php
+        Knp\FriendlyContexts\Extension: ~
+        Behat\MinkExtension:
+            sessions:
+                my_session:
+                    symfony2: ~
+
+    suites:
+        user:
+            type: symfony_bundle
+            bundle: ProfileBundle
+            contexts:
+                - MMC\Profile\Bundle\ProfileBundle\Features\Context\UserContext
+            paths:
+                - src/Bundle/ProfileBundle/Features/user.feature

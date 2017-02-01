@@ -1,0 +1,29 @@
+Feature: User
+
+@reset-schema
+    Scenario: getting user profiles
+        Given there are the following profiles
+            | uuid      |roles      |
+            | 123456789 |ROLE_TEST  |
+            | 987654321 |ROLE_TEST2 |
+        And the following users
+            | username |
+            | toto     |
+            | tintin   |
+        And the following userProfiles
+            # Empty lines correspond to false boolean value
+            | profile   | user   | isActive | isOwner |
+            | 123456789 | tintin | true     | true    |
+            | 123456789 | toto   |          |         |
+            | 987654321 | tintin |          | true    |
+        Then I should see tintin active profile is 123456789
+        And I should see tintin roles are ROLE_TEST
+
+        Given tintin use profile 987654321
+        Then I should see tintin active profile is 987654321
+        # And I should see tintin roles are ROLE_TEST2
+
+
+        Given toto use profile 123456789
+        Then I should see toto active profile is 123456789
+        # And I should see toto roles are ROLE_TEST
