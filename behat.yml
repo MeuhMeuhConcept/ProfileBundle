@@ -20,3 +20,11 @@ default:
                 - MMC\Profile\Bundle\ProfileBundle\Features\Context\UserContext
             paths:
                 - src/Bundle/ProfileBundle/Features/user.feature
+
+        userProfileAccessor:
+            type: symfony_bundle
+            bundle: ProfileBundle
+            contexts:
+                - MMC\Profile\Bundle\ProfileBundle\Features\Context\UserProfileAccessorContext
+            paths:
+                - src/Bundle/ProfileBundle/Features/userProfileAccessor.feature

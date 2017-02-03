@@ -83,4 +83,15 @@ abstract class GlobalContext implements Context, SnippetAcceptingContext
             $this->store[$name]
         );
     }
+
+    /**
+     * @Then I should see exception :arg1
+     */
+    public function iShouldSeeException($arg1)
+    {
+        \PHPUnit_Framework_Assert::assertEquals(
+            $this->lastException->getStatusCode(),
+            $arg1
+        );
+    }
 }

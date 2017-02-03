@@ -57,6 +57,9 @@ trait ProfileUserAccessorTrait
             if ($this->getUserProfiles() != null) {
                 if (in_array($userProfile, $this->getUserProfiles())) {
                     return $this;
+                } else {
+                    $this->userProfiles[] = $userProfile;
+                    $userProfile->setProfile($this);
                 }
             } else {
                 $this->userProfiles[] = $userProfile;

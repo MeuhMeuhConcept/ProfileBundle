@@ -38,4 +38,11 @@ interface UserProfileAccessorInterface
      * @return UserProfileAccessorInterface
      */
     public function addUserProfile(UserProfileInterface $userProfile);
+
+    /**
+     * Remove a userProfile.
+     *
+     * @return UserProfileAccessorInterface
+     */
+    public function removeUserProfile(UserProfileInterface $userProfile);
 }

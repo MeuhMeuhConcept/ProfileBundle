@@ -2,6 +2,9 @@
 
 namespace MMC\Profile\Component\Model;
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 trait UserProfileAccessorTrait
 {
     /**
@@ -14,7 +17,16 @@ trait UserProfileAccessorTrait
      */
     public function getUserProfiles()
     {
-        return $this->userProfiles;
+        $ups = [];
+        if (isset($this->userProfiles)) {
+            foreach ($this->userProfiles as $up) {
+                if ($up->getDeletedAt() == null) {
+                    $ups[] = $up;
+                }
+            }
+        }
+
+        return $ups;
     }
 
     /**
@@ -50,13 +62,22 @@ trait UserProfileAccessorTrait
      */
     public function setActiveProfile(Profile $profile)
     {
+        $isSet = false;
         $userProfiles = $this->getUserProfiles();
         foreach ($userProfiles as $up) {
             if ($up->getProfile() == $profile) {
                 $up->setIsActive(true);
-            } else {
-                $up->setIsActive(false);
+                $isSet = true;
+                foreach ($userProfiles as $up) {
+                    if ($up->getProfile() != $profile) {
+                        $up->setIsActive(false);
+                    }
+                }
             }
+        }
+
+        if ($isSet == false) {
+            throw new NotFoundHttpException('Le profil n\'existe pas');
         }
 
         return $this;
@@ -80,8 +101,35 @@ trait UserProfileAccessorTrait
                 $userProfile->setUser($this);
             }
         } else {
-            throw new Exception('Erreur dans l\'ajout de la liaison user-profile');
+            throw new AccessDeniedHttpException('Erreur dans l\'ajout de la liaison user-profile');
         }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeUserProfile(UserProfileInterface $userProfile)
+    {
+        if ($this != $userProfile->getUser()) {
+            throw new AccessDeniedHttpException('Erreur dans la suppression de la liaison user-profile');
+        }
+
+        if ($this->getUserProfiles() == null) {
+            throw new NotFoundHttpException('La liaison n\'existe pas');
+        }
+
+        if (!in_array($userProfile, $this->getUserProfiles())) {
+            throw new NotFoundHttpException('La liaison n\'existe pas');
+        }
+
+        if ($this->getActiveProfile() == $userProfile->getProfile()) {
+            throw new AccessDeniedHttpException('Vous ne pouvez pas supprimer le profil actif');
+        }
+
+        $userProfile->setPriority(0);
+        $userProfile->setDeletedAt(date('Y-m-d H:i:s'));
 
         return $this;
     }
