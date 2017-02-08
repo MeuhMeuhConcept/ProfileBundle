@@ -14,7 +14,16 @@ trait ProfileUserAccessorTrait
      */
     public function getUserProfiles()
     {
-        return $this->userProfiles;
+        $ups = [];
+        if (isset($this->userProfiles)) {
+            foreach ($this->userProfiles as $up) {
+                if ($up->getDeletedAt() == null) {
+                    $ups[] = $up;
+                }
+            }
+        }
+
+        return $ups;
     }
 
     /**
@@ -66,7 +75,7 @@ trait ProfileUserAccessorTrait
                 $userProfile->setProfile($this);
             }
         } else {
-            throw new Exception('Erreur dans l\'ajout de la liaison user-profile');
+            throw new NotFoundHttpException('Erreur dans l\'ajout de la liaison user-profile');
         }
 
         return $this;
