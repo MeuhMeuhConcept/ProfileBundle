@@ -21,18 +21,10 @@ default:
             paths:
                 - src/Bundle/ProfileBundle/Features/user.feature
 
-        userProfileAccessor:
+        userProfileManipulator:
             type: symfony_bundle
             bundle: ProfileBundle
             contexts:
-                - MMC\Profile\Bundle\ProfileBundle\Features\Context\UserProfileAccessorContext
+                - MMC\Profile\Bundle\ProfileBundle\Features\Context\UserProfileManipulatorContext
             paths:
-                - src/Bundle/ProfileBundle/Features/userProfileAccessor.feature
-
-        profileUserAccessor:
-            type: symfony_bundle
-            bundle: ProfileBundle
-            contexts:
-                - MMC\Profile\Bundle\ProfileBundle\Features\Context\ProfileUserAccessorContext
-            paths:
-                - src/Bundle/ProfileBundle/Features/profileUserAccessor.feature
+                - src/Bundle/ProfileBundle/Features/userProfileManipulator.feature

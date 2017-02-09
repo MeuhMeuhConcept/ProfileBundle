@@ -8,15 +8,18 @@ use Behat\Gherkin\Node\TableNode;
 use MMC\Profile\Bundle\ProfileBundle\Entity\Profile;
 use MMC\Profile\Bundle\ProfileBundle\Entity\User;
 use MMC\Profile\Bundle\ProfileBundle\Entity\UserProfile;
+use MMC\Profile\Component\Manipulator\UserProfileManipulator;
 
 abstract class GlobalContext implements Context, SnippetAcceptingContext
 {
     protected $store;
+    protected $manipulator;
     protected $lastException;
 
     public function __construct()
     {
-        $store = [];
+        $this->store = [];
+        $this->manipulator = new UserProfileManipulator();
     }
 
     /**

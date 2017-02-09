@@ -5,7 +5,7 @@ namespace MMC\Profile\Bundle\ProfileBundle\Features\Context;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Context\SnippetAcceptingContext;
 
-class UserProfileAccessorContext extends GlobalContext implements Context, SnippetAcceptingContext
+class UserProfileManipulatorContext extends GlobalContext implements Context, SnippetAcceptingContext
 {
     /**
      * @Then I should see :arg1 active profile is :arg2
@@ -14,7 +14,7 @@ class UserProfileAccessorContext extends GlobalContext implements Context, Snipp
     {
         foreach ($this->store['users'] as $user) {
             if ($user->getUsername() == $arg1) {
-                $activeProfileUuid = $user->getActiveProfile()->getUuid();
+                $activeProfileUuid = $this->manipulator->getActiveProfile($user)->getUuid();
                 \PHPUnit_Framework_Assert::assertEquals(
                     $arg2,
                     $activeProfileUuid
@@ -37,7 +37,7 @@ class UserProfileAccessorContext extends GlobalContext implements Context, Snipp
         foreach ($this->store['users'] as $user) {
             if ($user->getUsername() == $arg1) {
                 try {
-                    $user->setActiveProfile($selectedProfile);
+                    $this->manipulator->setActiveProfile($user, $selectedProfile);
                 } catch (\Exception $e) {
                     $this->lastException = $e;
                 }
@@ -60,7 +60,7 @@ class UserProfileAccessorContext extends GlobalContext implements Context, Snipp
             if ($user->getUsername() == $arg1) {
                 \PHPUnit_Framework_Assert::assertEquals(
                     true,
-                    $user->isOwner($selectedProfile)
+                    $this->manipulator->isOwner($user, $selectedProfile)
                 );
             }
         }
@@ -71,17 +71,16 @@ class UserProfileAccessorContext extends GlobalContext implements Context, Snipp
      */
     public function iRemoveProfileTo($arg1, $arg2)
     {
-        $selectedUserProfile;
-        foreach ($this->store['userProfiles'] as $up) {
-            if ($up->getProfile()->getUuid() == $arg1 && $up->getUser()->getUsername() == $arg2) {
-                $selectedUserProfile = $up;
+        foreach ($this->store['profiles'] as $profile) {
+            if ($profile->getUuid() == $arg1) {
+                $selectedProfile = $profile;
             }
         }
 
         foreach ($this->store['users'] as $user) {
             if ($user->getUsername() == $arg2) {
                 try {
-                    $user->removeUserProfile($selectedUserProfile);
+                    $this->manipulator->removeProfileForUser($user, $selectedProfile);
                 } catch (\Exception $e) {
                     $this->lastException = $e;
                 }
@@ -97,11 +96,44 @@ class UserProfileAccessorContext extends GlobalContext implements Context, Snipp
         foreach ($this->store['users'] as $user) {
             if ($user->getUsername() == $arg2) {
                 foreach ($user->getUserProfiles() as $up) {
+                    \PHPUnit_Framework_Assert::assertCount(
+                        intval($arg1),
+                        $user->getUserProfiles()
+                    );
                 }
+            }
+        }
+    }
+
+    /**
+     * @Then I should see that profile :arg1 has :arg2 owners
+     */
+    public function iShouldSeeThatProfileHasOwners($arg1, $arg2)
+    {
+        foreach ($this->store['profiles'] as $profile) {
+            if ($profile->getUuid() == $arg1) {
                 \PHPUnit_Framework_Assert::assertCount(
-                    intval($arg1),
-                    $user->getUserProfiles()
+                    intval($arg2),
+                    $this->manipulator->getOwners($profile)
                 );
+            }
+        }
+    }
+
+    /**
+     * @Then I create the userProfile :ar1 :arg2
+     */
+    public function iCreateTheUserprofileTintin($arg1, $arg2)
+    {
+        foreach ($this->store['users'] as $user) {
+            if ($user->getUsername() == $arg1) {
+                $selectedUser = $user;
+            }
+        }
+
+        foreach ($this->store['profiles'] as $profile) {
+            if ($profile->getUuid() == $arg2) {
+                $this->manipulator->createUserProfile($selectedUser, $profile);
             }
         }
     }
