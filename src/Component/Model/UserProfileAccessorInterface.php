@@ -12,37 +12,16 @@ interface UserProfileAccessorInterface
     public function getUserProfiles();
 
     /**
-     * Get the active profile.
-     *
-     * @return Profile
-     */
-    public function getActiveProfile();
-
-    /**
-     * Get true if is profile's owner.
-     *
-     * @return bool
-     */
-    public function isOwner(Profile $profile);
-
-    /**
-     * Set profile to active.
+     * Add an userProfile.
      *
      * @return UserProfileAccessorInterface
      */
-    public function setActiveProfile(Profile $profile);
+    public function addUserProfile(UserProfileInterface $up);
 
     /**
-     * Add a userProfile.
+     * Remove an userProfile.
      *
      * @return UserProfileAccessorInterface
      */
-    public function addUserProfile(UserProfileInterface $userProfile);
-
-    /**
-     * Remove a userProfile.
-     *
-     * @return UserProfileAccessorInterface
-     */
-    public function removeUserProfile(UserProfileInterface $userProfile);
+    public function removeUserProfile(UserProfileInterface $up);
 }

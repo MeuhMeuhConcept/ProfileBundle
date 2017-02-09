@@ -2,7 +2,7 @@
 
 namespace MMC\Profile\Component\Model;
 
-abstract class UserProfile implements UserProfileInterface
+class UserProfile implements UserProfileInterface
 {
     /**
      * @var bool
@@ -18,16 +18,6 @@ abstract class UserProfile implements UserProfileInterface
      * @var int
      */
     protected $piority;
-
-    /**
-     * @var \DateTime
-     */
-    protected $createdAt;
-
-    /**
-     * @var \DateTime
-     */
-    protected $deletedAt;
 
     /**
      * @var \User
@@ -96,47 +86,12 @@ abstract class UserProfile implements UserProfileInterface
     /**
      * {@inheritdoc}
      */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setCreatedAt($createdAt)
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDeletedAt()
-    {
-        return $this->deletedAt;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDeletedAt($deletedAt)
-    {
-        $this->deletedAt = $deletedAt;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function setUser(User $user)
     {
         if ($user != $this->user) {
             $this->user = $user;
-            $user->addUserProfile($this);
+
+            $this->user->addUserProfile($this);
         }
 
         return $this;
@@ -157,7 +112,8 @@ abstract class UserProfile implements UserProfileInterface
     {
         if ($profile != $this->profile) {
             $this->profile = $profile;
-            $profile->addUserProfile($this);
+
+            $this->profile->addUserProfile($this);
         }
 
         return $this;

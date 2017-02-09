@@ -96,6 +96,8 @@ class UserProfileAccessorContext extends GlobalContext implements Context, Snipp
     {
         foreach ($this->store['users'] as $user) {
             if ($user->getUsername() == $arg2) {
+                foreach ($user->getUserProfiles() as $up) {
+                }
                 \PHPUnit_Framework_Assert::assertCount(
                     intval($arg1),
                     $user->getUserProfiles()

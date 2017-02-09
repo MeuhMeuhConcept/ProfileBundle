@@ -2,15 +2,8 @@
 
 namespace MMC\Profile\Component\Model;
 
-abstract class Profile implements ProfileInterface, ProfileUserAccessorInterface
+class Profile implements ProfileInterface, UserProfileAccessorInterface
 {
-    use ProfileUserAccessorTrait;
-
-    /**
-     * @var int
-     */
-    protected $id;
-
     /**
      * @var string
      */
@@ -22,11 +15,38 @@ abstract class Profile implements ProfileInterface, ProfileUserAccessorInterface
     protected $roles;
 
     /**
+     * @var array
+     */
+    protected $userProfiles;
+
+    /**
      * {@inheritdoc}
      */
-    public function getId()
+    public function getUserProfiles()
     {
-        return $this->id;
+        return $this->userProfiles;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addUserProfile(UserProfileInterface $up)
+    {
+        $this->userProfiles[] = $up;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeUserProfile(UserProfileInterface $up)
+    {
+        if (($key = array_search($up, $this->userProfiles)) !== false) {
+            unset($this->userProfiles[$key]);
+        }
+
+        return $this;
     }
 
     /**

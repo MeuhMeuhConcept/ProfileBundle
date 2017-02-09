@@ -51,36 +51,4 @@ interface UserProfileInterface
      * @return UserProfileInterface
      */
     public function setPriority($priority);
-
-    /**
-     * Get createdAt.
-     *
-     * @return \DateTime
-     */
-    public function getCreatedAt();
-
-    /**
-     * Set createdAt.
-     *
-     * @param \DateTime $createdAt
-     *
-     * @return UserProfileInterface
-     */
-    public function setCreatedAt($createdAt);
-
-    /**
-     * Get deletedAt.
-     *
-     * @return \DateTime
-     */
-    public function getDeletedAt();
-
-    /**
-     * Set deletedAt.
-     *
-     * @param \DateTime $deletedAt
-     *
-     * @return UserProfileInterface
-     */
-    public function setDeletedAt($deletedAt);
 }

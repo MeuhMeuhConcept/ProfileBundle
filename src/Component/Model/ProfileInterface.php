@@ -5,13 +5,6 @@ namespace MMC\Profile\Component\Model;
 interface ProfileInterface
 {
     /**
-     * Get id.
-     *
-     * @return int
-     */
-    public function getId();
-
-    /**
      * Get uuid.
      *
      * @return string
