@@ -95,10 +95,17 @@ class UserProfileManipulatorContext extends GlobalContext implements Context, Sn
     {
         foreach ($this->store['users'] as $user) {
             if ($user->getUsername() == $arg2) {
-                foreach ($user->getUserProfiles() as $up) {
+                if ($user->getUserProfiles() != null) {
+                    foreach ($user->getUserProfiles() as $up) {
+                        \PHPUnit_Framework_Assert::assertCount(
+                            intval($arg1),
+                            $user->getUserProfiles()
+                        );
+                    }
+                } else {
                     \PHPUnit_Framework_Assert::assertCount(
                         intval($arg1),
-                        $user->getUserProfiles()
+                        []
                     );
                 }
             }

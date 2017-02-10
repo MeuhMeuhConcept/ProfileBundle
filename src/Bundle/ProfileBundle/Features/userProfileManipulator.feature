@@ -11,6 +11,7 @@ Feature: UserProfileManipulator
             | username |
             | toto     |
             | tintin   |
+            | tutu     |
         And the following userProfiles
             # Empty lines correspond to false boolean value
             | profile   | user   | isActive | isOwner |
@@ -35,28 +36,35 @@ Feature: UserProfileManipulator
 
         # 000000000 is active profile
         Given I remove profile 000000000 to toto
-        Then I should see exception 403
+        Then I should see exception UnableToDeleteActiveUserProfileException
+
+        # tutu has no userProfile
+        Given I remove profile 000000000 to tutu
+        Then I should see exception NoUserProfileException
+        Then I should see 0 userProfiles for tutu
+        Given tutu use profile 000000000
+        Then I should see exception NoUserProfileException
 
         # try to use removed userProfile
         Given I remove profile 987654321 to tintin
         Then I should see 2 userProfiles for tintin
         And tintin use profile 987654321
-        And I should see exception 404
+        And I should see exception UserProfileNotFoundException
 
         # toto is the last 987654321 profile owner
         Given I remove profile 987654321 to toto
-        Then I should see exception 404
+        Then I should see exception UnableToDeleteLastOwnerUserProfileException
 
         # tintin is the last 000000000 profile owner
         Given I remove profile 000000000 to tintin
-        And I should see exception 403
+        And I should see exception UnableToDeleteLastOwnerUserProfileException
 
         Then I should see that profile 123456789 has 2 owners
         And I should see that profile 454545454 has 0 owners
 
         # userProfile tintin - 454545454 not exists
         Given  tintin use profile 454545454
-        Then I should see exception 404
+        Then I should see exception UserProfileNotFoundException
         And I create the userProfile tintin 454545454
         And tintin use profile 454545454
         And I should see tintin active profile is 454545454

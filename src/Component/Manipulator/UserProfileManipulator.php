@@ -3,10 +3,12 @@
 namespace MMC\Profile\Component\Manipulator;
 
 use MMC\Profile\Bundle\ProfileBundle\Entity\UserProfile;
-use MMC\Profile\Component\Manipulator\Exception\ProfileNotFoundException;
+use MMC\Profile\Component\Manipulator\Exception\NoUserProfileException;
+use MMC\Profile\Component\Manipulator\Exception\UnableToDeleteActiveUserProfileException;
+use MMC\Profile\Component\Manipulator\Exception\UnableToDeleteLastOwnerUserProfileException;
+use MMC\Profile\Component\Manipulator\Exception\UserProfileNotFoundException;
 use MMC\Profile\Component\Model\ProfileInterface;
 use MMC\Profile\Component\Model\UserInterface;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class UserProfileManipulator implements UserProfileManipulatorInterface
 {
@@ -15,9 +17,12 @@ class UserProfileManipulator implements UserProfileManipulatorInterface
      */
     public function getActiveProfile(UserInterface $user)
     {
-        $userProfiles = $user->getUserProfiles();
-        foreach ($userProfiles as $up) {
-            if ($up->getIsActive() == 'true') {
+        if ($user->getUserProfiles() == null) {
+            throw new NoUserProfileException();
+        }
+
+        foreach ($user->getUserProfiles() as $up) {
+            if ($up->getIsActive() == true) {
                 return $up->getProfile();
             }
         }
@@ -28,8 +33,23 @@ class UserProfileManipulator implements UserProfileManipulatorInterface
      */
     public function isOwner(UserInterface $user, ProfileInterface $profile)
     {
-        $userProfiles = $user->getUserProfiles();
-        foreach ($userProfiles as $up) {
+        if ($user->getUserProfiles() == null) {
+            throw new NoUserProfileException();
+        }
+
+        $profileMatches = false;
+
+        foreach ($user->getUserProfiles() as $up) {
+            if ($profile == $up->getProfile()) {
+                $profileMatches = true;
+            }
+        }
+
+        if ($profileMatches == false) {
+            throw new UserProfileNotFoundException();
+        }
+
+        foreach ($user->getUserProfiles() as $up) {
             if ($up->getProfile() == $profile && $up->getIsOwner() == true) {
                 return true;
             }
@@ -43,9 +63,12 @@ class UserProfileManipulator implements UserProfileManipulatorInterface
      */
     public function setActiveProfile(UserInterface $user, ProfileInterface $profile)
     {
+        if ($user->getUserProfiles() == null) {
+            throw new NoUserProfileException();
+        }
+
         $isSet = false;
-        $userProfiles = $user->getUserProfiles();
-        foreach ($userProfiles as $up) {
+        foreach ($user->getUserProfiles() as $up) {
             if ($up->getProfile() == $profile) {
                 $up->setIsActive(true);
                 $isSet = true;
@@ -55,7 +78,7 @@ class UserProfileManipulator implements UserProfileManipulatorInterface
         }
 
         if ($isSet == false) {
-            throw new ProfileNotFoundException();
+            throw new UserProfileNotFoundException();
         }
 
         return $this;
@@ -110,7 +133,7 @@ class UserProfileManipulator implements UserProfileManipulatorInterface
     public function removeProfileForUser(UserInterface $user, ProfileInterface $profile)
     {
         if ($user->getUserProfiles() == null) {
-            throw new NotFoundHttpException('La liaison n\'existe pas');
+            throw new NoUserProfileException();
         }
 
         $profileMatches = false;
@@ -122,20 +145,24 @@ class UserProfileManipulator implements UserProfileManipulatorInterface
         }
 
         if ($profileMatches == false) {
-            throw new NotFoundHttpException('La liaison n\'existe pas');
+            throw new UserProfileNotFoundException();
         }
 
         if ($this->getActiveProfile($user) == $profile) {
-            throw new AccessDeniedHttpException('Vous ne pouvez pas supprimer le profil actif');
+            throw new UnableToDeleteActiveUserProfileException();
+        }
+
+        foreach ($this->getOwners($profile) as $owner) {
         }
 
         if (count($this->getOwners($profile)) <= 1) {
-            throw new AccessDeniedHttpException('Impossible de supprimer le dernier propriétaire');
+            throw new UnableToDeleteLastOwnerUserProfileException();
         }
 
         foreach ($user->getUserProfiles() as $up) {
             if ($up->getProfile() == $profile) {
                 $user->removeUserProfile($up);
+                $profile->removeUserProfile($up);
             }
         }
 

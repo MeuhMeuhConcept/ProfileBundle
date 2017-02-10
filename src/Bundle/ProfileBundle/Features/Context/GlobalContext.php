@@ -93,7 +93,7 @@ abstract class GlobalContext implements Context, SnippetAcceptingContext
     public function iShouldSeeException($arg1)
     {
         \PHPUnit_Framework_Assert::assertEquals(
-            $this->lastException->getStatusCode(),
+            explode('Exception\\', get_class($this->lastException))[1],
             $arg1
         );
     }
