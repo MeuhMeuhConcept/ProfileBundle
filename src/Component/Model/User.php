@@ -2,7 +2,7 @@
 
 namespace MMC\Profile\Component\Model;
 
-use MMC\Profile\Component\Manipulator\UserProfileManipulator;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class User implements UserInterface, UserProfileAccessorInterface
 {
@@ -12,9 +12,14 @@ class User implements UserInterface, UserProfileAccessorInterface
     protected $username;
 
     /**
-     * @var array
+     * @var ArrayCollection
      */
     protected $userProfiles;
+
+    public function __construct()
+    {
+        $this->userProfiles = new ArrayCollection();
+    }
 
     /**
      * {@inheritdoc}
@@ -39,9 +44,7 @@ class User implements UserInterface, UserProfileAccessorInterface
      */
     public function removeUserProfile(UserProfileInterface $up)
     {
-        if (($key = array_search($up, $this->userProfiles)) !== false) {
-            unset($this->userProfiles[$key]);
-        }
+        $this->userProfiles->removeElement($up);
 
         return $this;
     }
@@ -92,8 +95,6 @@ class User implements UserInterface, UserProfileAccessorInterface
      */
     public function getRoles()
     {
-        $manipulator = new UserProfileManipulator();
-
-        return $manipulator->getActiveProfile($this)->getRoles();
+        return [];
     }
 }

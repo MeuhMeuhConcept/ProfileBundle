@@ -30,7 +30,7 @@ abstract class GlobalContext implements Context, SnippetAcceptingContext
         foreach ($table as $row) {
             $profile = new Profile();
             $profile->setUuid($row['uuid']);
-            $profile->setRoles($row['roles']);
+            $profile->addRole($row['roles']);
             $this->store['profiles'][] = $profile;
         }
     }

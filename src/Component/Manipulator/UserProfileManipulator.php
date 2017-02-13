@@ -17,7 +17,7 @@ class UserProfileManipulator implements UserProfileManipulatorInterface
      */
     public function getActiveProfile(UserInterface $user)
     {
-        if ($user->getUserProfiles() == null) {
+        if ($user->getUserProfiles()->isEmpty()) {
             throw new NoUserProfileException();
         }
 
@@ -33,7 +33,7 @@ class UserProfileManipulator implements UserProfileManipulatorInterface
      */
     public function isOwner(UserInterface $user, ProfileInterface $profile)
     {
-        if ($user->getUserProfiles() == null) {
+        if ($user->getUserProfiles()->isEmpty()) {
             throw new NoUserProfileException();
         }
 
@@ -63,7 +63,7 @@ class UserProfileManipulator implements UserProfileManipulatorInterface
      */
     public function setActiveProfile(UserInterface $user, ProfileInterface $profile)
     {
-        if ($user->getUserProfiles() == null) {
+        if ($user->getUserProfiles()->isEmpty()) {
             throw new NoUserProfileException();
         }
 
@@ -132,7 +132,7 @@ class UserProfileManipulator implements UserProfileManipulatorInterface
      */
     public function removeProfileForUser(UserInterface $user, ProfileInterface $profile)
     {
-        if ($user->getUserProfiles() == null) {
+        if ($user->getUserProfiles()->isEmpty()) {
             throw new NoUserProfileException();
         }
 

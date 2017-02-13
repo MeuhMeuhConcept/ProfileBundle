@@ -40,20 +40,4 @@ class UserContext extends GlobalContext implements Context, SnippetAcceptingCont
             }
         }
     }
-
-    /**
-     * @Then I should see :arg1 roles are :arg2
-     */
-    public function iShouldSeeRolesAre($arg1, $arg2)
-    {
-        foreach ($this->store['users'] as $user) {
-            if ($user->getUsername() == $arg1) {
-                $userRoles = $user->getRoles();
-                \PHPUnit_Framework_Assert::assertEquals(
-                    $arg2,
-                    $userRoles
-                );
-            }
-        }
-    }
 }

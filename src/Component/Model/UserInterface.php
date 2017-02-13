@@ -12,11 +12,4 @@ interface UserInterface extends SymfonyUserInterface
      * @return UserInterface
      */
     public function setUsername($username);
-
-    /**
-     * Get roles form the active profile.
-     *
-     * @return array
-     */
-    public function getRoles();
 }

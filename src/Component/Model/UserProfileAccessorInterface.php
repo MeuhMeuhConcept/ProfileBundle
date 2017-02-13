@@ -7,7 +7,7 @@ interface UserProfileAccessorInterface
     /**
      * Get userProfiles.
      *
-     * @return array
+     * @return ArrayCollection
      */
     public function getUserProfiles();
 

@@ -2,6 +2,8 @@
 
 namespace MMC\Profile\Component\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 class Profile implements ProfileInterface, UserProfileAccessorInterface
 {
     /**
@@ -10,14 +12,20 @@ class Profile implements ProfileInterface, UserProfileAccessorInterface
     protected $uuid;
 
     /**
-     * @var array
+     * @var ArrayCollection
      */
     protected $roles;
 
     /**
-     * @var array
+     * @var ArrayCollection
      */
     protected $userProfiles;
+
+    public function __construct()
+    {
+        $this->userProfiles = new ArrayCollection();
+        $this->roles = new ArrayCollection();
+    }
 
     /**
      * {@inheritdoc}
@@ -42,9 +50,7 @@ class Profile implements ProfileInterface, UserProfileAccessorInterface
      */
     public function removeUserProfile(UserProfileInterface $up)
     {
-        if (($key = array_search($up, $this->userProfiles)) !== false) {
-            unset($this->userProfiles[$key]);
-        }
+        $this->userProfiles->removeElement($up);
 
         return $this;
     }
@@ -78,9 +84,19 @@ class Profile implements ProfileInterface, UserProfileAccessorInterface
     /**
      * {@inheritdoc}
      */
-    public function setRoles($roles)
+    public function addRole($role)
     {
-        $this->roles = $roles;
+        $this->roles[] = $role;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeRole($role)
+    {
+        $this->roles->removeElement($role);
 
         return $this;
     }

@@ -23,16 +23,21 @@ interface ProfileInterface
     /**
      * Get roles.
      *
-     * @return array
+     * @return ArrayCollection
      */
     public function getRoles();
 
     /**
-     * Set roles.
-     *
-     * @param array $roles
+     * Add a role.
      *
      * @return ProfileInterface
      */
-    public function setRoles($roles);
+    public function addRole($role);
+
+    /**
+     * Remove a role.
+     *
+     * @return ProfileInterface
+     */
+    public function removeRole($role);
 }
