@@ -4,9 +4,17 @@ namespace MMC\Profile\Bundle\ProfileBundle\Features\Context;
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Context\SnippetAcceptingContext;
+use MMC\Profile\Component\Manipulator\UserProfileManipulator;
 
 class UserProfileManipulatorContext extends GlobalContext implements Context, SnippetAcceptingContext
 {
+    protected $userProfileManipulator;
+
+    public function __construct(UserProfileManipulator $userProfileManipulator)
+    {
+        $this->userProfileManipulator = $userProfileManipulator;
+    }
+
     /**
      * @Then I should see :arg1 active profile is :arg2
      */
@@ -14,7 +22,7 @@ class UserProfileManipulatorContext extends GlobalContext implements Context, Sn
     {
         foreach ($this->store['users'] as $user) {
             if ($user->getUsername() == $arg1) {
-                $activeProfileUuid = $this->manipulator->getActiveProfile($user)->getUuid();
+                $activeProfileUuid = $this->userProfileManipulator->getActiveProfile($user)->getUuid();
                 \PHPUnit_Framework_Assert::assertEquals(
                     $arg2,
                     $activeProfileUuid
@@ -37,7 +45,7 @@ class UserProfileManipulatorContext extends GlobalContext implements Context, Sn
         foreach ($this->store['users'] as $user) {
             if ($user->getUsername() == $arg1) {
                 try {
-                    $this->manipulator->setActiveProfile($user, $selectedProfile);
+                    $this->userProfileManipulator->setActiveProfile($user, $selectedProfile);
                 } catch (\Exception $e) {
                     $this->lastException = $e;
                 }
@@ -60,7 +68,7 @@ class UserProfileManipulatorContext extends GlobalContext implements Context, Sn
             if ($user->getUsername() == $arg1) {
                 \PHPUnit_Framework_Assert::assertEquals(
                     true,
-                    $this->manipulator->isOwner($user, $selectedProfile)
+                    $this->userProfileManipulator->isOwner($user, $selectedProfile)
                 );
             }
         }
@@ -80,7 +88,7 @@ class UserProfileManipulatorContext extends GlobalContext implements Context, Sn
         foreach ($this->store['users'] as $user) {
             if ($user->getUsername() == $arg2) {
                 try {
-                    $this->manipulator->removeProfileForUser($user, $selectedProfile);
+                    $this->userProfileManipulator->removeProfileForUser($user, $selectedProfile);
                 } catch (\Exception $e) {
                     $this->lastException = $e;
                 }
@@ -121,7 +129,7 @@ class UserProfileManipulatorContext extends GlobalContext implements Context, Sn
             if ($profile->getUuid() == $arg1) {
                 \PHPUnit_Framework_Assert::assertCount(
                     intval($arg2),
-                    $this->manipulator->getOwners($profile)
+                    $this->userProfileManipulator->getOwners($profile)
                 );
             }
         }
@@ -140,7 +148,7 @@ class UserProfileManipulatorContext extends GlobalContext implements Context, Sn
 
         foreach ($this->store['profiles'] as $profile) {
             if ($profile->getUuid() == $arg2) {
-                $this->manipulator->createUserProfile($selectedUser, $profile);
+                $this->userProfileManipulator->createUserProfile($selectedUser, $profile);
             }
         }
     }

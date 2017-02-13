@@ -17,7 +17,8 @@ default:
             type: symfony_bundle
             bundle: ProfileBundle
             contexts:
-                - MMC\Profile\Bundle\ProfileBundle\Features\Context\UserContext
+                - MMC\Profile\Bundle\ProfileBundle\Features\Context\UserContext:
+                    userProfileManipulator: '@profile_bundle.user_profile.manipulator'
             paths:
                 - src/Bundle/ProfileBundle/Features/user.feature
 
@@ -25,6 +26,7 @@ default:
             type: symfony_bundle
             bundle: ProfileBundle
             contexts:
-                - MMC\Profile\Bundle\ProfileBundle\Features\Context\UserProfileManipulatorContext
+                - MMC\Profile\Bundle\ProfileBundle\Features\Context\UserProfileManipulatorContext:
+                    userProfileManipulator: '@profile_bundle.user_profile.manipulator'
             paths:
                 - src/Bundle/ProfileBundle/Features/userProfileManipulator.feature

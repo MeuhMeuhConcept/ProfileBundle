@@ -4,9 +4,17 @@ namespace MMC\Profile\Bundle\ProfileBundle\Features\Context;
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Context\SnippetAcceptingContext;
+use MMC\Profile\Component\Manipulator\UserProfileManipulator;
 
 class UserContext extends GlobalContext implements Context, SnippetAcceptingContext
 {
+    protected $userProfileManipulator;
+
+    public function __construct(userProfileManipulator $userProfileManipulator)
+    {
+        $this->userProfileManipulator = $userProfileManipulator;
+    }
+
     /**
      * @Then I should see :arg1 active profile is :arg2
      */
@@ -14,7 +22,7 @@ class UserContext extends GlobalContext implements Context, SnippetAcceptingCont
     {
         foreach ($this->store['users'] as $user) {
             if ($user->getUsername() == $arg1) {
-                $activeProfileUuid = $this->manipulator->getActiveProfile($user)->getUuid();
+                $activeProfileUuid = $this->userProfileManipulator->getActiveProfile($user)->getUuid();
                 \PHPUnit_Framework_Assert::assertEquals(
                     $arg2,
                     $activeProfileUuid
@@ -36,7 +44,7 @@ class UserContext extends GlobalContext implements Context, SnippetAcceptingCont
 
         foreach ($this->store['users'] as $user) {
             if ($user->getUsername() == $arg1) {
-                $this->manipulator->setActiveProfile($user, $selectedProfile);
+                $this->userProfileManipulator->setActiveProfile($user, $selectedProfile);
             }
         }
     }
