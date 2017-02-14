@@ -2,11 +2,11 @@ Feature: UserProfileManipulator
 @reset-schema
     Scenario: test UserProfileManipulator functions
         Given there are the following profiles
-            | uuid      |roles      |
-            | 123456789 |ROLE_USER  |
-            | 987654321 |ROLE_TEST  |
-            | 000000000 |ROLE_USER  |
-            | 454545454 |ROLE_TEST1 |
+            | uuid      |roles      | type  |
+            | 123456789 |ROLE_USER  | TYPE1 |
+            | 987654321 |ROLE_TEST  | TYPE1 |
+            | 000000000 |ROLE_USER  | TYPE2 |
+            | 454545454 |ROLE_TEST1 | TYPE2 |
         And the following users
             | username |
             | toto     |
@@ -68,3 +68,11 @@ Feature: UserProfileManipulator
         And I create the userProfile tintin 454545454
         And tintin use profile 454545454
         And I should see tintin active profile is 454545454
+
+        Given I set type of profile 123456789 to TYPE2
+        Then I should see profile 123456789 type is TYPE2
+
+        # TYPE3 is not a valid value for profile type
+        Given I set type of profile 123456789 to TYPE3
+        Then I should see exception InvalidProfileTypeException
+        Then I should see profile 123456789 type is TYPE2

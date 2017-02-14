@@ -28,5 +28,6 @@ default:
             contexts:
                 - MMC\Profile\Bundle\ProfileBundle\Features\Context\UserProfileManipulatorContext:
                     userProfileManipulator: '@profile_bundle.user_profile.manipulator'
+                    profileTypeValidator: '@profile_bundle.profile_type.validator'
             paths:
                 - src/Bundle/ProfileBundle/Features/userProfileManipulator.feature

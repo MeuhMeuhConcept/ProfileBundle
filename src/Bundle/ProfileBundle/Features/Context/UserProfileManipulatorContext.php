@@ -5,14 +5,17 @@ namespace MMC\Profile\Bundle\ProfileBundle\Features\Context;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Context\SnippetAcceptingContext;
 use MMC\Profile\Component\Manipulator\UserProfileManipulator;
+use MMC\Profile\Component\Validator\ProfileTypeValidator;
 
 class UserProfileManipulatorContext extends GlobalContext implements Context, SnippetAcceptingContext
 {
     protected $userProfileManipulator;
+    protected $profileTypeValidator;
 
-    public function __construct(UserProfileManipulator $userProfileManipulator)
+    public function __construct(UserProfileManipulator $userProfileManipulator, ProfileTypeValidator $profileTypeValidator)
     {
         $this->userProfileManipulator = $userProfileManipulator;
+        $this->profileTypeValidator = $profileTypeValidator;
     }
 
     /**
@@ -149,6 +152,38 @@ class UserProfileManipulatorContext extends GlobalContext implements Context, Sn
         foreach ($this->store['profiles'] as $profile) {
             if ($profile->getUuid() == $arg2) {
                 $this->userProfileManipulator->createUserProfile($selectedUser, $profile);
+            }
+        }
+    }
+
+    /**
+     * @Given I set type of profile :arg1 to :arg2
+     */
+    public function iSetTypeOfProfileToType($arg1, $arg2)
+    {
+        foreach ($this->store['profiles'] as $profile) {
+            if ($profile->getUuid() == $arg1) {
+                try {
+                    $this->profileTypeValidator->validate($arg2);
+                    $profile->setType($arg2);
+                } catch (\Exception $e) {
+                    $this->lastException = $e;
+                }
+            }
+        }
+    }
+
+    /**
+     * @Then I should see profile :arg1 type is :arg2
+     */
+    public function iShouldSeeProfileTypeIs($arg1, $arg2)
+    {
+        foreach ($this->store['profiles'] as $profile) {
+            if ($profile->getUuid() == $arg1) {
+                \PHPUnit_Framework_Assert::assertEquals(
+                    $profile->getType(),
+                    $arg2
+                );
             }
         }
     }

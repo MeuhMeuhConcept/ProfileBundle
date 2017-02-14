@@ -10,7 +10,7 @@ class UserContext extends GlobalContext implements Context, SnippetAcceptingCont
 {
     protected $userProfileManipulator;
 
-    public function __construct(userProfileManipulator $userProfileManipulator)
+    public function __construct(UserProfileManipulator $userProfileManipulator)
     {
         $this->userProfileManipulator = $userProfileManipulator;
     }
@@ -23,6 +23,7 @@ class UserContext extends GlobalContext implements Context, SnippetAcceptingCont
         foreach ($this->store['users'] as $user) {
             if ($user->getUsername() == $arg1) {
                 $activeProfileUuid = $this->userProfileManipulator->getActiveProfile($user)->getUuid();
+
                 \PHPUnit_Framework_Assert::assertEquals(
                     $arg2,
                     $activeProfileUuid

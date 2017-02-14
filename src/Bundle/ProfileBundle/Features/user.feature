@@ -3,9 +3,9 @@ Feature: User
 @reset-schema
     Scenario: getting user profiles
         Given there are the following profiles
-            | uuid      |roles      |
-            | 123456789 |ROLE_TEST  |
-            | 987654321 |ROLE_TEST2 |
+            | uuid      |roles      | type  |
+            | 123456789 |ROLE_USER  | TYPE1 |
+            | 987654321 |ROLE_TEST  | TYPE2 |
         And the following users
             | username |
             | toto     |
