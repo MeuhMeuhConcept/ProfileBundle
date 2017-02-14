@@ -19,6 +19,11 @@ class Profile implements ProfileInterface, UserProfileAccessorInterface
     /**
      * @var ArrayCollection
      */
+    protected $type;
+
+    /**
+     * @var ArrayCollection
+     */
     protected $userProfiles;
 
     public function __construct()
@@ -97,6 +102,24 @@ class Profile implements ProfileInterface, UserProfileAccessorInterface
     public function removeRole($role)
     {
         $this->roles->removeElement($role);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
 
         return $this;
     }

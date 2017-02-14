@@ -40,4 +40,20 @@ interface ProfileInterface
      * @return ProfileInterface
      */
     public function removeRole($role);
+
+    /**
+     * Get the profile type.
+     *
+     * @return string
+     */
+    public function getType();
+
+    /**
+     * Set type.
+     *
+     * @param string $type
+     *
+     * @return ProfileInterface
+     */
+    public function setType($type);
 }
