@@ -6,6 +6,7 @@ data:
         - ..:/srv/profile-bundle
         - ./docker/conf/nginx_vhost.conf:/etc/nginx/sites-enabled/my_app.conf
         - ./docker/.home-developer:/home/developer
+        - /var/lib/mysql
 
 webserver:
     image: greg0ire/nginx
@@ -24,6 +25,8 @@ appserver:
     container_name: profile-bundle-sample_appserver
     volumes_from:
         - data
+    links:
+        - database
     env_file:
         - ./docker/docker-compose.env
     environment:
@@ -34,6 +37,8 @@ console:
     container_name: profile-bundle-sample_console
     volumes_from:
         - data
+    links:
+        - database
     env_file:
         - ./docker/docker-compose.env
     environment:
