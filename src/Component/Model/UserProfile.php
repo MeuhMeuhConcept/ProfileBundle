@@ -86,7 +86,7 @@ class UserProfile implements UserProfileInterface
     /**
      * {@inheritdoc}
      */
-    public function setUser(User $user)
+    public function setUser(UserInterface $user)
     {
         if ($user != $this->user) {
             $this->user = $user;
@@ -108,7 +108,7 @@ class UserProfile implements UserProfileInterface
     /**
      * {@inheritdoc}
      */
-    public function setProfile(Profile $profile)
+    public function setProfile(ProfileInterface $profile)
     {
         if ($profile != $this->profile) {
             $this->profile = $profile;

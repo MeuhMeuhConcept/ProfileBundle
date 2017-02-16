@@ -51,4 +51,36 @@ interface UserProfileInterface
      * @return UserProfileInterface
      */
     public function setPriority($priority);
+
+    /**
+     * Set user.
+     *
+     * @param UserInterface $user
+     *
+     * @return UserProfileInterface
+     */
+    public function setUser(UserInterface $user);
+
+    /**
+     * Get user.
+     *
+     * @return UserInterface
+     */
+    public function getUser();
+
+    /**
+     * Set profile.
+     *
+     * @param ProfileInterface $priority
+     *
+     * @return UserProfileInterface
+     */
+    public function setProfile(ProfileInterface $profile);
+
+    /**
+     * Get profile.
+     *
+     * @return ProfileInterface
+     */
+    public function getProfile();
 }
