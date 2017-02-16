@@ -12,3 +12,13 @@ services:
 
     profile_bundle.profile_type.provider:
         class: MMC\Profile\Component\Provider\ProfileTypeProvider
+
+    profile_bundle.profile_controller:
+        class: MMC\Profile\Bundle\ProfileBundle\Controller\ProfileController
+        arguments:
+            - '@templating'
+            - "@security.token_storage"
+            - "@profile_bundle.user_profile.manipulator"
+            - "@doctrine.orm.entity_manager"
+            - '@form.factory'
+            - '@router'

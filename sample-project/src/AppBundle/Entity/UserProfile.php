@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
    */
 class UserProfile extends BaseUserProfile
 {
+
   /**
    * @ORM\Column(name="id", type="integer")
    * @ORM\Id
@@ -25,7 +26,7 @@ class UserProfile extends BaseUserProfile
     protected $user;
 
   /**
-   * @ORM\ManyToOne(targetEntity="Profile")
+   * @ORM\ManyToOne(targetEntity="Profile", inversedBy="userProfiles")
    * @ORM\JoinColumn(nullable=false)
    */
     protected $profile;
@@ -43,5 +44,5 @@ class UserProfile extends BaseUserProfile
     /**
      * @ORM\Column(type="integer")
      */
-    protected $piority;
+    protected $priority;
 }

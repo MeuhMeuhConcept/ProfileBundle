@@ -11,16 +11,17 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Profile extends BaseProfile
 {
-  /**
-   * @ORM\Id
-   * @ORM\Column(type="integer")
-   * @ORM\GeneratedValue(strategy="AUTO")
-   */
+
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
     protected $id;
 
-  /**
-   * @ORM\OneToMany(targetEntity="UserProfile", mappedBy="profile")
-   */
+    /**
+     * @ORM\OneToMany(targetEntity="UserProfile", mappedBy="profile")
+     */
     protected $userProfiles;
 
     /**
@@ -38,4 +39,4 @@ class Profile extends BaseProfile
      */
     protected $type;
 
-}
+  }

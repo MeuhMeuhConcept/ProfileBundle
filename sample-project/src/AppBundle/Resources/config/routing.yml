@@ -1,0 +1,3 @@
+app_homepage:
+     path:     /
+     defaults: { _controller:app_bundle.default_controller:indexAction }

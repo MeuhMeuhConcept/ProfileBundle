@@ -2,6 +2,8 @@
 
 namespace MMC\Profile\Component\Manipulator;
 
+use MMC\Profile\Component\Manipulator\Exception\InvalidProfileClassName;
+use MMC\Profile\Component\Manipulator\Exception\InvalidUserProfileClassName;
 use MMC\Profile\Component\Manipulator\Exception\NoUserProfileException;
 use MMC\Profile\Component\Manipulator\Exception\UnableToDeleteActiveUserProfileException;
 use MMC\Profile\Component\Manipulator\Exception\UnableToDeleteLastOwnerUserProfileException;
@@ -19,19 +21,18 @@ class UserProfileManipulator implements UserProfileManipulatorInterface
         $profileClassname,
         $userProfileClassname
     ) {
-        dump($profileClassname);
         if (!is_subclass_of($profileClassname, ProfileInterface::class)) {
-            throw new NoUserProfileException();
+            throw new InvalidProfileClassName();
         }
-        dump($userProfileClassname);
 
         if (!is_subclass_of($userProfileClassname, UserProfileInterface::class)) {
-            throw new NoUserProfileException();
+            throw new InvalidUserProfileClassName();
         }
 
         $this->profileClassname = $profileClassname;
         $this->userProfileClassname = $userProfileClassname;
     }
+
     /**
      * {@inheritdoc}
      */

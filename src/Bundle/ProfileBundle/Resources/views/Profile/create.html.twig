@@ -1,0 +1,39 @@
+{% extends 'AppBundle::layout.html.twig' %}
+
+{% block title %}
+    {{ parent() }} | nouveau profil
+{% endblock %}
+{% block body %}
+    <section id="contact" class="padding_section">
+        <div class="container">
+            <h1 class="text-center">Ajout d'un nouveau profil</h1>
+            <div class="row d-flex justify-content-between">
+                <div class="col-lg-6 col-lg-offset-3">
+                    {{ form_start(form, {'attr': {'id': 'contactForm'}}) }}
+                        <div class="form-group row {% if form.uuid.vars.errors|length > 0 %}has-error{% endif %}">
+                            {{ form_label(form.uuid, null, {'label_attr': {'class': 'col-lg-4 col-form-label text-lg-right'}}) }}
+                            <div class="col-lg-8">{{ form_widget(form.uuid, {'attr': {'class': 'form-control'}}) }}</div>
+                            {{ form_errors(form.uuid) }}
+                        </div>
+                       {#  <div class="form-group row {% if form.roles.vars.errors|length > 0 %}has-error{% endif %}">
+                            {{ form_label(form.roles, null, {'label_attr': {'class': 'col-lg-4 col-form-label text-lg-right'}}) }}
+                            <div class="col-lg-8">{{ form_widget(form.roles, {'attr': {'class': 'form-control'}}) }}</div>
+                            {{ form_errors(form.roles) }}
+                        </div> #}
+                        <div class="form-group row {% if form.type.vars.errors|length > 0 %}has-error{% endif %}">
+                            {{ form_label(form.type, null, {'label_attr': {'class': 'col-lg-4 col-form-label text-lg-right'}}) }}
+                            <div class="col-lg-8">{{ form_widget(form.type, {'attr': {'class': 'form-control'}}) }}</div>
+                            {{ form_errors(form.type) }}
+                        </div>
+                        <div class="row justify-content-center mt-4">
+                            <button class="btn btn-primary d-block mx-auto col-lg-12" type="submit" role="button">Créer
+                            </button>
+                        </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+

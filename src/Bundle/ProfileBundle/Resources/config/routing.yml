@@ -1,0 +1,3 @@
+profile_bundle_createProfile:
+     path:     /createProfile
+     defaults: { _controller:profile_bundle.profile_controller:createAction }

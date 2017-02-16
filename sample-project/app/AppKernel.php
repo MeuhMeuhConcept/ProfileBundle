@@ -19,6 +19,8 @@ class AppKernel extends Kernel
 
             new MMC\FosUserBundle\MMCFosUserBundle(),
             new FOS\UserBundle\FOSUserBundle(),
+
+            new MMC\Profile\Bundle\ProfileBundle\ProfileBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

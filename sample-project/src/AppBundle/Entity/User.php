@@ -22,7 +22,7 @@ class User extends BaseUser
     protected $id;
 
     /**
-     * @ORM\OneToMany(targetEntity="UserProfile", mappedBy="profile")
+     * @ORM\OneToMany(targetEntity="UserProfile", mappedBy="user")
      */
     protected $userProfiles;
 }

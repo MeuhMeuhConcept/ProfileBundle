@@ -4,6 +4,10 @@ parameters:
 #    parameter_name: value
 
 services:
-#    service_name:
-#        class: AppBundle\Directory\ClassName
-#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+    app_bundle.default_controller:
+        class: AppBundle\Controller\HomeController
+        arguments:
+            - '@templating'
+            - "@security.token_storage"
+            - "@profile_bundle.user_profile.manipulator"
+            - "@doctrine.orm.entity_manager"
