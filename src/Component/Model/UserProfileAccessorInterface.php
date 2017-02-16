@@ -24,4 +24,9 @@ interface UserProfileAccessorInterface
      * @return UserProfileAccessorInterface
      */
     public function removeUserProfile(UserProfileInterface $up);
+
+    /**
+     * Initialize userProfiles as ArrayCollection if null.
+     */
+    public function initializeUserProfile();
 }

@@ -17,7 +17,7 @@ class UserProfile implements UserProfileInterface
     /**
      * @var int
      */
-    protected $piority;
+    protected $priority;
 
     /**
      * @var \User

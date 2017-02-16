@@ -2,11 +2,9 @@
 
 namespace MMC\Profile\Bundle\ProfileBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
 use MMC\Profile\Component\Model\UserProfile as UserProfileModel;
 
-/**
- * @ORM\Entity
- */
 class UserProfile extends UserProfileModel
 {
     /**

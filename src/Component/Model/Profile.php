@@ -17,7 +17,7 @@ class Profile implements ProfileInterface, UserProfileAccessorInterface
     protected $roles;
 
     /**
-     * @var ArrayCollection
+     * @var string
      */
     protected $type;
 
@@ -25,12 +25,6 @@ class Profile implements ProfileInterface, UserProfileAccessorInterface
      * @var ArrayCollection
      */
     protected $userProfiles;
-
-    public function __construct()
-    {
-        $this->userProfiles = new ArrayCollection();
-        $this->roles = new ArrayCollection();
-    }
 
     /**
      * {@inheritdoc}
@@ -45,7 +39,11 @@ class Profile implements ProfileInterface, UserProfileAccessorInterface
      */
     public function addUserProfile(UserProfileInterface $up)
     {
-        $this->userProfiles[] = $up;
+        $this->initializeUserProfile();
+
+        if (!$this->userProfiles->contains($up)) {
+            $this->userProfiles->add($up);
+        }
 
         return $this;
     }
@@ -55,6 +53,8 @@ class Profile implements ProfileInterface, UserProfileAccessorInterface
      */
     public function removeUserProfile(UserProfileInterface $up)
     {
+        $this->initializeUserProfile();
+
         $this->userProfiles->removeElement($up);
 
         return $this;
@@ -91,6 +91,8 @@ class Profile implements ProfileInterface, UserProfileAccessorInterface
      */
     public function addRole($role)
     {
+        $this->initializeRoles();
+
         $this->roles[] = $role;
 
         return $this;
@@ -101,6 +103,8 @@ class Profile implements ProfileInterface, UserProfileAccessorInterface
      */
     public function removeRole($role)
     {
+        $this->initializeRoles();
+
         $this->roles->removeElement($role);
 
         return $this;
@@ -122,5 +126,19 @@ class Profile implements ProfileInterface, UserProfileAccessorInterface
         $this->type = $type;
 
         return $this;
+    }
+
+    public function initializeUserProfile()
+    {
+        if ($this->userProfiles == null) {
+            $this->userProfiles = new ArrayCollection();
+        }
+    }
+
+    public function initializeRoles()
+    {
+        if ($this->roles == null) {
+            $this->roles = new ArrayCollection();
+        }
     }
 }

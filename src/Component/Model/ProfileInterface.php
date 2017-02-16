@@ -56,4 +56,14 @@ interface ProfileInterface
      * @return ProfileInterface
      */
     public function setType($type);
+
+    /**
+     * Initialize userProfiles as ArrayCollection if null.
+     */
+    public function initializeUserProfile();
+
+    /**
+     * Initialize roles as ArrayCollection if null.
+     */
+    public function initializeRoles();
 }

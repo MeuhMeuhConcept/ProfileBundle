@@ -1,6 +1,9 @@
 services:
     profile_bundle.user_profile.manipulator:
         class: MMC\Profile\Component\Manipulator\UserProfileManipulator
+        arguments:
+          - 'AppBundle\Entity\Profile'
+          - 'AppBundle\Entity\UserProfile'
 
     profile_bundle.profile_type.validator:
         class: MMC\Profile\Component\Validator\ProfileTypeValidator

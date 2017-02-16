@@ -2,13 +2,11 @@
 
 namespace MMC\Profile\Bundle\ProfileBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
 use MMC\Profile\Component\Model\UserInterface;
 use MMC\Profile\Component\Model\UserProfileAccessorInterface;
 use MMC\Profile\Component\Model\UserProfileAccessorTrait;
 
-/**
- * @ORM\Entity
- */
 class User implements UserInterface, UserProfileAccessorInterface
 {
     use UserProfileAccessorTrait;

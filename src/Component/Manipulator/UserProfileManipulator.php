@@ -2,16 +2,36 @@
 
 namespace MMC\Profile\Component\Manipulator;
 
-use MMC\Profile\Bundle\ProfileBundle\Entity\UserProfile;
 use MMC\Profile\Component\Manipulator\Exception\NoUserProfileException;
 use MMC\Profile\Component\Manipulator\Exception\UnableToDeleteActiveUserProfileException;
 use MMC\Profile\Component\Manipulator\Exception\UnableToDeleteLastOwnerUserProfileException;
 use MMC\Profile\Component\Manipulator\Exception\UserProfileNotFoundException;
 use MMC\Profile\Component\Model\ProfileInterface;
 use MMC\Profile\Component\Model\UserInterface;
+use MMC\Profile\Component\Model\UserProfileInterface;
 
 class UserProfileManipulator implements UserProfileManipulatorInterface
 {
+    private $profileClassname;
+    private $userProfileClassname;
+
+    public function __construct(
+        $profileClassname,
+        $userProfileClassname
+    ) {
+        dump($profileClassname);
+        if (!is_subclass_of($profileClassname, ProfileInterface::class)) {
+            throw new NoUserProfileException();
+        }
+        dump($userProfileClassname);
+
+        if (!is_subclass_of($userProfileClassname, UserProfileInterface::class)) {
+            throw new NoUserProfileException();
+        }
+
+        $this->profileClassname = $profileClassname;
+        $this->userProfileClassname = $userProfileClassname;
+    }
     /**
      * {@inheritdoc}
      */
@@ -89,15 +109,18 @@ class UserProfileManipulator implements UserProfileManipulatorInterface
      */
     public function createUserProfile(UserInterface $user, ProfileInterface $profile)
     {
-        $up = new UserProfile();
-        $up->setUser($user);
-        $up->setProfile($profile);
+        $class = $this->userProfileClassname;
+        $up = new $class();
 
         if (count($profile->getUserProfiles()) == 0) {
             $up->setIsOwner(true);
         }
+        $up->setPriority(0);
+        $up->setUser($user);
+        $up->setProfile($profile);
+        $this->setActiveProfile($user, $profile);
 
-        return $user;
+        return $up;
     }
 
     /**
@@ -105,7 +128,8 @@ class UserProfileManipulator implements UserProfileManipulatorInterface
      */
     public function createProfileForUser(UserInterface $user)
     {
-        $profile = new Profile();
+        $class = $this->profileClassname;
+        $profile = new $class();
         $this->createUserProfile($user, $profile);
 
         return $profile;
