@@ -1,12 +1,8 @@
 <?php
 
-namespace AppBundle\Form;
+namespace MMC\Profile\Bundle\ProfileBundle\Form;
 
-use AppBundle\Enum\ContactSubject;
-use Greg0ire\Enum\Bridge\Symfony\Form\Type\EnumType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;

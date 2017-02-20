@@ -22,6 +22,7 @@ services:
             - "@profile_bundle.user_profile.manager"
             - '@form.factory'
             - '@router'
+            - 'AppBundle\Entity\Profile'
 
     profile_bundle.profile.manager:
         class: MMC\Profile\Component\Manager\ProfileManager

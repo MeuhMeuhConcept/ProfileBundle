@@ -3,9 +3,11 @@
 namespace MMC\Profile\Bundle\ProfileBundle\Controller;
 
 use AppBundle\Entity\Profile;
-use AppBundle\Form\ProfileType;
+use MMC\Profile\Bundle\ProfileBundle\Form\ProfileType;
 use MMC\Profile\Component\Manager\UserProfileManagerInterface;
+use MMC\Profile\Component\Manipulator\Exception\InvalidProfileClassName;
 use MMC\Profile\Component\Manipulator\UserProfileManipulatorInterface;
+use MMC\Profile\Component\Model\ProfileInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Form\FormFactory;
@@ -22,6 +24,7 @@ class ProfileController
     private $upManager;
     private $formFactory;
     private $router;
+    private $profileClassname;
 
     public function __construct(
         EngineInterface $templating,
@@ -29,14 +32,21 @@ class ProfileController
         UserProfileManipulatorInterface $manipulator,
         UserProfileManagerInterface $upManager,
         FormFactory $formFactory,
-        Router $router
+        Router $router,
+        $profileClassname
     ) {
+
+        if (!is_subclass_of($profileClassname, ProfileInterface::class)) {
+            throw new InvalidProfileClassName();
+        }
+
         $this->templating = $templating;
         $this->tokenStorage = $tokenStorage;
         $this->manipulator = $manipulator;
         $this->upManager = $upManager;
         $this->formFactory = $formFactory;
         $this->router = $router;
+        $this->profileClassname = $profileClassname;
     }
 
     /**
