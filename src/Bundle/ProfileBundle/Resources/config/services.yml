@@ -19,6 +19,21 @@ services:
             - '@templating'
             - "@security.token_storage"
             - "@profile_bundle.user_profile.manipulator"
-            - "@doctrine.orm.entity_manager"
+            - "@profile_bundle.user_profile.manager"
             - '@form.factory'
             - '@router'
+
+    profile_bundle.profile.manager:
+        class: MMC\Profile\Component\Manager\ProfileManager
+        arguments:
+          - '@doctrine.orm.entity_manager'
+
+    profile_bundle.user.manager:
+        class: MMC\Profile\Component\Manager\UserManager
+        arguments:
+          - '@doctrine.orm.entity_manager'
+
+    profile_bundle.user_profile.manager:
+        class: MMC\Profile\Component\Manager\UserProfileManager
+        arguments:
+          - '@doctrine.orm.entity_manager'

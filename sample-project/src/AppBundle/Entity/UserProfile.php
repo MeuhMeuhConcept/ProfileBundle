@@ -20,13 +20,13 @@ class UserProfile extends BaseUserProfile
     private $id;
 
   /**
-   * @ORM\ManyToOne(targetEntity="User", inversedBy="userProfiles")
+   * @ORM\ManyToOne(targetEntity="User", inversedBy="userProfiles", cascade={"persist"})
    * @ORM\JoinColumn(nullable=false)
    */
     protected $user;
 
   /**
-   * @ORM\ManyToOne(targetEntity="Profile", inversedBy="userProfiles")
+   * @ORM\ManyToOne(targetEntity="Profile", inversedBy="userProfiles", cascade={"persist"})
    * @ORM\JoinColumn(nullable=false)
    */
     protected $profile;

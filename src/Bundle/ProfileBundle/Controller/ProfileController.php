@@ -4,7 +4,7 @@ namespace MMC\Profile\Bundle\ProfileBundle\Controller;
 
 use AppBundle\Entity\Profile;
 use AppBundle\Form\ProfileType;
-use Doctrine\ORM\EntityManager;
+use MMC\Profile\Component\Manager\UserProfileManagerInterface;
 use MMC\Profile\Component\Manipulator\UserProfileManipulatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
@@ -19,7 +19,7 @@ class ProfileController
     private $templating;
     private $tokenStorage;
     private $manipulator;
-    private $em;
+    private $upManager;
     private $formFactory;
     private $router;
 
@@ -27,14 +27,14 @@ class ProfileController
         EngineInterface $templating,
         TokenStorage $tokenStorage,
         UserProfileManipulatorInterface $manipulator,
-        EntityManager $em,
+        UserProfileManagerInterface $upManager,
         FormFactory $formFactory,
         Router $router
     ) {
         $this->templating = $templating;
         $this->tokenStorage = $tokenStorage;
         $this->manipulator = $manipulator;
-        $this->em = $em;
+        $this->upManager = $upManager;
         $this->formFactory = $formFactory;
         $this->router = $router;
     }
@@ -51,15 +51,13 @@ class ProfileController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->em->persist($profile);
 
             $user = $this->tokenStorage->getToken()->getUser();
             $up = $this->manipulator->createUserProfile($user, $profile);
 
-            $this->em->persist($user);
-            $this->em->persist($up);
+            $this->upManager->saveUserProfile($up);
 
-            $this->em->flush();
+            $this->upManager->flush();
 
             return new RedirectResponse($this->router->generate('app_homepage'));
         }
