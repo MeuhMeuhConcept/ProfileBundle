@@ -2,8 +2,8 @@
 
 namespace AppBundle\Entity;
 
-use MMC\Profile\Component\Model\Profile as BaseProfile;
 use Doctrine\ORM\Mapping as ORM;
+use MMC\Profile\Component\Model\Profile as BaseProfile;
 
 /**
  * @ORM\Entity
@@ -38,5 +38,4 @@ class Profile extends BaseProfile
      * @ORM\Column(type="string")
      */
     protected $type;
-
-  }
+}

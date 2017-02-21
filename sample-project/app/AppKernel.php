@@ -20,6 +20,8 @@ class AppKernel extends Kernel
             new MMC\FosUserBundle\MMCFosUserBundle(),
             new FOS\UserBundle\FOSUserBundle(),
 
+            new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
+
             new MMC\Profile\Bundle\ProfileBundle\ProfileBundle(),
         ];
 

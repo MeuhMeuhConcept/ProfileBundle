@@ -25,6 +25,14 @@ class UserProfileManager implements UserProfileManagerInterface
     /**
      * {@inheritdoc}
      */
+    public function removeUserProfile(UserProfileInterface $userProfile)
+    {
+        $this->em->remove($userProfile);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function flush()
     {
         $this->em->flush();

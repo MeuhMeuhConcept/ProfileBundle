@@ -2,12 +2,15 @@
 
 namespace AppBundle\Entity;
 
-use MMC\Profile\Component\Model\UserProfile as BaseUserProfile;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use MMC\Profile\Component\Model\UserProfile as BaseUserProfile;
 
   /**
    * @ORM\Entity
    * @ORM\Table(name="user_profile")
+   * @ORM\HasLifecycleCallbacks
+   * @Gedmo\SoftDeleteable(fieldName="deleted_at", timeAware=false)
    */
 class UserProfile extends BaseUserProfile
 {
@@ -45,4 +48,26 @@ class UserProfile extends BaseUserProfile
      * @ORM\Column(type="integer")
      */
     protected $priority;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    protected $created_at;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    protected $deleted_at;
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function onPrePersist()
+    {
+        $this->created_at = new \DateTime("now");
+    }
+
+    public function getDeleted_at(){
+      return $this->deleted_at;
+    }
 }

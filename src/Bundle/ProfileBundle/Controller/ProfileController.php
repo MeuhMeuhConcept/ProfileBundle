@@ -117,7 +117,7 @@ class ProfileController
 
         dump($up);
 
-        $this->upManager->saveUserProfile($up);
+        $this->upManager->removeUserProfile($up);
         $this->upManager->flush();
 
         return $this->templating->renderResponse('ProfileBundle:Default:index.html.twig',

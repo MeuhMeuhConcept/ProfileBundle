@@ -187,9 +187,9 @@ class UserProfileManipulator implements UserProfileManipulatorInterface
 
         foreach ($user->getUserProfiles() as $up) {
             if ($up->getProfile() == $profile) {
-                $removedUserProfile = $up;
-                $user->removeUserProfile($up);
                 $profile->removeUserProfile($up);
+                $user->removeUserProfile($up);
+                $removedUserProfile = $up;
             }
         }
 

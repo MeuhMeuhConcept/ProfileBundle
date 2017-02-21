@@ -12,6 +12,11 @@ interface UserProfileManagerInterface
     public function saveUserProfile(UserProfileInterface $userProfile);
 
     /**
+     * remove a userProfile.
+     */
+    public function removeUserProfile(UserProfileInterface $userProfile);
+
+    /**
      * Make a flush.
      */
     public function flush();

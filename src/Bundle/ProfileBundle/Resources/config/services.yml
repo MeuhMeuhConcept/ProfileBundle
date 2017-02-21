@@ -26,6 +26,7 @@ services:
             - '@profile_bundle.profile_type.validator'
             - '@profile_bundle.profile_type.provider'
             - 'AppBundle\Entity\Profile'
+
     profile_bundle.default_controller:
         class: MMC\Profile\Bundle\ProfileBundle\Controller\DefaultController
         arguments:
