@@ -22,6 +22,7 @@ services:
             - "@profile_bundle.user_profile.manager"
             - '@form.factory'
             - '@router'
+            - '@profile_bundle.ramsey_uuid_generator'
             - 'AppBundle\Entity\Profile'
 
     profile_bundle.profile.manager:
@@ -38,3 +39,6 @@ services:
         class: MMC\Profile\Component\Manager\UserProfileManager
         arguments:
           - '@doctrine.orm.entity_manager'
+
+    profile_bundle.ramsey_uuid_generator:
+        class: MMC\Profile\Component\UuidGenerator\RamseyUuidGenerator

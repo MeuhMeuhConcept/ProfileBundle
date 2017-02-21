@@ -29,6 +29,7 @@
     },
     "require": {
         "php": "~7.0",
+        "ramsey/uuid": "^3.5",
         "sensio/framework-extra-bundle": "^3.0",
         "symfony/doctrine-bridge": "^3.1",
         "symfony/monolog-bundle": "^3.0",

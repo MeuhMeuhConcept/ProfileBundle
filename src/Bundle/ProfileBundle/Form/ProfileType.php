@@ -11,7 +11,6 @@ class ProfileType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('uuid', TextType::class, ['label' => 'UUID']);
         // $builder->add('roles', TextType::class, ['label' => 'roles']);
         $builder->add('type', TextType::class, ['label' => 'type']);
     }

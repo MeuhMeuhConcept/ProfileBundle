@@ -8,6 +8,7 @@ use MMC\Profile\Component\Manager\UserProfileManagerInterface;
 use MMC\Profile\Component\Manipulator\Exception\InvalidProfileClassName;
 use MMC\Profile\Component\Manipulator\UserProfileManipulatorInterface;
 use MMC\Profile\Component\Model\ProfileInterface;
+use MMC\Profile\Component\UuidGenerator\UuidGeneratorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Form\FormFactory;
@@ -24,6 +25,7 @@ class ProfileController
     private $upManager;
     private $formFactory;
     private $router;
+    private $uuidGenerator;
     private $profileClassname;
 
     public function __construct(
@@ -33,9 +35,9 @@ class ProfileController
         UserProfileManagerInterface $upManager,
         FormFactory $formFactory,
         Router $router,
+        UuidGeneratorInterface $uuidGenerator,
         $profileClassname
     ) {
-
         if (!is_subclass_of($profileClassname, ProfileInterface::class)) {
             throw new InvalidProfileClassName();
         }
@@ -46,6 +48,7 @@ class ProfileController
         $this->upManager = $upManager;
         $this->formFactory = $formFactory;
         $this->router = $router;
+        $this->uuidGenerator = $uuidGenerator;
         $this->profileClassname = $profileClassname;
     }
 
@@ -55,13 +58,12 @@ class ProfileController
     public function createAction(Request $request)
     {
         $profile = new Profile();
+        $profile->setUuid($this->uuidGenerator->generate());
 
         $form = $this->formFactory->create(ProfileType::class, $profile);
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $user = $this->tokenStorage->getToken()->getUser();
             $up = $this->manipulator->createUserProfile($user, $profile);
 
