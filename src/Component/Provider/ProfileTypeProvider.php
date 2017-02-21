@@ -9,6 +9,9 @@ class ProfileTypeProvider implements ProfileTypeProviderInterface
      */
     public function getTypes()
     {
-        return ['TYPE1', 'TYPE2'];
+        return [
+            'TYPE1' => 'TYPE1',
+            'TYPE2' => 'TYPE2',
+        ];
     }
 }
