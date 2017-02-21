@@ -1,0 +1,33 @@
+{% extends 'ProfileBundle::layout.html.twig' %}
+
+{% block title %}
+    {{ parent() }} | profile
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        {{ dump(userProfile)}}
+        <h2>Profil {{ userProfile.profile.uuid }}</h2>
+        <p>Type: {{ userProfile.profile.type }}</p>
+        {% if(userProfile.isOwner) %}
+            <p>Propriétaire</p>
+        {% endif %}
+        {% if(userProfile.isActive) %}
+            <p>Profil actif</p>
+        {% endif %}
+        {% if userProfile.priority == null %}
+            <p>Priorité : non définie</p>
+        {% else %}
+            <p>Priorité : {{ userProfile.priority }}</p>
+        {% endif %}
+        <a href="{{ path('profile_bundle_activeProfile', {'username': user.username, 'uuid': userProfile.profile.uuid }) }}">
+            <button class="btn btn-success d-block mx-auto col-lg-6"role="button">Rendre le profil actif</button>
+        </a>
+        <a href="{{ path('profile_bundle_setPriorityProfile', {'username': user.username, 'uuid': userProfile.profile.uuid }) }}">
+            <button class="btn btn-info d-block mx-auto col-lg-6"role="button">Modifier la priorité</button>
+        </a>
+        <a href="{{ path('profile_bundle_deleteProfile', {'uuid': userProfile.profile.uuid, 'username': user.username }) }}">
+            <button class="btn btn-danger d-block mx-auto col-lg-6"role="button">Supprimer le profil</button>
+        </a>
+    </div>
+{% endblock %}

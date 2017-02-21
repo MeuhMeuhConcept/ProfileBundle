@@ -18,7 +18,7 @@
             {% else %}
                 <h3>Liste des profils liés à votre compte</h3>
                     {% for userProfile in user.userProfiles %}
-                        <a href="{{ path('profile_bundle_seeProfile', { 'uuid': userProfile.profile.uuid }) }}">
+                        <a href="{{ path('profile_bundle_seeProfile', { 'uuid': userProfile.profile.uuid, 'username': user.username}) }}">
                         {% if userProfile.isActive %}
                             <div class="col-lg-4 thumbnail text-center alert alert-success">
                         {% else %}

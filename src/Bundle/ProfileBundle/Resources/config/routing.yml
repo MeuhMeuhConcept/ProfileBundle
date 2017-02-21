@@ -1,3 +1,23 @@
+profile_bundle_homepage:
+     path:     /
+     defaults: { _controller:profile_bundle.default_controller:indexAction }
+
 profile_bundle_createProfile:
      path:     /createProfile
      defaults: { _controller:profile_bundle.profile_controller:createAction }
+
+profile_bundle_seeProfile:
+     path:     /profile/{uuid}/{username}
+     defaults: { _controller:profile_bundle.profile_controller:seeAction }
+
+profile_bundle_deleteProfile:
+     path:     /profile/delete/{uuid}/{username}
+     defaults: { _controller:profile_bundle.profile_controller:deleteAction }
+
+profile_bundle_activeProfile:
+     path:     /profile/active/{username}/{uuid}
+     defaults: { _controller:profile_bundle.profile_controller:activeAction }
+
+profile_bundle_setPriorityProfile:
+     path:     /profile/setPriority/{username}/{uuid}
+     defaults: { _controller:profile_bundle.profile_controller:setPriorityAction }

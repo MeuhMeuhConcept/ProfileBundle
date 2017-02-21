@@ -102,7 +102,7 @@ class UserProfileManipulator implements UserProfileManipulatorInterface
             throw new UserProfileNotFoundException();
         }
 
-        return $this;
+        return $up;
     }
 
     /**
@@ -157,11 +157,12 @@ class UserProfileManipulator implements UserProfileManipulatorInterface
      */
     public function removeProfileForUser(UserInterface $user, ProfileInterface $profile)
     {
+        $profileMatches = false;
+        $removedUserProfile;
+
         if ($user->getUserProfiles()->isEmpty()) {
             throw new NoUserProfileException();
         }
-
-        $profileMatches = false;
 
         foreach ($user->getUserProfiles() as $up) {
             if ($profile == $up->getProfile()) {
@@ -186,11 +187,12 @@ class UserProfileManipulator implements UserProfileManipulatorInterface
 
         foreach ($user->getUserProfiles() as $up) {
             if ($up->getProfile() == $profile) {
+                $removedUserProfile = $up;
                 $user->removeUserProfile($up);
                 $profile->removeUserProfile($up);
             }
         }
 
-        return $this;
+        return $removedUserProfile;
     }
 }
