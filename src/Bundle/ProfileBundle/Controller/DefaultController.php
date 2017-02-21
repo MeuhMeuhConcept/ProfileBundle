@@ -1,41 +1,32 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace MMC\Profile\Bundle\ProfileBundle\Controller;
 
-use AppBundle\Entity\Profile;
-use Doctrine\ORM\EntityManager;
-use MMC\Profile\Component\Manipulator\UserProfileManipulatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Templating\EngineInterface;
 
-class HomeController
+class DefaultController
 {
     private $templating;
     private $tokenStorage;
-    private $manipulator;
-    private $em;
 
     public function __construct(
         EngineInterface $templating,
-        TokenStorage $tokenStorage,
-        UserProfileManipulatorInterface $manipulator,
-        EntityManager $em
+        TokenStorage $tokenStorage
     ) {
         $this->templating = $templating;
         $this->tokenStorage = $tokenStorage;
-        $this->manipulator = $manipulator;
-        $this->em = $em;
     }
 
     /**
-     * @Route("/", name="app_homepage")
+     * @Route("/", name="profile_bundle_homepage")
      */
     public function indexAction()
     {
         $user = $this->tokenStorage->getToken()->getUser();
 
-        return $this->templating->renderResponse('AppBundle:Default:index.html.twig',
+        return $this->templating->renderResponse('ProfileBundle:Default:index.html.twig',
             ['user' => $user]);
     }
 }

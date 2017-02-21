@@ -61,11 +61,11 @@ class ProfileController
     }
 
     /**
-     * @Route("/createProfile", name="app_createProfile")
+     * @Route("/createProfile", name="profile_bundle_createProfile")
      */
     public function createAction(Request $request)
     {
-        $profile = new Profile();
+        $profile = new $this->profileClassname();
         $profile->setUuid($this->uuidGenerator->generate());
 
         $form = $this->formFactory->create(ProfileType::class, $profile);
