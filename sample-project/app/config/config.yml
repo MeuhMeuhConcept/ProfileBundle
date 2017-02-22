@@ -89,3 +89,7 @@ stof_doctrine_extensions:
     orm:
         default:
             softdeleteable: true
+
+mmc_profile:
+    profile_class: AppBundle\Entity\Profile
+    userProfile_class: AppBundle\Entity\UserProfile

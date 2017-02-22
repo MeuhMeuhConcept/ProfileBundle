@@ -2,13 +2,13 @@ services:
     profile_bundle.user_profile.manipulator:
         class: MMC\Profile\Component\Manipulator\UserProfileManipulator
         arguments:
-          - 'AppBundle\Entity\Profile'
-          - 'AppBundle\Entity\UserProfile'
+            - '%mmc_profile.profile_class%'
+            - '%mmc_profile.userProfile_class%'
 
     profile_bundle.profile_type.validator:
         class: MMC\Profile\Component\Validator\ProfileTypeValidator
         arguments:
-          - '@profile_bundle.profile_type.provider'
+            - '@profile_bundle.profile_type.provider'
 
     profile_bundle.profile_type.provider:
         class: MMC\Profile\Component\Provider\ProfileTypeProvider
@@ -25,7 +25,7 @@ services:
             - '@profile_bundle.ramsey_uuid_generator'
             - '@profile_bundle.profile_type.validator'
             - '@profile_bundle.profile_type.provider'
-            - 'AppBundle\Entity\Profile'
+            - '%mmc_profile.profile_class%'
 
     profile_bundle.default_controller:
         class: MMC\Profile\Bundle\ProfileBundle\Controller\DefaultController
@@ -36,17 +36,17 @@ services:
     profile_bundle.profile.manager:
         class: MMC\Profile\Component\Manager\ProfileManager
         arguments:
-          - '@doctrine.orm.entity_manager'
+            - '@doctrine.orm.entity_manager'
 
     profile_bundle.user.manager:
         class: MMC\Profile\Component\Manager\UserManager
         arguments:
-          - '@doctrine.orm.entity_manager'
+            - '@doctrine.orm.entity_manager'
 
     profile_bundle.user_profile.manager:
         class: MMC\Profile\Component\Manager\UserProfileManager
         arguments:
-          - '@doctrine.orm.entity_manager'
+            - '@doctrine.orm.entity_manager'
 
     profile_bundle.ramsey_uuid_generator:
         class: MMC\Profile\Component\UuidGenerator\RamseyUuidGenerator
