@@ -31,7 +31,7 @@ interface UserProfileManipulatorInterface
     /**
      * Create a userProfile.
      *
-     * @return ProfileInterface
+     * @return UserProfileInterface
      */
     public function createUserProfile(UserInterface $user, ProfileInterface $profile);
 
@@ -45,7 +45,7 @@ interface UserProfileManipulatorInterface
     /**
      * Remove a userProfile.
      *
-     * @return UserInterface
+     * @return UserProfileInterface
      */
     public function removeProfileForUser(UserInterface $user, ProfileInterface $profile);
 
@@ -55,4 +55,18 @@ interface UserProfileManipulatorInterface
      * @return array
      */
     public function getOwners(ProfileInterface $profile);
+
+    /**
+     * Change userProfile isOwner attribute to true.
+     *
+     * @return UserProfileInterface
+     */
+    public function promoteUserProfile(UserInterface $user, ProfileInterface $profile);
+
+    /**
+     * Change userProfile isOwer attribute to false.
+     *
+     * @return UserProfileInterface
+     */
+    public function demoteUserProfile(UserInterface $user, ProfileInterface $profile);
 }

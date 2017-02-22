@@ -5,8 +5,8 @@ namespace MMC\Profile\Component\Manipulator;
 use MMC\Profile\Component\Manipulator\Exception\InvalidProfileClassName;
 use MMC\Profile\Component\Manipulator\Exception\InvalidUserProfileClassName;
 use MMC\Profile\Component\Manipulator\Exception\NoUserProfileException;
-use MMC\Profile\Component\Manipulator\Exception\UnableToDeleteActiveUserProfileException;
-use MMC\Profile\Component\Manipulator\Exception\UnableToDeleteLastOwnerUserProfileException;
+use MMC\Profile\Component\Manipulator\Exception\UnableToDeleteOwnerUserProfileException;
+use MMC\Profile\Component\Manipulator\Exception\UnableToDemoteLastOwnerUserProfileException;
 use MMC\Profile\Component\Manipulator\Exception\UserProfileNotFoundException;
 use MMC\Profile\Component\Model\ProfileInterface;
 use MMC\Profile\Component\Model\UserInterface;
@@ -155,10 +155,9 @@ class UserProfileManipulator implements UserProfileManipulatorInterface
     /**
      * {@inheritdoc}
      */
-    public function removeProfileForUser(UserInterface $user, ProfileInterface $profile)
+    public function promoteUserProfile(UserInterface $user, ProfileInterface $profile)
     {
         $profileMatches = false;
-        $removedUserProfile;
 
         if ($user->getUserProfiles()->isEmpty()) {
             throw new NoUserProfileException();
@@ -166,6 +165,7 @@ class UserProfileManipulator implements UserProfileManipulatorInterface
 
         foreach ($user->getUserProfiles() as $up) {
             if ($profile == $up->getProfile()) {
+                $selectedUserProfile = $up;
                 $profileMatches = true;
             }
         }
@@ -174,25 +174,68 @@ class UserProfileManipulator implements UserProfileManipulatorInterface
             throw new UserProfileNotFoundException();
         }
 
-        if ($this->getActiveProfile($user) == $profile) {
-            throw new UnableToDeleteActiveUserProfileException();
-        }
+        $selectedUserProfile->setIsOwner(true);
+    }
 
-        foreach ($this->getOwners($profile) as $owner) {
-        }
+    /**
+     * {@inheritdoc}
+     */
+    public function demoteUserProfile(UserInterface $user, ProfileInterface $profile)
+    {
+        $profileMatches = false;
 
-        if (count($this->getOwners($profile)) <= 1) {
-            throw new UnableToDeleteLastOwnerUserProfileException();
+        if ($user->getUserProfiles()->isEmpty()) {
+            throw new NoUserProfileException();
         }
 
         foreach ($user->getUserProfiles() as $up) {
-            if ($up->getProfile() == $profile) {
-                $profile->removeUserProfile($up);
-                $user->removeUserProfile($up);
-                $removedUserProfile = $up;
+            if ($profile == $up->getProfile()) {
+                $selectedUserProfile = $up;
+                $profileMatches = true;
             }
         }
 
-        return $removedUserProfile;
+        if ($profileMatches == false) {
+            throw new UserProfileNotFoundException();
+        }
+
+        if ($this->getOwners($profile) <= 1) {
+            throw new UnableToDemoteLastOwnerUserProfileException();
+        }
+
+        $selectedUserProfile->setIsOwner(false);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeProfileForUser(UserInterface $user, ProfileInterface $profile)
+    {
+        $profileMatches = false;
+        $selectedUserProfile;
+
+        if ($user->getUserProfiles()->isEmpty()) {
+            throw new NoUserProfileException();
+        }
+
+        foreach ($user->getUserProfiles() as $up) {
+            if ($profile == $up->getProfile()) {
+                $selectedUserProfile = $up;
+                $profileMatches = true;
+            }
+        }
+
+        if ($profileMatches == false) {
+            throw new UserProfileNotFoundException();
+        }
+
+        if ($selectedUserProfile->isOwner()) {
+            throw new UnableToDeleteOwnerUserProfileException();
+        }
+
+        $profile->removeUserProfile($selectedUserProfile);
+        $user->removeUserProfile($selectedUserProfile);
+
+        return $selectedUserProfile;
     }
 }
