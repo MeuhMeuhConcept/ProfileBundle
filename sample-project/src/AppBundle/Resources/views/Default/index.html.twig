@@ -34,6 +34,8 @@
                             <p>{{ userProfile.profile.uuid }}</p>
                             {% if userProfile.isOwner %}
                                 <p>Propriétaire</p>
+                            {% else %}
+                                <p>Non propriétaire</p>
                             {% endif %}
                             {% if userProfile.isActive %}
                                 <p>Actif</p>

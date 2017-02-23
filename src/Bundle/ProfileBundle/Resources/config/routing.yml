@@ -21,3 +21,11 @@ profile_bundle_activeProfile:
 profile_bundle_setPriorityProfile:
      path:     /profile/setPriority/{username}/{uuid}
      defaults: { _controller:profile_bundle.profile_controller:setPriorityAction }
+
+profile_bundle_associateProfile:
+     path:     /profile/associate/{username}/{uuid}
+     defaults: { _controller:profile_bundle.profile_controller:associateAction }
+
+profile_bundle_addAssociation:
+     path:     /profile/addAssociation/{username}/{uuid}
+     defaults: { _controller:profile_bundle.profile_controller:addAssociationAction }

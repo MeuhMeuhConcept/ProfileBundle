@@ -48,7 +48,7 @@ class ProfileController
         ProfileTypeValidator $profileTypeValidator,
         ProfileTypeProviderInterface $profileTypeProvider,
         $profileClassname
-    ) {
+        ) {
         if (!is_subclass_of($profileClassname, ProfileInterface::class)) {
             throw new InvalidProfileClassName();
         }
@@ -107,7 +107,7 @@ class ProfileController
         }
 
         return $this->templating->renderResponse('AppBundle:Profile:create.html.twig',
-        ['form' => $form->createView(), 'formTest' => $formTest->createView()]);
+            ['form' => $form->createView(), 'formTest' => $formTest->createView()]);
     }
 
     /**
@@ -184,6 +184,39 @@ class ProfileController
 
         $this->upManager->saveUserProfile($up);
         $this->upManager->flush();
+
+        $users = $this->userManager->findUsers();
+        $user = $this->tokenStorage->getToken()->getUser();
+
+        return $this->templating->renderResponse('AppBundle:Default:index.html.twig',
+            ['user' => $user, 'users' => $users]);
+    }
+
+    /**
+     * @Route("/profile/associate/{username}/{uuid}", name="profile_bundle_associateProfile")
+     * @ParamConverter("profile", class="AppBundle:Profile")
+     * @ParamConverter("user", class="AppBundle:User")
+     */
+    public function associateAction(ProfileInterface $profile, UserInterface $user)
+    {
+        $users = $this->userManager->findUsers();
+
+        return $this->templating->renderResponse('AppBundle:Profile:associate.html.twig',
+            ['profile' => $profile, 'users' => $users]);
+    }
+
+    /**
+     * @Route("/profile/addAssociation/{username}/{uuid}", name="profile_bundle_addAssociation")
+     * @ParamConverter("profile", class="AppBundle:Profile")
+     * @ParamConverter("user", class="AppBundle:User")
+     */
+    public function addAssociationAction(ProfileInterface $profile, UserInterface $user)
+    {
+        $up = $this->manipulator->createUserProfile($user, $profile);
+
+        $this->upManager->saveUserProfile($up);
+        $this->upManager->flush();
+        dump($up);
 
         $users = $this->userManager->findUsers();
         $user = $this->tokenStorage->getToken()->getUser();

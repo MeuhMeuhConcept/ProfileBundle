@@ -1,0 +1,19 @@
+{% extends '@MMCProfileBundle/Profile/associate.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        {{ parent() }}
+        <hr style="border:solid 3px black">
+        <h1>Version de test</h1>
+        <div class="container">
+            <h1 class="text-center">Associer le profil {{ profile.uuid }}</h1>
+            {% for user in users %}
+                <a href="{{ path('profile_bundle_addAssociation', {'username': user.username, 'uuid': profile.uuid }) }}">
+                    <div class="col-lg-4 thumbnail text-center alert alert-info">
+                        <p>{{ user.username }}</p>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'ProfileBundle::layout.html.twig' %}
+
+{% block title %}
+    {{ parent() }} | Associer un profil
+{% endblock %}
+{% block body %}
+    <div class="container">
+        <h1 class="text-center">Associer le profil {{ profile.uuid }}</h1>
+        {% for user in users %}
+            {% set existingUp = false %}
+            {% for up in user.userProfiles %}
+                {% if up.profile.uuid == profile.uuid%}
+                {% set existingUp = true %}
+                {% endif %}
+            {% endfor %}
+
+            {% if existingUp == false %}
+                <a href="{{ path('profile_bundle_addAssociation', {'username': user.username, 'uuid': profile.uuid }) }}">
+                    <div class="col-lg-4 thumbnail text-center alert alert-info">
+                        <p>{{ user.username }}</p>
+                    </div>
+                </a>
+            {% else %}
+                <div class="alert alert-warning">
+                    <p>{{ user.username }} a déjà un accès vers ce profil</p>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}

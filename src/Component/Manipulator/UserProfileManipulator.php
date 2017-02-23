@@ -2,6 +2,7 @@
 
 namespace MMC\Profile\Component\Manipulator;
 
+use MMC\Profile\Component\Manipulator\Exception\ExistingUserProfileException;
 use MMC\Profile\Component\Manipulator\Exception\InvalidProfileClassName;
 use MMC\Profile\Component\Manipulator\Exception\InvalidUserProfileClassName;
 use MMC\Profile\Component\Manipulator\Exception\NoUserProfileException;
@@ -110,11 +111,25 @@ class UserProfileManipulator implements UserProfileManipulatorInterface
      */
     public function createUserProfile(UserInterface $user, ProfileInterface $profile)
     {
+        $existingUP = false;
+
+        foreach ($user->getUserProfiles() as $up) {
+            if ($profile == $up->getProfile()) {
+                $existingUP = true;
+            }
+        }
+
+        if ($existingUP) {
+            throw new ExistingUserProfileException();
+        }
+
         $class = $this->userProfileClassname;
         $up = new $class();
 
         if (count($profile->getUserProfiles()) == 0) {
             $up->setIsOwner(true);
+        } else {
+            $up->setIsOwner(false);
         }
         $up->setPriority(0);
         $up->setUser($user);
