@@ -2,6 +2,7 @@
 
 namespace MMC\Profile\Bundle\ProfileBundle\Controller;
 
+use AppBundle\Form\ProfileTypeTest;
 use MMC\Profile\Bundle\ProfileBundle\Form\ProfileType;
 use MMC\Profile\Component\Manager\UserProfileManagerInterface;
 use MMC\Profile\Component\Manipulator\Exception\InvalidProfileClassName;
@@ -85,8 +86,24 @@ class ProfileController
             return new RedirectResponse($this->router->generate('profile_bundle_homepage'));
         }
 
-        return $this->templating->renderResponse('ProfileBundle:Profile:create.html.twig',
-        ['form' => $form->createView()]);
+        $formTest = $this->formFactory->create(ProfileTypeTest::class, $profile);
+        $formTest->handleRequest($request);
+
+        if ($formTest->isSubmitted() && $formTest->isValid()) {
+            $this->profileTypeValidator->validate($profile->getType());
+
+            $user = $this->tokenStorage->getToken()->getUser();
+            $up = $this->manipulator->createUserProfile($user, $profile);
+
+            $this->upManager->saveUserProfile($up);
+
+            $this->upManager->flush();
+
+            return new RedirectResponse($this->router->generate('profile_bundle_homepage'));
+        }
+
+        return $this->templating->renderResponse('AppBundle:Profile:create.html.twig',
+        ['form' => $form->createView(), 'formTest' => $formTest->createView()]);
     }
 
     /**
@@ -102,7 +119,7 @@ class ProfileController
             }
         }
 
-        return $this->templating->renderResponse('ProfileBundle:Profile:profile.html.twig',
+        return $this->templating->renderResponse('AppBundle:Profile:profile.html.twig',
             ['userProfile' => $up, 'user' => $user]);
     }
 
@@ -120,7 +137,7 @@ class ProfileController
         $this->upManager->removeUserProfile($up);
         $this->upManager->flush();
 
-        return $this->templating->renderResponse('ProfileBundle:Default:index.html.twig',
+        return $this->templating->renderResponse('AppBundle:Default:index.html.twig',
             ['user' => $user]);
     }
 
@@ -136,7 +153,7 @@ class ProfileController
         $this->upManager->saveUserProfile($up);
         $this->upManager->flush();
 
-        return $this->templating->renderResponse('ProfileBundle:Default:index.html.twig',
+        return $this->templating->renderResponse('AppBundle:Default:index.html.twig',
             ['user' => $user]);
     }
 
@@ -158,7 +175,7 @@ class ProfileController
         $this->upManager->saveUserProfile($up);
         $this->upManager->flush();
 
-        return $this->templating->renderResponse('ProfileBundle:Default:index.html.twig',
+        return $this->templating->renderResponse('AppBundle:Default:index.html.twig',
             ['user' => $user]);
     }
 }

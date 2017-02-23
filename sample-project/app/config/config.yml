@@ -38,6 +38,8 @@ twig:
     strict_variables: "%kernel.debug%"
     globals:
         mmc_fos_user_layout: "FOSUserBundle:Default:layout.html.twig"
+    paths:
+        '%kernel.root_dir%/../vendor/meuhmeuhconcept/profile-bundle/src/Bundle/ProfileBundle/Resources/views': MMCProfileBundle
 
 # Doctrine Configuration
 doctrine:

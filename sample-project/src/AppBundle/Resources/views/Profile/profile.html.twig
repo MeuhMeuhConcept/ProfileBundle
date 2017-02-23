@@ -1,11 +1,12 @@
-{% extends 'ProfileBundle::layout.html.twig' %}
-
-{% block title %}
-    {{ parent() }} | profile
-{% endblock %}
+{% extends '@MMCProfileBundle/Profile/profile.html.twig' %}
 
 {% block body %}
     <div class="container">
+        {{ parent() }}
+        <hr style="border:solid 3px black">
+        <h1>Version de test</h1>
+        <div class="container">
+        {{ dump(userProfile)}}
         <h2>Profil {{ userProfile.profile.uuid }}</h2>
         <p>Type: {{ userProfile.profile.type }}</p>
         {% if(userProfile.isOwner) %}
