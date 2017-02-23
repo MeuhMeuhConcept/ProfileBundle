@@ -3,6 +3,7 @@
 namespace MMC\Profile\Bundle\ProfileBundle\Controller;
 
 use AppBundle\Form\ProfileTypeTest;
+use MMC\Profile\Bundle\ProfileBundle\Form\PriorityType;
 use MMC\Profile\Bundle\ProfileBundle\Form\ProfileType;
 use MMC\Profile\Component\Manager\UserManagerInterface;
 use MMC\Profile\Component\Manager\UserProfileManagerInterface;
@@ -172,7 +173,7 @@ class ProfileController
      * @ParamConverter("profile", class="AppBundle:Profile")
      * @ParamConverter("user", class="AppBundle:User")
      */
-    public function setPriorityAction(ProfileInterface $profile, UserInterface $user)
+    public function setPriorityAction(Request $request, ProfileInterface $profile, UserInterface $user)
     {
         foreach ($profile->getUserProfiles() as $userProfile) {
             if ($userProfile->getUser() == $user) {
@@ -180,16 +181,18 @@ class ProfileController
             }
         }
 
-        $up->setPriority(5);
+        $form = $this->formFactory->create(PriorityType::class, $up);
+        $form->handleRequest($request);
 
-        $this->upManager->saveUserProfile($up);
-        $this->upManager->flush();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->upManager->saveUserProfile($up);
+            $this->upManager->flush();
 
-        $users = $this->userManager->findUsers();
-        $user = $this->tokenStorage->getToken()->getUser();
+            return new RedirectResponse($this->router->generate('profile_bundle_homepage'));
+        }
 
-        return $this->templating->renderResponse('AppBundle:Default:index.html.twig',
-            ['user' => $user, 'users' => $users]);
+        return $this->templating->renderResponse('AppBundle:Profile:priority.html.twig',
+            ['form' => $form->createView()]);
     }
 
     /**

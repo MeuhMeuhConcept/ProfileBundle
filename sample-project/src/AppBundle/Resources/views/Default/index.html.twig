@@ -42,11 +42,7 @@
                             {% else %}
                                 <p>Inactif</p>
                             {% endif %}
-                            {% if userProfile.priority == null %}
-                                <p>Priorité : non définie</p>
-                            {% else %}
-                                <p>Priorité : {{ userProfile.priority }}</p>
-                            {% endif %}
+                            <p>Priorité : {{ userProfile.priority }}</p>
                             <p>Type: {{ userProfile.profile.type }}</p>
                         </div>
                     </a>
