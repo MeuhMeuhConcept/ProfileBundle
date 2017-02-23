@@ -16,6 +16,7 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode('profile_class')->isRequired()->cannotBeEmpty()->end()
                 ->scalarNode('userProfile_class')->isRequired()->cannotBeEmpty()->end()
+                ->scalarNode('user_class')->isRequired()->cannotBeEmpty()->end()
             ->end()
         ;
 

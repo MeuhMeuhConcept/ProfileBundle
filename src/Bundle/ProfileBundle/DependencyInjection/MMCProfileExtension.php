@@ -22,5 +22,6 @@ class MMCProfileExtension extends Extension
 
         $container->setParameter('mmc_profile.profile_class', $config['profile_class']);
         $container->setParameter('mmc_profile.userProfile_class', $config['userProfile_class']);
+        $container->setParameter('mmc_profile.user_class', $config['user_class']);
     }
 }

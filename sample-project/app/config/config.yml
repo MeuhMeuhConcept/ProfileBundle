@@ -95,3 +95,4 @@ stof_doctrine_extensions:
 mmc_profile:
     profile_class: AppBundle\Entity\Profile
     userProfile_class: AppBundle\Entity\UserProfile
+    user_class: AppBundle\Entity\User

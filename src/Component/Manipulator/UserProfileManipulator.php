@@ -229,7 +229,7 @@ class UserProfileManipulator implements UserProfileManipulatorInterface
             throw new UserProfileNotFoundException();
         }
 
-        if ($selectedUserProfile->isOwner()) {
+        if ($this->isOwner($user, $profile)) {
             throw new UnableToDeleteOwnerUserProfileException();
         }
 

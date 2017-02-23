@@ -20,6 +20,7 @@ services:
             - "@security.token_storage"
             - "@profile_bundle.user_profile.manipulator"
             - "@profile_bundle.user_profile.manager"
+            - "@profile_bundle.user.manager"
             - '@form.factory'
             - '@router'
             - '@profile_bundle.ramsey_uuid_generator'
@@ -32,6 +33,7 @@ services:
         arguments:
             - '@templating'
             - "@security.token_storage"
+            - "@profile_bundle.user.manager"
 
     profile_bundle.profile.manager:
         class: MMC\Profile\Component\Manager\ProfileManager
@@ -42,6 +44,7 @@ services:
         class: MMC\Profile\Component\Manager\UserManager
         arguments:
             - '@doctrine.orm.entity_manager'
+            - '%mmc_profile.user_class%'
 
     profile_bundle.user_profile.manager:
         class: MMC\Profile\Component\Manager\UserProfileManager

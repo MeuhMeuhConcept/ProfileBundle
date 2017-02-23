@@ -7,10 +7,12 @@ use MMC\Profile\Component\Model\UserInterface;
 class UserManager implements UserManagerInterface
 {
     private $em;
+    private $userClassname;
 
-    public function __construct($em)
+    public function __construct($em, $userClassname)
     {
         $this->em = $em;
+        $this->userClassname = $userClassname;
     }
 
     /**
@@ -27,5 +29,13 @@ class UserManager implements UserManagerInterface
     public function flush()
     {
         $this->em->flush();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findUsers()
+    {
+        return $this->em->getRepository($this->userClassname)->findAll();
     }
 }

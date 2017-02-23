@@ -6,42 +6,51 @@
         <hr style="border:solid 3px black">
         <h1>Version de test</h1>
         {{ dump(user) }}
-            <h2>Bienvenue {{ user.username }}</h2>
-            {% if user.userProfiles is empty %}
-                <div class="alert alert-warning">
-                    <h3> Vous n'avez pas de profil actuellement</h3>
-                    <h3><a href="{{ path('profile_bundle_createProfile') }}">
-                        Créer votre premier profil
-                    </a></h3>
-                </div>
-            {% else %}
-                <h3>Liste des profils liés à votre compte</h3>
-                    {% for userProfile in user.userProfiles %}
-                        <a href="{{ path('profile_bundle_seeProfile', { 'uuid': userProfile.profile.uuid, 'username': user.username}) }}">
-                        {% if userProfile.isActive %}
-                            <div class="col-lg-4 thumbnail text-center alert alert-success">
-                        {% else %}
-                            <div class="col-lg-4 thumbnail text-center alert alert-info">
-                        {% endif %}
-                                <p>{{ userProfile.profile.uuid }}</p>
-                                {% if userProfile.isOwner %}
-                                    <p>Propriétaire</p>
-                                {% endif %}
-                                {% if userProfile.isActive %}
-                                    <p>Actif</p>
-                                {% else %}
-                                    <p>Inactif</p>
-                                {% endif %}
-                                {% if userProfile.priority == null %}
-                                    <p>Priorité : non définie</p>
-                                {% else %}
-                                    <p>Priorité : {{ userProfile.priority }}</p>
-                                {% endif %}
-                                <p>Type: {{ userProfile.profile.type }}</p>
-                            </div>
-                        </a>
-                    {% endfor %}
-                <a class="col-lg-12" href="{{ path('profile_bundle_createProfile') }}">Créer un nouveau profil</a>
+        <h2>Bienvenue {{ user.username }}</h2>
+        {% set emptyProfiles = true %}
+        {% for user in users %}
+            {% if user.userProfiles|length > 0 %}
+                {% set emptyProfiles = false %}
+            {% endif %}
+        {% endfor %}
+        {% if emptyProfiles == true %}
+            <div class="alert alert-warning">
+                <h3> Vous n'avez pas de profil actuellement</h3>
+                <h3><a href="{{ path('profile_bundle_createProfile') }}">
+                    Créer votre premier profil
+                </a></h3>
+            </div>
+        {% else %}
+            <h3>Liste des profils</h3>
+            {% for user in users %}
+                {% for userProfile in user.userProfiles %}
+                    <a href="{{ path('profile_bundle_seeProfile', { 'uuid': userProfile.profile.uuid, 'username': user.username}) }}">
+                    {% if userProfile.isActive %}
+                        <div class="col-lg-4 thumbnail text-center alert alert-success">
+                    {% else %}
+                        <div class="col-lg-4 thumbnail text-center alert alert-info">
+                    {% endif %}
+                            <p>{{ userProfile.user.username }}</p>
+                            <p>{{ userProfile.profile.uuid }}</p>
+                            {% if userProfile.isOwner %}
+                                <p>Propriétaire</p>
+                            {% endif %}
+                            {% if userProfile.isActive %}
+                                <p>Actif</p>
+                            {% else %}
+                                <p>Inactif</p>
+                            {% endif %}
+                            {% if userProfile.priority == null %}
+                                <p>Priorité : non définie</p>
+                            {% else %}
+                                <p>Priorité : {{ userProfile.priority }}</p>
+                            {% endif %}
+                            <p>Type: {{ userProfile.profile.type }}</p>
+                        </div>
+                    </a>
+                {% endfor %}
+            {% endfor %}
+            <a class="col-lg-12" href="{{ path('profile_bundle_createProfile') }}">Créer un nouveau profil</a>
         {% endif %}
     </div>
 {% endblock %}

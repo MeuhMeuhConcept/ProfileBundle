@@ -4,6 +4,7 @@ namespace MMC\Profile\Bundle\ProfileBundle\Controller;
 
 use AppBundle\Form\ProfileTypeTest;
 use MMC\Profile\Bundle\ProfileBundle\Form\ProfileType;
+use MMC\Profile\Component\Manager\UserManagerInterface;
 use MMC\Profile\Component\Manager\UserProfileManagerInterface;
 use MMC\Profile\Component\Manipulator\Exception\InvalidProfileClassName;
 use MMC\Profile\Component\Manipulator\UserProfileManipulatorInterface;
@@ -27,6 +28,7 @@ class ProfileController
     private $tokenStorage;
     private $manipulator;
     private $upManager;
+    private $userManager;
     private $formFactory;
     private $router;
     private $uuidGenerator;
@@ -39,6 +41,7 @@ class ProfileController
         TokenStorage $tokenStorage,
         UserProfileManipulatorInterface $manipulator,
         UserProfileManagerInterface $upManager,
+        UserManagerInterface $userManager,
         FormFactory $formFactory,
         Router $router,
         UuidGeneratorInterface $uuidGenerator,
@@ -54,6 +57,7 @@ class ProfileController
         $this->tokenStorage = $tokenStorage;
         $this->manipulator = $manipulator;
         $this->upManager = $upManager;
+        $this->userManager = $userManager;
         $this->formFactory = $formFactory;
         $this->router = $router;
         $this->uuidGenerator = $uuidGenerator;
@@ -137,8 +141,11 @@ class ProfileController
         $this->upManager->removeUserProfile($up);
         $this->upManager->flush();
 
+        $users = $this->userManager->findUsers();
+        $user = $this->tokenStorage->getToken()->getUser();
+
         return $this->templating->renderResponse('AppBundle:Default:index.html.twig',
-            ['user' => $user]);
+            ['user' => $user, 'users' => $users]);
     }
 
     /**
@@ -153,8 +160,11 @@ class ProfileController
         $this->upManager->saveUserProfile($up);
         $this->upManager->flush();
 
+        $users = $this->userManager->findUsers();
+        $user = $this->tokenStorage->getToken()->getUser();
+
         return $this->templating->renderResponse('AppBundle:Default:index.html.twig',
-            ['user' => $user]);
+            ['user' => $user, 'users' => $users]);
     }
 
     /**
@@ -175,7 +185,10 @@ class ProfileController
         $this->upManager->saveUserProfile($up);
         $this->upManager->flush();
 
+        $users = $this->userManager->findUsers();
+        $user = $this->tokenStorage->getToken()->getUser();
+
         return $this->templating->renderResponse('AppBundle:Default:index.html.twig',
-            ['user' => $user]);
+            ['user' => $user, 'users' => $users]);
     }
 }

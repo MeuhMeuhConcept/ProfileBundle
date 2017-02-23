@@ -15,4 +15,9 @@ interface UserManagerInterface
      * Make a flush.
      */
     public function flush();
+
+    /**
+     * Get all users.
+     */
+    public function findUsers();
 }
