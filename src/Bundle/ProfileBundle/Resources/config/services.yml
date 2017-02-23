@@ -25,7 +25,6 @@ services:
             - '@router'
             - '@profile_bundle.ramsey_uuid_generator'
             - '@profile_bundle.profile_type.validator'
-            - '@profile_bundle.profile_type.provider'
             - '%mmc_profile.profile_class%'
 
     profile_bundle.default_controller:

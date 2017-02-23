@@ -11,11 +11,9 @@ use MMC\Profile\Component\Manipulator\Exception\InvalidProfileClassName;
 use MMC\Profile\Component\Manipulator\UserProfileManipulatorInterface;
 use MMC\Profile\Component\Model\ProfileInterface;
 use MMC\Profile\Component\Model\UserInterface;
-use MMC\Profile\Component\Provider\ProfileTypeProviderInterface;
 use MMC\Profile\Component\UuidGenerator\UuidGeneratorInterface;
 use MMC\Profile\Component\Validator\ProfileTypeValidator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -34,7 +32,6 @@ class ProfileController
     private $router;
     private $uuidGenerator;
     private $profileTypeValidator;
-    private $profileTypeProvider;
     private $profileClassname;
 
     public function __construct(
@@ -47,7 +44,6 @@ class ProfileController
         Router $router,
         UuidGeneratorInterface $uuidGenerator,
         ProfileTypeValidator $profileTypeValidator,
-        ProfileTypeProviderInterface $profileTypeProvider,
         $profileClassname
         ) {
         if (!is_subclass_of($profileClassname, ProfileInterface::class)) {
@@ -63,13 +59,9 @@ class ProfileController
         $this->router = $router;
         $this->uuidGenerator = $uuidGenerator;
         $this->profileTypeValidator = $profileTypeValidator;
-        $this->profileTypeProvider = $profileTypeProvider;
         $this->profileClassname = $profileClassname;
     }
 
-    /**
-     * @Route("/createProfile", name="profile_bundle_createProfile")
-     */
     public function createAction(Request $request)
     {
         $profile = new $this->profileClassname();
@@ -85,7 +77,6 @@ class ProfileController
             $up = $this->manipulator->createUserProfile($user, $profile);
 
             $this->upManager->saveUserProfile($up);
-
             $this->upManager->flush();
 
             return new RedirectResponse($this->router->generate('profile_bundle_homepage'));
@@ -101,7 +92,6 @@ class ProfileController
             $up = $this->manipulator->createUserProfile($user, $profile);
 
             $this->upManager->saveUserProfile($up);
-
             $this->upManager->flush();
 
             return new RedirectResponse($this->router->generate('profile_bundle_homepage'));
@@ -112,7 +102,6 @@ class ProfileController
     }
 
     /**
-     * @Route("/profile/{uuid}", name="profile_bundle_seeProfile")
      * @ParamConverter("profile", class="AppBundle:Profile")
      * @ParamConverter("user", class="AppBundle:User")
      */
@@ -129,7 +118,6 @@ class ProfileController
     }
 
     /**
-     * @Route("/profile/delete/{uuid}/{username}", name="profile_bundle_deleteProfile")
      * @ParamConverter("user", class="AppBundle:User")
      * @ParamConverter("profile", class="AppBundle:Profile")
      */
@@ -137,20 +125,13 @@ class ProfileController
     {
         $up = $this->manipulator->removeProfileForUser($user, $profile);
 
-        dump($up);
-
         $this->upManager->removeUserProfile($up);
         $this->upManager->flush();
 
-        $users = $this->userManager->findUsers();
-        $user = $this->tokenStorage->getToken()->getUser();
-
-        return $this->templating->renderResponse('AppBundle:Default:index.html.twig',
-            ['user' => $user, 'users' => $users]);
+        return new RedirectResponse($this->router->generate('profile_bundle_homepage'));
     }
 
     /**
-     * @Route("/profile/active/{username}/{uuid}", name="profile_bundle_activeProfile")
      * @ParamConverter("profile", class="AppBundle:Profile")
      * @ParamConverter("user", class="AppBundle:User")
      */
@@ -161,15 +142,10 @@ class ProfileController
         $this->upManager->saveUserProfile($up);
         $this->upManager->flush();
 
-        $users = $this->userManager->findUsers();
-        $user = $this->tokenStorage->getToken()->getUser();
-
-        return $this->templating->renderResponse('AppBundle:Default:index.html.twig',
-            ['user' => $user, 'users' => $users]);
+        return new RedirectResponse($this->router->generate('profile_bundle_homepage'));
     }
 
     /**
-     * @Route("/profile/setPriority/{username}/{uuid}", name="profile_bundle_setPriorityProfile")
      * @ParamConverter("profile", class="AppBundle:Profile")
      * @ParamConverter("user", class="AppBundle:User")
      */
@@ -196,11 +172,9 @@ class ProfileController
     }
 
     /**
-     * @Route("/profile/associate/{username}/{uuid}", name="profile_bundle_associateProfile")
      * @ParamConverter("profile", class="AppBundle:Profile")
-     * @ParamConverter("user", class="AppBundle:User")
      */
-    public function associateAction(ProfileInterface $profile, UserInterface $user)
+    public function associateAction(ProfileInterface $profile)
     {
         $users = $this->userManager->findUsers();
 
@@ -209,7 +183,6 @@ class ProfileController
     }
 
     /**
-     * @Route("/profile/addAssociation/{username}/{uuid}", name="profile_bundle_addAssociation")
      * @ParamConverter("profile", class="AppBundle:Profile")
      * @ParamConverter("user", class="AppBundle:User")
      */
@@ -219,12 +192,7 @@ class ProfileController
 
         $this->upManager->saveUserProfile($up);
         $this->upManager->flush();
-        dump($up);
 
-        $users = $this->userManager->findUsers();
-        $user = $this->tokenStorage->getToken()->getUser();
-
-        return $this->templating->renderResponse('AppBundle:Default:index.html.twig',
-            ['user' => $user, 'users' => $users]);
+        return new RedirectResponse($this->router->generate('profile_bundle_homepage'));
     }
 }
