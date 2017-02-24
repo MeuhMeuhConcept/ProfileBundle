@@ -1,31 +1,33 @@
 profile_bundle_homepage:
      path:     /
-     defaults: { _controller:profile_bundle.default_controller:indexAction }
+     defaults: { _controller:profile_bundle.default_controller:indexaction }
 
 profile_bundle_createProfile:
      path:     /createProfile
-     defaults: { _controller:profile_bundle.profile_controller:createAction }
+     defaults: { _controller:profile_bundle.profile_controller:createaction }
 
 profile_bundle_seeProfile:
      path:     /profile/{uuid}/{username}
-     defaults: { _controller:profile_bundle.profile_controller:seeAction }
+     defaults: { _controller:profile_bundle.profile_controller:seeaction }
+     requirements:
+          uuid: "[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}"
 
 profile_bundle_deleteProfile:
      path:     /profile/delete/{uuid}/{username}
-     defaults: { _controller:profile_bundle.profile_controller:deleteAction }
+     defaults: { _controller:profile_bundle.profile_controller:deleteaction }
 
 profile_bundle_activeProfile:
      path:     /profile/active/{username}/{uuid}
-     defaults: { _controller:profile_bundle.profile_controller:activeAction }
+     defaults: { _controller:profile_bundle.profile_controller:activeaction }
 
 profile_bundle_setPriorityProfile:
      path:     /profile/setPriority/{username}/{uuid}
-     defaults: { _controller:profile_bundle.profile_controller:setPriorityAction }
+     defaults: { _controller:profile_bundle.profile_controller:setPriorityaction }
 
 profile_bundle_associateProfile:
-     path:     /profile/associate/{username}/{uuid}
-     defaults: { _controller:profile_bundle.profile_controller:associateAction }
+     path:     /profile/associate/{uuid}
+     defaults: { _controller:profile_bundle.profile_controller:associateaction }
 
 profile_bundle_addAssociation:
-     path:     /profile/addAssociation/{username}/{uuid}
-     defaults: { _controller:profile_bundle.profile_controller:addAssociationAction }
+     path:     /profile/addassociation/{username}/{uuid}
+     defaults: { _controller:profile_bundle.profile_controller:addassociationaction }
