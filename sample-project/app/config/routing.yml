@@ -1,5 +1,5 @@
 fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
 
-mmc_profile_bundle:
-    resource: "@ProfileBundle/Resources/config/routing.yml"
+mmc_profile:
+    resource: "@MMCProfileBundle/Resources/config/routing.yml"

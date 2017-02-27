@@ -22,7 +22,7 @@ class AppKernel extends Kernel
 
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
 
-            new MMC\Profile\Bundle\ProfileBundle\ProfileBundle(),
+            new MMC\Profile\Bundle\ProfileBundle\MMCProfileBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
