@@ -61,14 +61,8 @@ doctrine:
 
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
-        entity_managers:
-            default:
-                naming_strategy: doctrine.orm.naming_strategy.underscore
-                auto_mapping: true
-                filters:
-                    softdeleteable:
-                        class: Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter
-                        enabled: true
+        naming_strategy: doctrine.orm.naming_strategy.underscore
+        auto_mapping: true
 
 # Swiftmailer Configuration
 swiftmailer:
@@ -85,12 +79,6 @@ fos_user:
 
 mmc_fos_user:
     admin: ~
-
-stof_doctrine_extensions:
-    default_locale: %locale%
-    orm:
-        default:
-            softdeleteable: true
 
 mmc_profile:
     profile_class: AppBundle\Entity\Profile
