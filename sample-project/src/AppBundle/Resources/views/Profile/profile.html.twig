@@ -34,5 +34,11 @@
         <a href="{{ path('profile_bundle_associateProfile', {'uuid': userProfile.profile.uuid }) }}">
             <button class="btn btn-warning d-block mx-auto col-lg-6"role="button">Associer le profil à un utilisateur</button>
         </a>
+        <a href="{{ path('profile_bundle_promote', {'uuid': userProfile.profile.uuid }) }}">
+            <button class="btn btn-primary d-block mx-auto col-lg-6"role="button">Promouvoir un utilisateur</button>
+        </a>
+        <a href="{{ path('profile_bundle_demote', {'uuid': userProfile.profile.uuid, 'username': user.username }) }}">
+            <button class="btn btn-secondary d-block mx-auto col-lg-6"role="button">Se destituer</button>
+        </a>
     </div>
 {% endblock %}

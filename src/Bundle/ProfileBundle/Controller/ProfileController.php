@@ -195,4 +195,53 @@ class ProfileController
 
         return new RedirectResponse($this->router->generate('profile_bundle_homepage'));
     }
+
+    /**
+     * @ParamConverter("profile", class="AppBundle:Profile")
+     */
+    public function promoteAction(ProfileInterface $profile)
+    {
+        $users = $this->userManager->findUsers();
+
+        return $this->templating->renderResponse('AppBundle:Profile:promote.html.twig',
+            ['profile' => $profile, 'users' => $users]);
+    }
+
+    /**
+     * @ParamConverter("profile", class="AppBundle:Profile")
+     * @ParamConverter("user", class="AppBundle:User")
+     */
+    public function demoteAction(ProfileInterface $profile, UserInterface $user)
+    {
+        return $this->templating->renderResponse('AppBundle:Profile:demote.html.twig',
+            ['profile' => $profile, 'user' => $user]);
+    }
+
+    /**
+     * @ParamConverter("profile", class="AppBundle:Profile")
+     * @ParamConverter("user", class="AppBundle:User")
+     */
+    public function addPromotionAction(ProfileInterface $profile, UserInterface $user)
+    {
+        $up = $this->manipulator->promoteUserProfile($user, $profile);
+
+        $this->upManager->saveUserProfile($up);
+        $this->upManager->flush();
+
+        return new RedirectResponse($this->router->generate('profile_bundle_homepage'));
+    }
+
+    /**
+     * @ParamConverter("profile", class="AppBundle:Profile")
+     * @ParamConverter("user", class="AppBundle:User")
+     */
+    public function addDemotionAction(ProfileInterface $profile, UserInterface $user)
+    {
+        $up = $this->manipulator->demoteUserProfile($user, $profile);
+
+        $this->upManager->saveUserProfile($up);
+        $this->upManager->flush();
+
+        return new RedirectResponse($this->router->generate('profile_bundle_homepage'));
+    }
 }

@@ -1,0 +1,27 @@
+{% extends 'MMCProfileBundle::layout.html.twig' %}
+
+{% block title %}
+    {{ parent() }} | Destituer
+{% endblock %}
+{% block body %}
+    <div class="container">
+        <h1 class="text-center">Se destituer</h1>
+        {% set owner = false %}
+            {% for up in user.userProfiles %}
+                {% if up.profile.uuid == profile.uuid and up.isOwner %}
+                    {% set owner = true %}
+                {% endif %}
+            {% endfor %}
+            {% if owner == true %}
+                 <a href="{{ path('profile_bundle_addDemotion', {'username': user.username, 'uuid': profile.uuid }) }}">
+                     <div class="col-lg-4 col-lg-offset-4 thumbnail text-center alert alert-info">
+                         <p>Se destituer</p>
+                      </div>
+                   </a>
+            {% else %}
+                 <div class="alert alert-warning col-lg-12">
+                     <p>{{ user.username }} n'est pas propriétaire de ce profil</p>
+                  </div>
+            {% endif %}
+        </div>
+    {% endblock %}

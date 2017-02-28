@@ -1,0 +1,40 @@
+{% extends 'MMCProfileBundle::layout.html.twig' %}
+
+{% block title %}
+    {{ parent() }} | Promouvoir
+{% endblock %}
+{% block body %}
+    <div class="container">
+        <h1 class="text-center">Promouvoir un utilisateur</h1>
+        {% for user in users %}
+            {% set owner = false %}
+            {% set upExist = false %}
+            {% for up in user.userProfiles %}
+                {% if up.profile.uuid == profile.uuid %}
+                    {% if up.isOwner %}
+                        {% set owner = true %}
+                    {% endif %}
+                    {% set upExist = true %}
+                {% endif %}
+            {% endfor %}
+
+            {% if owner and upExist %}
+                <div class="alert alert-warning col-lg-12 text-center">
+                    <p>{{ user.username }} est déjà propriétaire de ce profil</p>
+                </div>
+            {% elseif upExist == false %}
+                <a href="{{ path('profile_bundle_associateProfile', {'uuid': profile.uuid }) }}">
+                    <div class="col-lg-12 thumbnail text-center alert alert-warning">
+                        <p>{{ user.username }} n'est pas lié à ce profil, cliquer ici pour créer un lien</p>
+                    </div>
+                </a>
+            {% else %}
+                <a href="{{ path('profile_bundle_addPromotion', {'username': user.username, 'uuid': profile.uuid }) }}">
+                    <div class="col-lg-12 thumbnail text-center alert alert-info">
+                        <p>{{ user.username }}</p>
+                    </div>
+                </a>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}

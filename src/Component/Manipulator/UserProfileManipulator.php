@@ -202,6 +202,8 @@ class UserProfileManipulator implements UserProfileManipulatorInterface
         }
 
         $selectedUserProfile->setIsOwner(true);
+
+        return $selectedUserProfile;
     }
 
     /**
@@ -231,6 +233,8 @@ class UserProfileManipulator implements UserProfileManipulatorInterface
         }
 
         $selectedUserProfile->setIsOwner(false);
+
+        return $selectedUserProfile;
     }
 
     /**

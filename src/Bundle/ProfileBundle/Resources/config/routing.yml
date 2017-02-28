@@ -31,3 +31,19 @@ profile_bundle_associateProfile:
 profile_bundle_addAssociation:
      path:     /profile/addAssociation/{username}/{uuid}
      defaults: { _controller:profile_bundle.profile_controller:addAssociationaction }
+
+profile_bundle_promote:
+     path:     /profile/promote/{uuid}
+     defaults: { _controller:profile_bundle.profile_controller:promoteAction }
+
+profile_bundle_demote:
+     path:     /profile/demote/{username}/{uuid}
+     defaults: { _controller:profile_bundle.profile_controller:demoteAction }
+
+profile_bundle_addPromotion:
+     path:     /profile/addPromotion/{username}/{uuid}
+     defaults: { _controller:profile_bundle.profile_controller:addPromotionaction }
+
+profile_bundle_addDemotion:
+     path:     /profile/addDemotion/{username}/{uuid}
+     defaults: { _controller:profile_bundle.profile_controller:addDemotionaction }

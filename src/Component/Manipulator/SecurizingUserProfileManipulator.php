@@ -92,6 +92,11 @@ class SecurizingUserProfileManipulator implements UserProfileManipulatorInterfac
      */
     public function promoteUserProfile(UserInterface $user, ProfileInterface $profile)
     {
+        $up = $this->getUserProfile($user, $profile);
+        if (!$this->authorizationChecker->isGranted('CAN_PROMOTE_USERPROFILE', $up)) {
+            throw new AccessDeniedHttpException();
+        }
+
         return $this->manipulator->promoteUserProfile($user, $profile);
     }
 
@@ -100,6 +105,11 @@ class SecurizingUserProfileManipulator implements UserProfileManipulatorInterfac
      */
     public function demoteUserProfile(UserInterface $user, ProfileInterface $profile)
     {
+        $up = $this->getUserProfile($user, $profile);
+        if (!$this->authorizationChecker->isGranted('CAN_DEMOTE_USERPROFILE', $up)) {
+            throw new AccessDeniedHttpException();
+        }
+
         return $this->manipulator->demoteUserProfile($user, $profile);
     }
 
