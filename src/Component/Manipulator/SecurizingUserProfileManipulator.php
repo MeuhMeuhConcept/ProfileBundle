@@ -2,9 +2,9 @@
 
 namespace MMC\Profile\Component\Manipulator;
 
+use MMC\Profile\Component\Manipulator\Exception\ManipulatorAccessDeniedHttpException;
 use MMC\Profile\Component\Model\ProfileInterface;
 use MMC\Profile\Component\Model\UserInterface;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class SecurizingUserProfileManipulator implements UserProfileManipulatorInterface
@@ -51,7 +51,7 @@ class SecurizingUserProfileManipulator implements UserProfileManipulatorInterfac
     {
         $up = $this->getUserProfile($user, $profile);
         if (!$this->authorizationChecker->isGranted('CAN_ACTIVATE_USERPROFILE', $up)) {
-            throw new AccessDeniedHttpException();
+            throw new ManipulatorAccessDeniedHttpException();
         }
 
         return $this->manipulator->setActiveProfile($user, $profile);
@@ -64,7 +64,7 @@ class SecurizingUserProfileManipulator implements UserProfileManipulatorInterfac
     {
         if (!$creation) {
             if (!$this->authorizationChecker->isGranted('CAN_ASSOCIATE_PROFILE', $profile)) {
-                throw new AccessDeniedHttpException();
+                throw new ManipulatorAccessDeniedHttpException();
             }
         }
 
@@ -94,7 +94,7 @@ class SecurizingUserProfileManipulator implements UserProfileManipulatorInterfac
     {
         $up = $this->getUserProfile($user, $profile);
         if (!$this->authorizationChecker->isGranted('CAN_PROMOTE_USERPROFILE', $up)) {
-            throw new AccessDeniedHttpException();
+            throw new ManipulatorAccessDeniedHttpException();
         }
 
         return $this->manipulator->promoteUserProfile($user, $profile);
@@ -107,7 +107,7 @@ class SecurizingUserProfileManipulator implements UserProfileManipulatorInterfac
     {
         $up = $this->getUserProfile($user, $profile);
         if (!$this->authorizationChecker->isGranted('CAN_DEMOTE_USERPROFILE', $up)) {
-            throw new AccessDeniedHttpException();
+            throw new ManipulatorAccessDeniedHttpException();
         }
 
         return $this->manipulator->demoteUserProfile($user, $profile);
@@ -120,7 +120,7 @@ class SecurizingUserProfileManipulator implements UserProfileManipulatorInterfac
     {
         $up = $this->getUserProfile($user, $profile);
         if (!$this->authorizationChecker->isGranted('CAN_DELETE_USERPROFILE', $up)) {
-            throw new AccessDeniedHttpException();
+            throw new ManipulatorAccessDeniedHttpException();
         }
 
         return $this->manipulator->removeProfileForUser($user, $profile);

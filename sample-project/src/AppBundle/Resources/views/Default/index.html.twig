@@ -4,7 +4,7 @@
     <div class="container">
         {{ parent() }}
         <hr style="border:solid 3px black">
-        <h1>Version de test</h1>
+        <h1 class="text-center alert alert-danger">Version de test</h1>
         {{ dump(user) }}
         <h2>Bienvenue {{ user.username }}</h2>
         {% set emptyProfiles = true %}
@@ -23,6 +23,7 @@
         {% else %}
             <h3>Liste des profils</h3>
             {% for user in users %}
+                <h3 class="col-lg-12 text-center">{{ user.username }}</h3>
                 {% for userProfile in user.userProfiles %}
                     <a href="{{ path('profile_bundle_seeProfile', { 'uuid': userProfile.profile.uuid, 'username': user.username}) }}">
                     {% if userProfile.isActive %}
@@ -30,8 +31,7 @@
                     {% else %}
                         <div class="col-lg-4 thumbnail text-center alert alert-info">
                     {% endif %}
-                            <p>{{ userProfile.user.username }}</p>
-                            <p>{{ userProfile.profile.uuid }}</p>
+                            <strong>{{ userProfile.profile.uuid }}</strong>
                             {% if userProfile.isOwner %}
                                 <p>Propriétaire</p>
                             {% else %}
@@ -48,7 +48,11 @@
                     </a>
                 {% endfor %}
             {% endfor %}
-            <a class="col-lg-12" href="{{ path('profile_bundle_createProfile') }}">Créer un nouveau profil</a>
+            <div class="alert alert-warning col-lg-12 text-center">
+                <h3><a href="{{ path('profile_bundle_createProfile') }}">
+                    Créer un nouveau profil
+                </a></h3>
+            </div>
         {% endif %}
     </div>
 {% endblock %}

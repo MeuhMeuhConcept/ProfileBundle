@@ -79,7 +79,9 @@ class ProfileController
             $this->upManager->saveUserProfile($up);
             $this->upManager->flush();
 
-            return new RedirectResponse($this->router->generate('profile_bundle_homepage'));
+            return new RedirectResponse($this->router->generate('profile_bundle_seeProfile',
+                ['uuid' => $profile->getUuid(), 'username' => $user->getUsername()]
+            ));
         }
 
         $formTest = $this->formFactory->create(ProfileTypeTest::class, $profile);
@@ -142,7 +144,9 @@ class ProfileController
         $this->upManager->saveUserProfile($up);
         $this->upManager->flush();
 
-        return new RedirectResponse($this->router->generate('profile_bundle_homepage'));
+        return new RedirectResponse($this->router->generate('profile_bundle_seeProfile',
+            ['uuid' => $profile->getUuid(), 'username' => $user->getUsername()]
+        ));
     }
 
     /**
@@ -164,7 +168,9 @@ class ProfileController
             $this->upManager->saveUserProfile($up);
             $this->upManager->flush();
 
-            return new RedirectResponse($this->router->generate('profile_bundle_homepage'));
+            return new RedirectResponse($this->router->generate('profile_bundle_seeProfile',
+                ['uuid' => $profile->getUuid(), 'username' => $user->getUsername()]
+            ));
         }
 
         return $this->templating->renderResponse('AppBundle:Profile:priority.html.twig',

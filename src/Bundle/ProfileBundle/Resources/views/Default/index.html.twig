@@ -23,24 +23,30 @@
                 {% else %}
                     <div class="col-lg-4 thumbnail text-center alert alert-info">
                 {% endif %}
-                        <p>{{ userProfile.user.username }}</p>
-                        <p>{{ userProfile.profile.uuid }}</p>
-                        {% if userProfile.isOwner %}
-                            <p>Propriétaire</p>
-                        {% else %}
-                            <p>Non propriétaire</p>
-                        {% endif %}
-                        {% if userProfile.isActive %}
-                            <p>Actif</p>
-                        {% else %}
-                            <p>Inactif</p>
-                        {% endif %}
-                        <p>Priorité : {{ userProfile.priority }}</p>
-                        <p>Type: {{ userProfile.profile.type }}</p>
+
+                <strong>{{ userProfile.profile.uuid }}</strong>
+
+                {% if userProfile.isOwner %}
+                    <p>Propriétaire</p>
+                {% else %}
+                    <p>Non propriétaire</p>
+                {% endif %}
+                {% if userProfile.isActive %}
+                    <p>Actif</p>
+                {% else %}
+                    <p>Inactif</p>
+                {% endif %}
+
+                <p>Priorité : {{ userProfile.priority }}</p>
+                    <p>Type: {{ userProfile.profile.type }}</p>
                     </div>
                 </a>
             {% endfor %}
-            <a class="col-lg-12" href="{{ path('profile_bundle_createProfile') }}">Créer un nouveau profil</a>
+            <div class="alert alert-warning col-lg-12 text-center">
+                <h3><a href="{{ path('profile_bundle_createProfile') }}">
+                    Créer un nouveau profil
+                </a></h3>
+            </div>
         {% endif %}
     </div>
 {% endblock %}
