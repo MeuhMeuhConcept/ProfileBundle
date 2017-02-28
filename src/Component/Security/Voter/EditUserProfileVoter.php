@@ -1,0 +1,60 @@
+<?php
+
+namespace MMC\Profile\Component\Security\Voter;
+
+use MMC\Profile\Component\Model\UserInterface;
+use MMC\Profile\Component\Model\UserProfileInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Voter;
+
+class EditUserProfileVoter extends Voter
+{
+    const ACTIVATE = 'CAN_ACTIVATE_USERPROFILE';
+    const PRIORITY = 'CAN_SET_PRIORITY_USERPROFILE';
+    const DELETE = 'CAN_DELETE_USERPROFILE';
+
+    protected function supports($attribute, $subject)
+    {
+        if (!in_array($attribute, [self::ACTIVATE, self::PRIORITY, self::DELETE])) {
+            return false;
+        }
+        if (!$subject instanceof UserProfileInterface) {
+            return false;
+        }
+
+        return true;
+    }
+
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    {
+        $user = $token->getUser();
+
+        if (!$user instanceof UserInterface) {
+            return false;
+        }
+
+        switch ($attribute) {
+            case self::PRIORITY:
+                return $this->canSetPriority($subject, $user);
+            case self::ACTIVATE:
+                return $this->canActivate($subject, $user);
+            case self::DELETE:
+                return $this->canDelete($subject, $user);
+        }
+    }
+
+    private function canSetPriority(UserProfileInterface $up, UserInterface $user)
+    {
+        return $up->getUser() == $user;
+    }
+
+    private function canActivate(UserProfileInterface $up, UserInterface $user)
+    {
+        return $up->getUser() == $user;
+    }
+
+    private function canDelete(UserProfileInterface $up, UserInterface $user)
+    {
+        return $up->getUser() == $user;
+    }
+}

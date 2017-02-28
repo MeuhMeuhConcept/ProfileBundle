@@ -8,6 +8,13 @@ use MMC\Profile\Component\Model\UserInterface;
 interface UserProfileManipulatorInterface
 {
     /**
+     * Get a userProfile with giving an user and a profile.
+     *
+     * @return ProfileInterface
+     */
+    public function getUserProfile(UserInterface $user, ProfileInterface $profile);
+
+    /**
      * Get the active profile of user.
      *
      * @return ProfileInterface

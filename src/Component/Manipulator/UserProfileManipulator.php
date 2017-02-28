@@ -37,6 +37,18 @@ class UserProfileManipulator implements UserProfileManipulatorInterface
     /**
      * {@inheritdoc}
      */
+    public function getUserProfile(UserInterface $user, ProfileInterface $profile)
+    {
+        foreach ($profile->getUserProfiles() as $userProfile) {
+            if ($userProfile->getUser() == $user) {
+                return $up = $userProfile;
+            }
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getActiveProfile(UserInterface $user)
     {
         if ($user->getUserProfiles()->isEmpty()) {

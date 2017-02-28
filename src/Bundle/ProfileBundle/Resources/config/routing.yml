@@ -29,5 +29,5 @@ profile_bundle_associateProfile:
      defaults: { _controller:profile_bundle.profile_controller:associateaction }
 
 profile_bundle_addAssociation:
-     path:     /profile/addassociation/{username}/{uuid}
-     defaults: { _controller:profile_bundle.profile_controller:addassociationaction }
+     path:     /profile/addAssociation/{username}/{uuid}
+     defaults: { _controller:profile_bundle.profile_controller:addAssociationaction }

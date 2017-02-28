@@ -21,19 +21,25 @@
         {% else %}
             <p>Priorité : {{ userProfile.priority }}</p>
         {% endif %}
-        <a href="{{ path('profile_bundle_activeProfile', {'username': user.username, 'uuid': userProfile.profile.uuid }) }}">
-            <button class="btn btn-success d-block mx-auto col-lg-6"role="button">Rendre le profil actif</button>
-        </a>
-        <a href="{{ path('profile_bundle_setPriorityProfile', {'username': user.username, 'uuid': userProfile.profile.uuid }) }}">
-            <button class="btn btn-info d-block mx-auto col-lg-6"role="button">Modifier la priorité</button>
-        </a>
-        {% if userProfile.isOwner == false %}
+        {% if is_granted('CAN_ACTIVATE_USERPROFILE', userProfile) %}
+            <a href="{{ path('profile_bundle_activeProfile', {'username': user.username, 'uuid': userProfile.profile.uuid }) }}">
+                <button class="btn btn-success d-block mx-auto col-lg-6"role="button">Rendre le profil actif</button>
+            </a>
+        {% endif %}
+        {% if is_granted('CAN_SET_PRIORITY_USERPROFILE', userProfile) %}
+            <a href="{{ path('profile_bundle_setPriorityProfile', {'username': user.username, 'uuid': userProfile.profile.uuid }) }}">
+                <button class="btn btn-info d-block mx-auto col-lg-6"role="button">Modifier la priorité</button>
+            </a>
+        {% endif %}
+        {% if is_granted('CAN_DELETE_USERPROFILE', userProfile) %}
             <a href="{{ path('profile_bundle_deleteProfile', {'uuid': userProfile.profile.uuid, 'username': user.username }) }}">
                 <button class="btn btn-danger d-block mx-auto col-lg-6"role="button">Supprimer le profil</button>
             </a>
         {% endif %}
-        <a href="{{ path('profile_bundle_associateProfile', {'uuid': userProfile.profile.uuid }) }}">
-            <button class="btn btn-warning d-block mx-auto col-lg-6"role="button">Associer le profil à un utilisateur</button>
-        </a>
+        {% if is_granted('CAN_ASSOCIATE_PROFILE', userProfile.profile) %}
+            <a href="{{ path('profile_bundle_associateProfile', {'uuid': userProfile.profile.uuid }) }}">
+                <button class="btn btn-warning d-block mx-auto col-lg-6"role="button">Associer le profil à un utilisateur</button>
+            </a>
+        {% endif %}
     </div>
 {% endblock %}

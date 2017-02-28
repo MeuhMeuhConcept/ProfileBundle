@@ -5,6 +5,12 @@ services:
             - '%mmc_profile.profile_class%'
             - '%mmc_profile.userProfile_class%'
 
+    profile_bundle.user_profile.securizing_manipulator:
+        class: MMC\Profile\Component\Manipulator\SecurizingUserProfileManipulator
+        arguments:
+            - "@profile_bundle.user_profile.manipulator"
+            - '@security.authorization_checker'
+
     profile_bundle.profile_type.validator:
         class: MMC\Profile\Component\Validator\ProfileTypeValidator
         arguments:
@@ -18,7 +24,7 @@ services:
         arguments:
             - '@templating'
             - "@security.token_storage"
-            - "@profile_bundle.user_profile.manipulator"
+            - "@profile_bundle.user_profile.securizing_manipulator"
             - "@profile_bundle.user_profile.manager"
             - "@profile_bundle.user.manager"
             - '@form.factory'
@@ -58,3 +64,15 @@ services:
         arguments: ["@profile_bundle.profile_type.provider"]
         tags:
             - { name: form.type }
+
+# VOTERS
+
+    profile_bundle.security.voter.edit_user_profile:
+        class: MMC\Profile\Component\Security\Voter\EditUserProfileVoter
+        tags:
+            - { name: security.voter }
+
+    profile_bundle.security.voter.edit_profile:
+        class: MMC\Profile\Component\Security\Voter\EditProfileVoter
+        tags:
+            - { name: security.voter }

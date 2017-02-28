@@ -74,7 +74,7 @@ class ProfileController
             $this->profileTypeValidator->validate($profile->getType());
 
             $user = $this->tokenStorage->getToken()->getUser();
-            $up = $this->manipulator->createUserProfile($user, $profile);
+            $up = $this->manipulator->createUserProfile($user, $profile, true);
 
             $this->upManager->saveUserProfile($up);
             $this->upManager->flush();
@@ -89,7 +89,7 @@ class ProfileController
             $this->profileTypeValidator->validate($profile->getType());
 
             $user = $this->tokenStorage->getToken()->getUser();
-            $up = $this->manipulator->createUserProfile($user, $profile);
+            $up = $this->manipulator->createUserProfile($user, $profile, true);
 
             $this->upManager->saveUserProfile($up);
             $this->upManager->flush();
