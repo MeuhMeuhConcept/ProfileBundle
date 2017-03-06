@@ -41,12 +41,12 @@
             </a>
         {% endif %}
         {% if is_granted('CAN_ASSOCIATE_PROFILE', userProfile.profile) %}
-            <a href="{{ path('profile_bundle_associateProfile', {'uuid': userProfile.profile.uuid }) }}">
+            <a href="{{ path('profile_bundle_associateProfile', {'username': user.username, 'uuid': userProfile.profile.uuid }) }}">
                 <button class="btn btn-warning d-block mx-auto col-lg-6"role="button">Associer le profil à un utilisateur</button>
             </a>
         {% endif %}
         {% if is_granted('CAN_PROMOTE_USERPROFILE', userProfile) %}
-            <a href="{{ path('profile_bundle_promote', {'uuid': userProfile.profile.uuid }) }}">
+            <a href="{{ path('profile_bundle_promote', {'uuid': userProfile.profile.uuid, 'username': user.username }) }}">
                 <button class="btn btn-primary d-block mx-auto col-lg-6"role="button">Promouvoir un utilisateur</button>
             </a>
         {% endif %}

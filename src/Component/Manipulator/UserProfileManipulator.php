@@ -119,6 +119,29 @@ class UserProfileManipulator implements UserProfileManipulatorInterface
     }
 
     /**
+     *{@inheritdoc}
+     */
+    public function setProfilePriority(UserInterface $user, ProfileInterface $profile)
+    {
+        if ($user->getUserProfiles()->isEmpty()) {
+            throw new NoUserProfileException();
+        }
+
+        $isSet = false;
+        foreach ($user->getUserProfiles() as $up) {
+            if ($up->getProfile() == $profile) {
+                $isSet = true;
+            }
+        }
+
+        if ($isSet == false) {
+            throw new UserProfileNotFoundException();
+        }
+
+        return $up;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function createUserProfile(UserInterface $user, ProfileInterface $profile)

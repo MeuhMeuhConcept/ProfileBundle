@@ -6,21 +6,23 @@
 {% block body %}
     <div class="container">
         <h1 class="text-center">Souhaitez vous vraiment ne plus être propriétaire du profil {{ profile.uuid }}?</h1>
-        {% set owner = false %}
+        {% set authorized = false %}
             {% for up in user.userProfiles %}
                 {% if up.profile.uuid == profile.uuid and up.isOwner %}
-                    {% set owner = true %}
+                        {% if is_granted('CAN_DEMOTE_USERPROFILE', up) %}
+                            {% set authorized = true %}
+                        {% endif %}
                 {% endif %}
             {% endfor %}
-            {% if owner == true %}
+            {% if authorized == true %}
                  <a href="{{ path('profile_bundle_addDemotion', {'username': user.username, 'uuid': profile.uuid }) }}">
-                     <div class="col-lg-4 col-lg-offset-4 thumbnail text-center alert alert-danger">
+                     <div class="col-lg-4 col-lg-offset-4 thumbnail text-center alert alert-warning">
                          <p>Se destituer</p>
                       </div>
                    </a>
             {% else %}
-                 <div class="alert alert-warning col-lg-12">
-                     <p>{{ user.username }} n'est pas propriétaire de ce profil</p>
+                 <div class="alert alert-danger text-center col-lg-12">
+                     <p>Non autorisé à destituer {{ user.username }}</p>
                   </div>
             {% endif %}
         </div>

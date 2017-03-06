@@ -60,6 +60,19 @@ class SecurizingUserProfileManipulator implements UserProfileManipulatorInterfac
     /**
      * {@inheritdoc}
      */
+    public function setProfilePriority(UserInterface $user, ProfileInterface $profile)
+    {
+        $up = $this->getUserProfile($user, $profile);
+        if (!$this->authorizationChecker->isGranted('CAN_SET_PRIORITY_USERPROFILE', $up)) {
+            throw new ManipulatorAccessDeniedHttpException();
+        }
+
+        return $this->manipulator->setProfilePriority($user, $profile);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function createUserProfile(UserInterface $user, ProfileInterface $profile, $creation = false)
     {
         if (!$creation) {

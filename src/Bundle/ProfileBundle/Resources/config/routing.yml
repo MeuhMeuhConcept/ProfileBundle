@@ -25,7 +25,7 @@ profile_bundle_setPriorityProfile:
      defaults: { _controller:profile_bundle.profile_controller:setPriorityaction }
 
 profile_bundle_associateProfile:
-     path:     /profile/associate/{uuid}
+     path:     /profile/associate/{username}/{uuid}
      defaults: { _controller:profile_bundle.profile_controller:associateaction }
 
 profile_bundle_addAssociation:
@@ -33,7 +33,7 @@ profile_bundle_addAssociation:
      defaults: { _controller:profile_bundle.profile_controller:addAssociationaction }
 
 profile_bundle_promote:
-     path:     /profile/promote/{uuid}
+     path:     /profile/promote/{username}/{uuid}
      defaults: { _controller:profile_bundle.profile_controller:promoteAction }
 
 profile_bundle_demote:

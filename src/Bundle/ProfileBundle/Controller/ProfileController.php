@@ -165,6 +165,7 @@ class ProfileController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $this->manipulator->setProfilePriority($user, $profile);
             $this->upManager->saveUserProfile($up);
             $this->upManager->flush();
 
@@ -179,13 +180,15 @@ class ProfileController
 
     /**
      * @ParamConverter("profile", class="AppBundle:Profile")
+     * @ParamConverter("user", class="AppBundle:User")
      */
-    public function associateAction(ProfileInterface $profile)
+    public function associateAction(ProfileInterface $profile, UserInterface $user)
     {
         $users = $this->userManager->findUsers();
+        $selectedUser = $user;
 
         return $this->templating->renderResponse('AppBundle:Profile:associate.html.twig',
-            ['profile' => $profile, 'users' => $users]);
+            ['profile' => $profile, 'users' => $users, 'selectedUser' => $selectedUser]);
     }
 
     /**
@@ -204,13 +207,15 @@ class ProfileController
 
     /**
      * @ParamConverter("profile", class="AppBundle:Profile")
+     * @ParamConverter("user", class="AppBundle:User")
      */
-    public function promoteAction(ProfileInterface $profile)
+    public function promoteAction(ProfileInterface $profile, UserInterface $user)
     {
         $users = $this->userManager->findUsers();
+        $selectedUser = $user;
 
         return $this->templating->renderResponse('AppBundle:Profile:promote.html.twig',
-            ['profile' => $profile, 'users' => $users]);
+            ['profile' => $profile, 'users' => $users, 'selectedUser' => $selectedUser]);
     }
 
     /**
