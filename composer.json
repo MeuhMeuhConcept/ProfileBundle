@@ -29,6 +29,7 @@
     },
     "require": {
         "php": "~7.0",
+        "doctrine/collections": "^1.4",
         "ramsey/uuid": "^3.5",
         "sensio/framework-extra-bundle": "^3.0",
         "stof/doctrine-extensions-bundle": "^1.2",
