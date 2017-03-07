@@ -74,3 +74,23 @@ Feature: UserProfileManipulator
         Given I set type of profile 123456789 to TYPE3
         Then I should see exception InvalidProfileTypeException
         Then I should see profile 123456789 type is TYPE2
+
+        # tutu has no userProfile
+        Given I promote tutu for profile 987654321
+        Then I should see exception NoUserProfileException
+        Then I remove profile 454545454 to tintin
+        Then I promote tintin for profile 454545454
+        And I should see exception UserProfileNotFoundException
+
+        Given I promote toto for profile 000000000
+        Then I should see that toto is owner of profile 000000000
+        Then I should see that profile 000000000 has 2 owners
+
+        # userProfile tintin - 123465789 not exists and tutu has no userProfile
+        Given I demote tutu for profile 987654321
+        Then I should see exception NoUserProfileException
+        Then I demote tintin for profile 454545454
+        And I should see exception UserProfileNotFoundException
+
+        Given I demote toto for profile 000000000
+        Then I should see that profile 000000000 has 1 owners

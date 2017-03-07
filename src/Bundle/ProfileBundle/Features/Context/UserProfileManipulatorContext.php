@@ -187,4 +187,48 @@ class UserProfileManipulatorContext extends GlobalContext implements Context, Sn
             }
         }
     }
+
+    /**
+     * @Given I promote :arg1 for profile :arg2
+     */
+    public function iPromoteForProfile($arg1, $arg2)
+    {
+        foreach ($this->store['profiles'] as $profile) {
+            if ($profile->getUuid() == $arg2) {
+                $selectedProfile = $profile;
+            }
+        }
+
+        foreach ($this->store['users'] as $user) {
+            if ($user->getUsername() == $arg1) {
+                try {
+                    $this->userProfileManipulator->promoteUserProfile($user, $selectedProfile);
+                } catch (\Exception $e) {
+                    $this->lastException = $e;
+                }
+            }
+        }
+    }
+
+    /**
+     * @Given I demote :arg1 for profile :arg2
+     */
+    public function iDemoteForProfile($arg1, $arg2)
+    {
+        foreach ($this->store['profiles'] as $profile) {
+            if ($profile->getUuid() == $arg2) {
+                $selectedProfile = $profile;
+            }
+        }
+
+        foreach ($this->store['users'] as $user) {
+            if ($user->getUsername() == $arg1) {
+                try {
+                    $this->userProfileManipulator->demoteUserProfile($user, $selectedProfile);
+                } catch (\Exception $e) {
+                    $this->lastException = $e;
+                }
+            }
+        }
+    }
 }
