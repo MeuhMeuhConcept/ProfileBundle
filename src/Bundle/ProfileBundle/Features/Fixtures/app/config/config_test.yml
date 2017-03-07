@@ -1,8 +1,33 @@
-framework:
-  secret: ThisIsVerySecret!
-  test: ~
-  validation:      { enable_annotations: true }
+imports:
+    - { resource: security.yml }
 
-services:
-    doctrine:
-        class: Symfony\Bridge\Doctrine\RegistryInterface
+framework:
+    secret: ThisIsVerySecret!
+    test: ~
+    validation:      { enable_annotations: true }
+    templating:
+        engines: ['twig']
+    router:
+        resource: ~
+        strict_requirements: ~
+    form: ~
+
+mmc_profile:
+    profile_class: MMC\Profile\Bundle\ProfileBundle\Entity\Profile
+    userProfile_class: MMC\Profile\Bundle\ProfileBundle\Entity\UserProfile
+    user_class: MMC\Profile\Bundle\ProfileBundle\Entity\User
+
+doctrine:
+    dbal:
+        driver:   pdo_mysql
+        host:     database
+        port:     null
+        dbname:   jtf2017_test
+        user:     root
+        password: jtf2017
+        charset:  UTF8
+        server_version: 10.0
+    orm:
+        auto_generate_proxy_classes: "%kernel.debug%"
+        naming_strategy: doctrine.orm.naming_strategy.underscore
+        auto_mapping: true

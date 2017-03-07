@@ -16,7 +16,7 @@ Feature: UserProfileManipulator
             # Empty lines correspond to false boolean value
             | profile   | user   | isActive | isOwner |
             | 123456789 | toto   |          | true    |
-            | 123456789 | tintin |          | true    |
+            | 123456789 | tintin |          |         |
             | 000000000 | toto   |          |         |
             | 000000000 | tintin |          | true    |
             | 454545454 | toto   | true     |         |
@@ -34,10 +34,6 @@ Feature: UserProfileManipulator
         And I should see that toto is owner of profile 123456789
         And I should see that tintin is owner of profile 987654321
 
-        # 000000000 is active profile
-        Given I remove profile 000000000 to toto
-        Then I should see exception UnableToDeleteActiveUserProfileException
-
         # tutu has no userProfile
         Given I remove profile 000000000 to tutu
         Then I should see exception NoUserProfileException
@@ -47,19 +43,21 @@ Feature: UserProfileManipulator
 
         # try to use removed userProfile
         Given I remove profile 987654321 to tintin
+        Then I should see exception UnableToDeleteOwnerUserProfileException
+        Then I remove profile 123456789 to tintin
         Then I should see 2 userProfiles for tintin
-        And tintin use profile 987654321
+        And tintin use profile 123456789
         And I should see exception UserProfileNotFoundException
 
-        # toto is the last 987654321 profile owner
+        # tintin is owner of 987654321 profile
         Given I remove profile 987654321 to toto
-        Then I should see exception UnableToDeleteLastOwnerUserProfileException
+        Then I should see exception UnableToDeleteOwnerUserProfileException
 
-        # tintin is the last 000000000 profile owner
+        # tintin is owner of 000000000 profile
         Given I remove profile 000000000 to tintin
-        And I should see exception UnableToDeleteLastOwnerUserProfileException
+        And I should see exception UnableToDeleteOwnerUserProfileException
 
-        Then I should see that profile 123456789 has 2 owners
+        Then I should see that profile 123456789 has 1 owners
         And I should see that profile 454545454 has 0 owners
 
         # userProfile tintin - 454545454 not exists

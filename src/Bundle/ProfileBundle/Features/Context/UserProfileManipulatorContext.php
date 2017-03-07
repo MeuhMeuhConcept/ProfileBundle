@@ -141,7 +141,7 @@ class UserProfileManipulatorContext extends GlobalContext implements Context, Sn
     /**
      * @Then I create the userProfile :ar1 :arg2
      */
-    public function iCreateTheUserprofileTintin($arg1, $arg2)
+    public function iCreateTheUserProfile($arg1, $arg2)
     {
         foreach ($this->store['users'] as $user) {
             if ($user->getUsername() == $arg1) {

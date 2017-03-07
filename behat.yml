@@ -15,7 +15,7 @@ default:
     suites:
         user:
             type: symfony_bundle
-            bundle: ProfileBundle
+            bundle: MMCProfileBundle
             contexts:
                 - MMC\Profile\Bundle\ProfileBundle\Features\Context\UserContext:
                     userProfileManipulator: '@profile_bundle.user_profile.manipulator'
@@ -24,7 +24,7 @@ default:
 
         userProfileManipulator:
             type: symfony_bundle
-            bundle: ProfileBundle
+            bundle: MMCProfileBundle
             contexts:
                 - MMC\Profile\Bundle\ProfileBundle\Features\Context\UserProfileManipulatorContext:
                     userProfileManipulator: '@profile_bundle.user_profile.manipulator'
