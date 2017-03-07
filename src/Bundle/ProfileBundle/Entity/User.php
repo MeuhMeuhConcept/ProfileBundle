@@ -2,7 +2,6 @@
 
 namespace MMC\Profile\Bundle\ProfileBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use MMC\Profile\Component\Model\UserInterface;
 use MMC\Profile\Component\Model\UserProfileAccessorInterface;
 use MMC\Profile\Component\Model\UserProfileAccessorTrait;
@@ -12,7 +11,7 @@ class User implements UserInterface, UserProfileAccessorInterface
     use UserProfileAccessorTrait;
 
     /**
-     * @ORM\OneToMany(targetEntity="MMC\Profile\Bundle\ProfileBundle\Entity\UserProfile", mappedBy="user")
+     * @var array
      */
     protected $userProfiles;
 
