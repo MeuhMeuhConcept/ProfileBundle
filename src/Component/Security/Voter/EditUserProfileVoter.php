@@ -89,6 +89,18 @@ class EditUserProfileVoter extends Voter
             }
         }
 
+        $ownersNb = 0;
+
+        foreach ($up->getProfile()->getUserProfiles() as $userProfile) {
+            if ($userProfile->getIsOwner()) {
+                ++$ownersNb;
+            }
+        }
+
+        if ($ownersNb <= 1) {
+            return false;
+        }
+
         return true;
     }
 }

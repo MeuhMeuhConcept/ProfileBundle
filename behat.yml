@@ -31,3 +31,13 @@ default:
                     profileTypeValidator: '@profile_bundle.profile_type.validator'
             paths:
                 - src/Bundle/ProfileBundle/Features/userProfileManipulator.feature
+
+        userProfileSecurizingManipulator:
+            type: symfony_bundle
+            bundle: MMCProfileBundle
+            contexts:
+                - MMC\Profile\Bundle\ProfileBundle\Features\Context\UserProfileSecurizingManipulatorContext:
+                    userProfileSecurizingManipulator: '@profile_bundle.user_profile.securizing_manipulator'
+                    tokenStorage: '@security.token_storage'
+            paths:
+                - src/Bundle/ProfileBundle/Features/userProfileSecurizingManipulator.feature
