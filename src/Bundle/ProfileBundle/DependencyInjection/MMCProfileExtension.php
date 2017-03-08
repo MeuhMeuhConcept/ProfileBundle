@@ -28,32 +28,5 @@ class MMCProfileExtension extends Extension implements PrependExtensionInterface
 
     public function prepend(ContainerBuilder $container)
     {
-        $doctrine = [
-            'orm' => [
-                'entity_managers' => [
-                    'default' => [
-                        'filters' => [
-                            'softdeleteable' => [
-                                'class' => 'Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter',
-                                'enabled' => true,
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
-
-        $container->prependExtensionConfig('doctrine', $doctrine);
-
-        $stof_doctrine_extensions = [
-            'default_locale' => '%locale%',
-            'orm' => [
-                'default' => [
-                    'softdeleteable' => true,
-                ],
-            ],
-        ];
-
-        $container->prependExtensionConfig('stof_doctrine_extensions', $stof_doctrine_extensions);
     }
 }
