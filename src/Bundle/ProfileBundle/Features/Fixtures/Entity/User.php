@@ -1,6 +1,6 @@
 <?php
 
-namespace MMC\Profile\Bundle\ProfileBundle\Entity;
+namespace MMC\Profile\Bundle\ProfileBundle\Features\Fixtures\Entity;
 
 use MMC\Profile\Component\Model\UserInterface;
 use MMC\Profile\Component\Model\UserProfileAccessorInterface;

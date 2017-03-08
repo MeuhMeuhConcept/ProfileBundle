@@ -5,9 +5,9 @@ namespace MMC\Profile\Bundle\ProfileBundle\Features\Context;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Gherkin\Node\TableNode;
-use MMC\Profile\Bundle\ProfileBundle\Entity\Profile;
-use MMC\Profile\Bundle\ProfileBundle\Entity\User;
-use MMC\Profile\Bundle\ProfileBundle\Entity\UserProfile;
+use MMC\Profile\Bundle\ProfileBundle\Features\Fixtures\Entity\Profile;
+use MMC\Profile\Bundle\ProfileBundle\Features\Fixtures\Entity\User;
+use MMC\Profile\Bundle\ProfileBundle\Features\Fixtures\Entity\UserProfile;
 
 abstract class GlobalContext implements Context, SnippetAcceptingContext
 {

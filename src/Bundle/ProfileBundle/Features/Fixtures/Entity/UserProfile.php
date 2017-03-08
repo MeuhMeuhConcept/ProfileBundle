@@ -1,6 +1,6 @@
 <?php
 
-namespace MMC\Profile\Bundle\ProfileBundle\Entity;
+namespace MMC\Profile\Bundle\ProfileBundle\Features\Fixtures\Entity;
 
 use MMC\Profile\Component\Model\UserProfile as UserProfileModel;
 

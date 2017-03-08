@@ -13,9 +13,9 @@ framework:
     form: ~
 
 mmc_profile:
-    profile_class: MMC\Profile\Bundle\ProfileBundle\Entity\Profile
-    userProfile_class: MMC\Profile\Bundle\ProfileBundle\Entity\UserProfile
-    user_class: MMC\Profile\Bundle\ProfileBundle\Entity\User
+    profile_class: MMC\Profile\Bundle\ProfileBundle\Features\Fixtures\Entity\Profile
+    userProfile_class: MMC\Profile\Bundle\ProfileBundle\Features\Fixtures\Entity\UserProfile
+    user_class: MMC\Profile\Bundle\ProfileBundle\Features\Fixtures\Entity\User
 
 doctrine:
     dbal:

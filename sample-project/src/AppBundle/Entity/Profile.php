@@ -23,19 +23,4 @@ class Profile extends BaseProfile
      * @ORM\OneToMany(targetEntity="UserProfile", mappedBy="profile")
      */
     protected $userProfiles;
-
-    /**
-     * @ORM\Column(type="string")
-     */
-    protected $uuid;
-
-    /**
-     * @ORM\Column(type="array")
-     */
-    protected $roles;
-
-    /**
-     * @ORM\Column(type="string")
-     */
-    protected $type;
 }

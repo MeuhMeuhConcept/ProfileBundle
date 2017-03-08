@@ -35,21 +35,6 @@ class UserProfile extends BaseUserProfile
     protected $profile;
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    protected $isActive;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    protected $isOwner;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    protected $priority;
-
-    /**
      * @ORM\Column(type="datetime")
      */
     protected $created_at;
