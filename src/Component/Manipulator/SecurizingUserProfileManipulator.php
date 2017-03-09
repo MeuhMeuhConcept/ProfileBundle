@@ -75,13 +75,15 @@ class SecurizingUserProfileManipulator implements UserProfileManipulatorInterfac
      */
     public function createUserProfile(UserInterface $user, ProfileInterface $profile, $creation = false)
     {
+        $association = false;
         if (!$creation) {
+            $association = true;
             if (!$this->authorizationChecker->isGranted('CAN_ASSOCIATE_PROFILE', $profile)) {
                 throw new ManipulatorAccessDeniedHttpException();
             }
         }
 
-        return $this->manipulator->createUserProfile($user, $profile);
+        return $this->manipulator->createUserProfile($user, $profile, $association);
     }
 
     /**

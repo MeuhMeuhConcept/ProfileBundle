@@ -185,10 +185,10 @@ class ProfileController
     public function associateAction(ProfileInterface $profile, UserInterface $user)
     {
         $users = $this->userManager->findUsers();
-        $selectedUser = $user;
+        $up = $this->manipulator->getUserProfile($user, $profile);
 
         return $this->templating->renderResponse('AppBundle:Profile:associate.html.twig',
-            ['profile' => $profile, 'users' => $users, 'selectedUser' => $selectedUser]);
+            ['users' => $users, 'userProfile' => $up]);
     }
 
     /**
@@ -211,11 +211,11 @@ class ProfileController
      */
     public function promoteAction(ProfileInterface $profile, UserInterface $user)
     {
+        $up = $this->manipulator->getUserProfile($user, $profile);
         $users = $this->userManager->findUsers();
-        $selectedUser = $user;
 
         return $this->templating->renderResponse('AppBundle:Profile:promote.html.twig',
-            ['profile' => $profile, 'users' => $users, 'selectedUser' => $selectedUser]);
+            ['users' => $users, 'userProfile' => $up]);
     }
 
     /**
