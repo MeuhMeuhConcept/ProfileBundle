@@ -6,7 +6,7 @@
 
     <title>
         {% block title %}
-            Test Profile Bundle
+            {{ 'global.page_title'|trans({}, 'mmc_profile_bundle_messages') }}
         {% endblock %}
     </title>
     {% block stylesheets %}
@@ -27,11 +27,15 @@
                                 <span class="icon-bar"></span>
                                 <span class="icon-bar"></span>
                             </button>
-                            <a class="navbar-brand" href="{{ path('profile_bundle_homepage')}}">Test Profile Bundle</a>
+                            <a class="navbar-brand" href="{{ path('profile_bundle_homepage')}}">
+                                {{ 'global.layout_brand'|trans({}, 'mmc_profile_bundle_messages') }}
+                            </a>
                         </div>
                         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                             <ul class="nav navbar-nav navbar-right">
-                                <li><a href="/logout">Déconnexion</a></li>
+                                <li><a href="/logout">
+                                    {{ 'global.layout_disconnection'|trans({}, 'mmc_profile_bundle_messages') }}
+                                </a></li>
                             </ul>
                         </div>
                     </div><!-- /.container-fluid -->

@@ -1,11 +1,11 @@
 {% extends 'MMCProfileBundle::layout.html.twig' %}
 
 {% block title %}
-    {{ parent() }} | Destituer
+    {{ parent() }} | {{ 'demote.page_title'|trans({}, 'mmc_profile_bundle_messages') }}
 {% endblock %}
 {% block body %}
     <div class="container">
-        <h1 class="text-center">Souhaitez vous vraiment ne plus être propriétaire du profil {{ profile.uuid }}?</h1>
+        <h1 class="text-center">{{ 'demote.confirmation'|trans({}, 'mmc_profile_bundle_messages') }} {{ profile.uuid }}?</h1>
         {% set authorized = false %}
             {% for up in user.userProfiles %}
                 {% if up.profile.uuid == profile.uuid and up.isOwner %}
@@ -17,12 +17,12 @@
             {% if authorized == true %}
                  <a href="{{ path('profile_bundle_addDemotion', {'username': user.username, 'uuid': profile.uuid }) }}">
                      <div class="col-lg-4 col-lg-offset-4 thumbnail text-center alert alert-warning">
-                         <p>Se destituer</p>
+                         <p>{{ 'demote.submit_button'|trans({}, 'mmc_profile_bundle_messages') }}</p>
                       </div>
                    </a>
             {% else %}
                  <div class="alert alert-danger text-center col-lg-12">
-                     <p>Non autorisé à destituer {{ user.username }}</p>
+                     <p>{{ 'demote.not_authorized'|trans({}, 'mmc_profile_bundle_messages') }} {{ user.username }}</p>
                   </div>
             {% endif %}
         </div>

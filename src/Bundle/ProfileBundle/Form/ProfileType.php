@@ -22,13 +22,14 @@ class ProfileType extends AbstractType
     {
         // $builder->add('roles', TextType::class, ['label' => 'roles']);
         $builder->add('type', ChoiceType::class, [
+            'label' => 'type',
             'choices' => $this->profileTypeProvider->getTypes(),
         ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefault('translation_domain', 'profile');
+        $resolver->setDefault('translation_domain', 'mmc_profile_bundle_profile');
     }
 
     public function getName()

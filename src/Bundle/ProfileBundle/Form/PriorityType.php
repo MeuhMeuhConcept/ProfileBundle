@@ -12,6 +12,7 @@ class PriorityType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('priority', RangeType::class, [
+            'label' => 'priority',
             'attr' => [
                 'min' => 0,
                 'max' => 5,
@@ -21,7 +22,7 @@ class PriorityType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefault('translation_domain', 'profile');
+        $resolver->setDefault('translation_domain', 'mmc_profile_bundle_profile');
     }
 
     public function getName()

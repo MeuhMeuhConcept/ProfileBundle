@@ -1,21 +1,21 @@
 {% extends 'MMCProfileBundle::layout.html.twig' %}
 
 {% block title %}
-    {{ parent() }} | Home
+    {{ parent() }} | {{ 'home.page_title'|trans({}, 'mmc_profile_bundle_messages') }}
 {% endblock %}
 
 {% block body %}
     <div class="container">
-        <h2>Bienvenue {{ user.username }}</h2>
+        <h2>{{ 'home.welcome'|trans({}, 'mmc_profile_bundle_messages') }} {{ user.username }}</h2>
         {% if user.userProfiles is empty %}
             <div class="alert alert-warning">
-                <h3> Vous n'avez pas de profil actuellement</h3>
+                <h3>{{ 'home.no_profile'|trans({}, 'mmc_profile_bundle_messages') }}</h3>
                 <h3><a href="{{ path('profile_bundle_createProfile') }}">
-                    Créer votre premier profil
+                    {{ 'home.create_first_profile'|trans({}, 'mmc_profile_bundle_messages') }}
                 </a></h3>
             </div>
         {% else %}
-            <h3>Liste des profils liés à votre compte</h3>
+            <h3>{{ 'home.profile_list'|trans({}, 'mmc_profile_bundle_messages') }}</h3>
             {% for userProfile in user.userProfiles %}
                 <a href="{{ path('profile_bundle_seeProfile', { 'uuid': userProfile.profile.uuid, 'username': user.username}) }}">
                 {% if userProfile.isActive %}
@@ -27,24 +27,24 @@
                 <strong>{{ userProfile.profile.uuid }}</strong>
 
                 {% if userProfile.isOwner %}
-                    <p>Propriétaire</p>
+                    <p>{{ 'owner'|trans({}, 'mmc_profile_bundle_profile') }}</p>
                 {% else %}
-                    <p>Non propriétaire</p>
+                    <p>{{ 'no_owner'|trans({}, 'mmc_profile_bundle_profile') }}</p>
                 {% endif %}
                 {% if userProfile.isActive %}
-                    <p>Actif</p>
+                    <p>{{ 'active'|trans({}, 'mmc_profile_bundle_profile') }}</p>
                 {% else %}
-                    <p>Inactif</p>
+                    <p>{{ 'inactive'|trans({}, 'mmc_profile_bundle_profile') }}</p>
                 {% endif %}
 
-                <p>Priorité : {{ userProfile.priority }}</p>
-                    <p>Type: {{ userProfile.profile.type }}</p>
+                <p>{{ 'priority'|trans({}, 'mmc_profile_bundle_profile') }} : {{ userProfile.priority }}</p>
+                    <p>{{ 'type'|trans({}, 'mmc_profile_bundle_profile') }} : {{ userProfile.profile.type }}</p>
                     </div>
                 </a>
             {% endfor %}
             <div class="alert alert-warning col-lg-12 text-center">
                 <h3><a href="{{ path('profile_bundle_createProfile') }}">
-                    Créer un nouveau profil
+                    {{ 'home.create_new_profile'|trans({}, 'mmc_profile_bundle_messages') }}
                 </a></h3>
             </div>
         {% endif %}

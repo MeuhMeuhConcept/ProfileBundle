@@ -1,11 +1,11 @@
 {% extends 'MMCProfileBundle::layout.html.twig' %}
 
 {% block title %}
-    {{ parent() }} | Promouvoir
+    {{ parent() }} | {{ 'promote.page_title'|trans({}, 'mmc_profile_bundle_messages') }}
 {% endblock %}
 {% block body %}
     <div class="container">
-        <h1 class="text-center">Promouvoir un utilisateur</h1>
+        <h1 class="text-center">{{ 'promote.promote_user'|trans({}, 'mmc_profile_bundle_messages') }}</h1>
 
         {% for user in users %}
             {% set upExist = false %}
@@ -22,12 +22,12 @@
             {% if is_granted('CAN_PROMOTE_USERPROFILE', userProfile) %}
                 {% if owner %}
                     <div class="alert alert-warning col-lg-12 text-center">
-                        <p>{{ user.username }} est déjà propriétaire de ce profil</p>
+                        <p>{{ user.username }} {{ 'promote.ever_owner'|trans({}, 'mmc_profile_bundle_messages') }}</p>
                     </div>
                 {% elseif upExist == false %}
                     <a href="{{ path('profile_bundle_associateProfile', {'uuid': userProfile.profile.uuid, 'username': userProfile.user.username }) }}">
                         <div class="col-lg-12 thumbnail text-center alert alert-warning">
-                            <p>{{ user.username }} n'est pas lié à ce profil, cliquer ici pour créer un lien</p>
+                            <p>{{ user.username }} {{ 'promote.not_associated'|trans({}, 'mmc_profile_bundle_messages') }}</p>
                         </div>
                     </a>
                 {% else %}
@@ -39,7 +39,7 @@
                 {% endif %}
             {% else %}
                 <div class="col-lg-12 thumbnail text-center alert alert-danger">
-                    <p>Non autorisé à promouvoir {{ user.username }}</p>
+                    <p>{{ 'promote.not_authorized'|trans({}, 'mmc_profile_bundle_messages') }} {{ user.username }}</p>
                 </div>
             {% endif %}
         {% endfor %}
