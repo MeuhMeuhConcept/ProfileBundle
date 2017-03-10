@@ -79,17 +79,3 @@ Feature: UserProfileSecurizingManipulator
             Then I should see 3 userProfiles for tutu
             Given tutu remove profile 999999999 to tutu
             Then I should see 2 userProfiles for tutu
-
-            # can't use profile if not logged in
-            Given tutu is logged out
-            Then tutu use profile 999999999
-            Then I should see exception AuthenticationCredentialsNotFoundException
-            And I should see tutu active profile is 333333333
-
-            # can't associate/promote/demote profile if not logged in
-            Given tutu associate tintin to 999999999
-            Then I should see exception AuthenticationCredentialsNotFoundException
-            Then tutu promote tintin for profile 999999999
-            Then I should see exception AuthenticationCredentialsNotFoundException
-            Then tutu demote toto for profile 987654321
-            Then I should see exception AuthenticationCredentialsNotFoundException

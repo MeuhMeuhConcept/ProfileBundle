@@ -25,6 +25,17 @@ class SecurizingUserProfileManipulator implements UserProfileManipulatorInterfac
      */
     public function getUserProfile(UserInterface $user, ProfileInterface $profile)
     {
+        $up = [];
+        foreach ($profile->getUserProfiles() as $userProfile) {
+            if ($userProfile->getUser() == $user) {
+                $up = $userProfile;
+            }
+        }
+
+        if (!$this->authorizationChecker->isGranted('CAN_GET_USER_PROFILE', $up)) {
+            throw new ManipulatorAccessDeniedHttpException();
+        }
+
         return $this->manipulator->getUserProfile($user, $profile);
     }
 
@@ -33,6 +44,10 @@ class SecurizingUserProfileManipulator implements UserProfileManipulatorInterfac
      */
     public function getActiveProfile(UserInterface $user)
     {
+        if (!$this->authorizationChecker->isGranted('CAN_GET_ACTIVE_PROFILE', $user)) {
+            throw new ManipulatorAccessDeniedHttpException();
+        }
+
         return $this->manipulator->getActiveProfile($user);
     }
 
@@ -41,6 +56,11 @@ class SecurizingUserProfileManipulator implements UserProfileManipulatorInterfac
      */
     public function isOwner(UserInterface $user, ProfileInterface $profile)
     {
+        $up = $this->getUserProfile($user, $profile);
+        if (!$this->authorizationChecker->isGranted('CAN_GET_IS_OWNER_USERPROFILE', $up)) {
+            throw new ManipulatorAccessDeniedHttpException();
+        }
+
         return $this->manipulator->isOwner($user, $profile);
     }
 
@@ -89,16 +109,12 @@ class SecurizingUserProfileManipulator implements UserProfileManipulatorInterfac
     /**
      * {@inheritdoc}
      */
-    public function createProfileForUser(UserInterface $user)
-    {
-        return $this->manipulator->createProfileForUser($user, $profile);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getOwners(ProfileInterface $profile)
     {
+        if (!$this->authorizationChecker->isGranted('CAN_GET_OWNERS', $profile)) {
+            throw new ManipulatorAccessDeniedHttpException();
+        }
+
         return $this->manipulator->getOwners($profile);
     }
 

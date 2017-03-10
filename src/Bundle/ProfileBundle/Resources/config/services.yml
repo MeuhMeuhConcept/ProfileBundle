@@ -76,3 +76,8 @@ services:
         class: MMC\Profile\Component\Security\Voter\EditProfileVoter
         tags:
             - { name: security.voter }
+
+    profile_bundle.security.voter.edit_user:
+        class: MMC\Profile\Component\Security\Voter\EditUserVoter
+        tags:
+            - { name: security.voter }

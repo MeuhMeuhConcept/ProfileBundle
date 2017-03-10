@@ -184,18 +184,6 @@ class UserProfileManipulator implements UserProfileManipulatorInterface
     /**
      * {@inheritdoc}
      */
-    public function createProfileForUser(UserInterface $user)
-    {
-        $class = $this->profileClassname;
-        $profile = new $class();
-        $this->createUserProfile($user, $profile);
-
-        return $profile;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getOwners(ProfileInterface $profile)
     {
         $owners = [];

@@ -14,10 +14,12 @@ class EditUserProfileVoter extends Voter
     const DELETE = 'CAN_DELETE_USERPROFILE';
     const PROMOTE = 'CAN_PROMOTE_USERPROFILE';
     const DEMOTE = 'CAN_DEMOTE_USERPROFILE';
+    const GET_USER_PROFILE = 'CAN_GET_USER_PROFILE';
+    const GET_IS_OWNER = 'CAN_GET_IS_OWNER_USERPROFILE';
 
     protected function supports($attribute, $subject)
     {
-        if (!in_array($attribute, [self::ACTIVATE, self::PRIORITY, self::DELETE, self::PROMOTE, self::DEMOTE])) {
+        if (!in_array($attribute, [self::ACTIVATE, self::PRIORITY, self::DELETE, self::PROMOTE, self::DEMOTE, self::GET_USER_PROFILE, self::GET_IS_OWNER])) {
             return false;
         }
         if (!$subject instanceof UserProfileInterface) {
@@ -46,6 +48,10 @@ class EditUserProfileVoter extends Voter
                 return $this->canPromote($subject, $user);
             case self::DEMOTE:
                 return $this->canDemote($subject, $user);
+            case self::GET_USER_PROFILE:
+                return $this->canGetUserProfile();
+            case self::GET_IS_OWNER:
+                return $this->canGetIsOwner();
         }
     }
 
@@ -61,15 +67,27 @@ class EditUserProfileVoter extends Voter
 
     private function canDelete(UserProfileInterface $up, UserInterface $user)
     {
-        return $up->getUser() == $user;
+        if ($up->getUser() == $user) {
+            return !$up->getIsOwner();
+        }
+
+        if ($up->getIsOwner()) {
+            return false;
+        }
+
+        $userProfile = $up->getProfile()->getUserProfile($user);
+        if ($userProfile && $userProfile->getIsOwner()) {
+            return true;
+        }
+
+        return false;
     }
 
     private function canPromote(UserProfileInterface $up, UserInterface $user)
     {
-        foreach ($up->getProfile()->getUserProfiles() as $userProfile) {
-            if ($userProfile->getUser() == $user && $userProfile->getIsOwner()) {
-                return true;
-            }
+        $userProfile = $up->getProfile()->getUserProfile($user);
+        if ($userProfile) {
+            return $userProfile->getIsOwner();
         }
 
         return false;
@@ -81,12 +99,9 @@ class EditUserProfileVoter extends Voter
             return false;
         }
 
-        foreach ($up->getProfile()->getUserProfiles() as $userProfile) {
-            if ($userProfile->getUser() == $user) {
-                if (!$userProfile->getIsOwner()) {
-                    return false;
-                }
-            }
+        $userProfile = $up->getProfile()->getUserProfile($user);
+        if ($userProfile && !$userProfile->getIsOwner()) {
+            return false;
         }
 
         $ownersNb = 0;
@@ -101,6 +116,16 @@ class EditUserProfileVoter extends Voter
             return false;
         }
 
+        return true;
+    }
+
+    private function canGetUserProfile()
+    {
+        return true;
+    }
+
+    private function canGetIsOwner()
+    {
         return true;
     }
 }

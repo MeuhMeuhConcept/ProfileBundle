@@ -10,10 +10,11 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 class EditProfileVoter extends Voter
 {
     const ASSOCIATE = 'CAN_ASSOCIATE_PROFILE';
+    const GET_OWNERS = 'CAN_GET_OWNERS';
 
     protected function supports($attribute, $subject)
     {
-        if (!in_array($attribute, [self::ASSOCIATE])) {
+        if (!in_array($attribute, [self::ASSOCIATE, self::GET_OWNERS])) {
             return false;
         }
         if (!$subject instanceof ProfileInterface) {
@@ -34,6 +35,8 @@ class EditProfileVoter extends Voter
         switch ($attribute) {
             case self::ASSOCIATE:
                 return $this->canAssociate($subject, $user);
+            case self::GET_OWNERS:
+                return $this->canGetOwners();
         }
     }
 
@@ -46,5 +49,10 @@ class EditProfileVoter extends Voter
         }
 
         return false;
+    }
+
+    private function canGetOwners()
+    {
+        return true;
     }
 }

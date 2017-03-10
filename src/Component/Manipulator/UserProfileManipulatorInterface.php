@@ -43,13 +43,6 @@ interface UserProfileManipulatorInterface
     public function createUserProfile(UserInterface $user, ProfileInterface $profile);
 
     /**
-     * Create profile and userProfile for user.
-     *
-     * @return ProfileInterface
-     */
-    public function createProfileForUser(UserInterface $user);
-
-    /**
      * Remove a userProfile.
      *
      * @return UserProfileInterface
