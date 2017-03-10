@@ -6,6 +6,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 class Profile implements ProfileInterface, UserProfileAccessorInterface
 {
+    use UserProfileAccessorTrait;
+
     /**
      * @var string
      */
@@ -25,40 +27,6 @@ class Profile implements ProfileInterface, UserProfileAccessorInterface
      * @var ArrayCollection
      */
     protected $userProfiles;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getUserProfiles()
-    {
-        return $this->userProfiles;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addUserProfile(UserProfileInterface $up)
-    {
-        $this->initializeUserProfile();
-
-        if (!$this->userProfiles->contains($up)) {
-            $this->userProfiles->add($up);
-        }
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function removeUserProfile(UserProfileInterface $up)
-    {
-        $this->initializeUserProfile();
-
-        $this->userProfiles->removeElement($up);
-
-        return $this;
-    }
 
     /**
      * {@inheritdoc}
@@ -128,11 +96,18 @@ class Profile implements ProfileInterface, UserProfileAccessorInterface
         return $this;
     }
 
-    public function initializeUserProfile()
+    /**
+     * {@inheritdoc}
+     */
+    public function getUserProfile(UserInterface $user)
     {
-        if ($this->userProfiles == null) {
-            $this->userProfiles = new ArrayCollection();
+        foreach ($this->getUserProfiles() as $userProfile) {
+            if ($userProfile->getUser() == $user) {
+                return $userProfile;
+            }
         }
+
+        return null;
     }
 
     public function initializeRoles()

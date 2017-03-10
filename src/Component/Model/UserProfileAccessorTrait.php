@@ -45,7 +45,10 @@ trait UserProfileAccessorTrait
         return $this;
     }
 
-    public function initializeUserProfile()
+    /**
+     * Initialize userProfiles as ArrayCollection if null.
+     */
+    protected function initializeUserProfile()
     {
         if ($this->userProfiles == null) {
             $this->userProfiles = new ArrayCollection();

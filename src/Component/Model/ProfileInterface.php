@@ -58,9 +58,11 @@ interface ProfileInterface
     public function setType($type);
 
     /**
-     * Initialize userProfiles as ArrayCollection if null.
+     * Get userProfile.
+     *
+     * @return ArrayCollection
      */
-    public function initializeUserProfile();
+    public function getUserProfile(UserInterface $user);
 
     /**
      * Initialize roles as ArrayCollection if null.
