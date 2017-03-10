@@ -42,11 +42,11 @@
                     </div>
                 </a>
             {% endfor %}
-            <div class="alert alert-warning col-lg-12 text-center">
-                <h3><a href="{{ path('profile_bundle_createProfile') }}">
-                    {{ 'home.create_new_profile'|trans({}, 'mmc_profile_bundle_messages') }}
-                </a></h3>
-            </div>
+            <a href="{{ path('profile_bundle_createProfile') }}">
+                <div class="alert alert-warning col-lg-6 col-lg-offset-3 text-center">
+                    <h3>{{ 'home.create_new_profile'|trans({}, 'mmc_profile_bundle_messages') }}</h3>
+                </div>
+            </a>
         {% endif %}
     </div>
 {% endblock %}

@@ -48,11 +48,11 @@
                     </a>
                 {% endfor %}
             {% endfor %}
-            <div class="alert alert-warning col-lg-12 text-center">
-                <h3><a href="{{ path('profile_bundle_createProfile') }}">
-                    Créer un nouveau profil
-                </a></h3>
-            </div>
+            <a href="{{ path('profile_bundle_createProfile') }}">
+                <div class="alert alert-warning col-lg-6 col-lg-offset-3 text-center">
+                    <h3>Créer un nouveau profil</h3>
+                </div>
+            </a>
         {% endif %}
     </div>
 {% endblock %}
