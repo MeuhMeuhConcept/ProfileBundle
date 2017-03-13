@@ -19,25 +19,6 @@ services:
     profile_bundle.profile_type.provider:
         class: MMC\Profile\Component\Provider\ProfileTypeProvider
 
-    profile_bundle.profile_controller:
-        class: MMC\Profile\Bundle\ProfileBundle\Controller\ProfileController
-        arguments:
-            - '@templating'
-            - "@security.token_storage"
-            - "@profile_bundle.user_profile.securizing_manipulator"
-            - "@profile_bundle.user_profile.manager"
-            - "@profile_bundle.user.manager"
-            - '@form.factory'
-            - '@router'
-            - '@profile_bundle.profile_type.validator'
-            - '%mmc_profile.profile_class%'
-
-    profile_bundle.default_controller:
-        class: MMC\Profile\Bundle\ProfileBundle\Controller\DefaultController
-        arguments:
-            - '@templating'
-            - "@security.token_storage"
-            - "@profile_bundle.user.manager"
 
     profile_bundle.profile.manager:
         class: MMC\Profile\Component\Manager\ProfileManager
@@ -66,6 +47,74 @@ services:
         arguments: ["@profile_bundle.profile_type.provider"]
         tags:
             - { name: form.type }
+
+# CONTROLLERS
+
+    profile_bundle.profile_create_controller:
+        class: MMC\Profile\Bundle\ProfileBundle\Controller\ProfileCreateController
+        arguments:
+            - '@templating'
+            - "@security.token_storage"
+            - "@profile_bundle.user_profile.securizing_manipulator"
+            - "@profile_bundle.user_profile.manager"
+            - '@form.factory'
+            - '@router'
+            - '@profile_bundle.profile_type.validator'
+            - '%mmc_profile.profile_class%'
+
+    profile_bundle.profile_show_controller:
+        class: MMC\Profile\Bundle\ProfileBundle\Controller\ProfileShowController
+        arguments:
+            - '@templating'
+
+
+    profile_bundle.profile_delete_controller:
+        class: MMC\Profile\Bundle\ProfileBundle\Controller\ProfileDeleteController
+        arguments:
+            - "@profile_bundle.user_profile.securizing_manipulator"
+            - "@profile_bundle.user_profile.manager"
+            - '@router'
+
+    profile_bundle.profile_set_priority_controller:
+        class: MMC\Profile\Bundle\ProfileBundle\Controller\ProfileSetPriorityController
+        arguments:
+            - '@templating'
+            - "@profile_bundle.user_profile.securizing_manipulator"
+            - "@profile_bundle.user_profile.manager"
+            - '@form.factory'
+            - '@router'
+
+    profile_bundle.profile_activate_controller:
+        class: MMC\Profile\Bundle\ProfileBundle\Controller\ProfileActivateController
+        arguments:
+            - "@profile_bundle.user_profile.securizing_manipulator"
+            - "@profile_bundle.user_profile.manager"
+            - '@router'
+
+    profile_bundle.profile_associate_controller:
+        class: MMC\Profile\Bundle\ProfileBundle\Controller\ProfileAssociateController
+        arguments:
+            - '@templating'
+            - "@profile_bundle.user_profile.securizing_manipulator"
+            - "@profile_bundle.user_profile.manager"
+            - "@profile_bundle.user.manager"
+            - '@router'
+
+    profile_bundle.profile_set_rights_controller:
+        class: MMC\Profile\Bundle\ProfileBundle\Controller\ProfileSetRightsController
+        arguments:
+            - '@templating'
+            - "@profile_bundle.user_profile.securizing_manipulator"
+            - "@profile_bundle.user_profile.manager"
+            - "@profile_bundle.user.manager"
+            - '@router'
+
+    profile_bundle.default_controller:
+        class: MMC\Profile\Bundle\ProfileBundle\Controller\DefaultController
+        arguments:
+            - '@templating'
+            - "@security.token_storage"
+            - "@profile_bundle.user.manager"
 
 # VOTERS
 
