@@ -22,7 +22,7 @@ class DefaultController
         $this->userManager = $userManager;
     }
 
-    public function indexAction()
+    public function index()
     {
         $users = $this->userManager->findUsers();
 

@@ -1,49 +1,49 @@
 profile_bundle_homepage:
      path:     /
-     defaults: { _controller:profile_bundle.default_controller:indexaction }
+     defaults: { _controller:profile_bundle.default_controller:index }
 
 profile_bundle_createProfile:
      path:     /createProfile
-     defaults: { _controller:profile_bundle.profile_controller:createaction }
+     defaults: { _controller:profile_bundle.profile_controller:create }
 
 profile_bundle_seeProfile:
      path:     /profile/{uuid}/{username}
-     defaults: { _controller:profile_bundle.profile_controller:seeaction }
+     defaults: { _controller:profile_bundle.profile_controller:show }
      requirements:
           uuid: "[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}"
 
 profile_bundle_deleteProfile:
      path:     /profile/delete/{uuid}/{username}
-     defaults: { _controller:profile_bundle.profile_controller:deleteaction }
+     defaults: { _controller:profile_bundle.profile_controller:delete }
 
 profile_bundle_activeProfile:
      path:     /profile/active/{username}/{uuid}
-     defaults: { _controller:profile_bundle.profile_controller:activeaction }
+     defaults: { _controller:profile_bundle.profile_controller:active }
 
 profile_bundle_setPriorityProfile:
      path:     /profile/setPriority/{username}/{uuid}
-     defaults: { _controller:profile_bundle.profile_controller:setPriorityaction }
+     defaults: { _controller:profile_bundle.profile_controller:setPriority }
 
 profile_bundle_associateProfile:
      path:     /profile/associate/{username}/{uuid}
-     defaults: { _controller:profile_bundle.profile_controller:associateaction }
+     defaults: { _controller:profile_bundle.profile_controller:associate }
 
 profile_bundle_addAssociation:
      path:     /profile/addAssociation/{username}/{uuid}
-     defaults: { _controller:profile_bundle.profile_controller:addAssociationaction }
+     defaults: { _controller:profile_bundle.profile_controller:addAssociation }
 
 profile_bundle_promote:
      path:     /profile/promote/{username}/{uuid}
-     defaults: { _controller:profile_bundle.profile_controller:promoteAction }
+     defaults: { _controller:profile_bundle.profile_controller:promote }
 
 profile_bundle_demote:
      path:     /profile/demote/{username}/{uuid}
-     defaults: { _controller:profile_bundle.profile_controller:demoteAction }
+     defaults: { _controller:profile_bundle.profile_controller:demote }
 
 profile_bundle_addPromotion:
      path:     /profile/addPromotion/{username}/{uuid}
-     defaults: { _controller:profile_bundle.profile_controller:addPromotionaction }
+     defaults: { _controller:profile_bundle.profile_controller:addPromotion }
 
 profile_bundle_addDemotion:
      path:     /profile/addDemotion/{username}/{uuid}
-     defaults: { _controller:profile_bundle.profile_controller:addDemotionaction }
+     defaults: { _controller:profile_bundle.profile_controller:addDemotion }

@@ -58,15 +58,15 @@ class ProfileController
         $this->profileClassname = $profileClassname;
     }
 
-    public function createAction(Request $request)
+    public function create(Request $request)
     {
         $profile = new $this->profileClassname();
-        $profile->setUuid($this->uuidGenerator->generate());
 
         $form = $this->formFactory->create(ProfileType::class, $profile);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             $this->profileTypeValidator->validate($profile->getType());
 
             $user = $this->tokenStorage->getToken()->getUser();
@@ -103,7 +103,7 @@ class ProfileController
      * @ParamConverter("profile", class="AppBundle:Profile")
      * @ParamConverter("user", class="AppBundle:User")
      */
-    public function seeAction(ProfileInterface $profile, UserInterface $user)
+    public function show(ProfileInterface $profile, UserInterface $user)
     {
         foreach ($profile->getUserProfiles() as $userProfile) {
             if ($userProfile->getUser() == $user) {
@@ -119,7 +119,7 @@ class ProfileController
      * @ParamConverter("user", class="AppBundle:User")
      * @ParamConverter("profile", class="AppBundle:Profile")
      */
-    public function deleteAction(ProfileInterface $profile, UserInterface $user)
+    public function delete(ProfileInterface $profile, UserInterface $user)
     {
         $up = $this->manipulator->removeProfileForUser($user, $profile);
 
@@ -133,7 +133,7 @@ class ProfileController
      * @ParamConverter("profile", class="AppBundle:Profile")
      * @ParamConverter("user", class="AppBundle:User")
      */
-    public function activeAction(ProfileInterface $profile, UserInterface $user)
+    public function active(ProfileInterface $profile, UserInterface $user)
     {
         $up = $this->manipulator->setActiveProfile($user, $profile);
 
@@ -149,7 +149,7 @@ class ProfileController
      * @ParamConverter("profile", class="AppBundle:Profile")
      * @ParamConverter("user", class="AppBundle:User")
      */
-    public function setPriorityAction(Request $request, ProfileInterface $profile, UserInterface $user)
+    public function setPriority(Request $request, ProfileInterface $profile, UserInterface $user)
     {
         foreach ($profile->getUserProfiles() as $userProfile) {
             if ($userProfile->getUser() == $user) {
@@ -178,7 +178,7 @@ class ProfileController
      * @ParamConverter("profile", class="AppBundle:Profile")
      * @ParamConverter("user", class="AppBundle:User")
      */
-    public function associateAction(ProfileInterface $profile, UserInterface $user)
+    public function associate(ProfileInterface $profile, UserInterface $user)
     {
         $users = $this->userManager->findUsers();
         $up = $this->manipulator->getUserProfile($user, $profile);
@@ -191,7 +191,7 @@ class ProfileController
      * @ParamConverter("profile", class="AppBundle:Profile")
      * @ParamConverter("user", class="AppBundle:User")
      */
-    public function addAssociationAction(ProfileInterface $profile, UserInterface $user)
+    public function addAssociation(ProfileInterface $profile, UserInterface $user)
     {
         $up = $this->manipulator->createUserProfile($user, $profile);
 
@@ -205,7 +205,7 @@ class ProfileController
      * @ParamConverter("profile", class="AppBundle:Profile")
      * @ParamConverter("user", class="AppBundle:User")
      */
-    public function promoteAction(ProfileInterface $profile, UserInterface $user)
+    public function promote(ProfileInterface $profile, UserInterface $user)
     {
         $up = $this->manipulator->getUserProfile($user, $profile);
         $users = $this->userManager->findUsers();
@@ -218,7 +218,7 @@ class ProfileController
      * @ParamConverter("profile", class="AppBundle:Profile")
      * @ParamConverter("user", class="AppBundle:User")
      */
-    public function demoteAction(ProfileInterface $profile, UserInterface $user)
+    public function demote(ProfileInterface $profile, UserInterface $user)
     {
         return $this->templating->renderResponse('AppBundle:Profile:demote.html.twig',
             ['profile' => $profile, 'user' => $user]);
@@ -228,7 +228,7 @@ class ProfileController
      * @ParamConverter("profile", class="AppBundle:Profile")
      * @ParamConverter("user", class="AppBundle:User")
      */
-    public function addPromotionAction(ProfileInterface $profile, UserInterface $user)
+    public function addPromotion(ProfileInterface $profile, UserInterface $user)
     {
         $up = $this->manipulator->promoteUserProfile($user, $profile);
 
@@ -242,7 +242,7 @@ class ProfileController
      * @ParamConverter("profile", class="AppBundle:Profile")
      * @ParamConverter("user", class="AppBundle:User")
      */
-    public function addDemotionAction(ProfileInterface $profile, UserInterface $user)
+    public function addDemotion(ProfileInterface $profile, UserInterface $user)
     {
         $up = $this->manipulator->demoteUserProfile($user, $profile);
 
