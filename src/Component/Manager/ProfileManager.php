@@ -2,15 +2,19 @@
 
 namespace MMC\Profile\Component\Manager;
 
+use Doctrine\ORM\EntityManager;
 use MMC\Profile\Component\Model\ProfileInterface;
+use MMC\Profile\Component\UuidGenerator\RamseyUuidGenerator;
 
 class ProfileManager implements ProfileManagerInterface
 {
     private $em;
+    private $uuidGenerator;
 
-    public function __construct($em)
+    public function __construct(EntityManager $em, RamseyUuidGenerator $uuidGenerator)
     {
         $this->em = $em;
+        $this->uuidGenerator = $uuidGenerator;
     }
 
     /**
@@ -18,6 +22,7 @@ class ProfileManager implements ProfileManagerInterface
      */
     public function saveProfile(ProfileInterface $profile)
     {
+        $profile->setUuid($this->uuidGenerator->generate());
         $this->em->persist($profile);
     }
 

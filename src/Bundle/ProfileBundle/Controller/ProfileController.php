@@ -11,7 +11,6 @@ use MMC\Profile\Component\Manipulator\Exception\InvalidProfileClassName;
 use MMC\Profile\Component\Manipulator\UserProfileManipulatorInterface;
 use MMC\Profile\Component\Model\ProfileInterface;
 use MMC\Profile\Component\Model\UserInterface;
-use MMC\Profile\Component\UuidGenerator\UuidGeneratorInterface;
 use MMC\Profile\Component\Validator\ProfileTypeValidator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
@@ -30,7 +29,6 @@ class ProfileController
     private $userManager;
     private $formFactory;
     private $router;
-    private $uuidGenerator;
     private $profileTypeValidator;
     private $profileClassname;
 
@@ -42,7 +40,6 @@ class ProfileController
         UserManagerInterface $userManager,
         FormFactory $formFactory,
         Router $router,
-        UuidGeneratorInterface $uuidGenerator,
         ProfileTypeValidator $profileTypeValidator,
         $profileClassname
         ) {
@@ -57,7 +54,6 @@ class ProfileController
         $this->userManager = $userManager;
         $this->formFactory = $formFactory;
         $this->router = $router;
-        $this->uuidGenerator = $uuidGenerator;
         $this->profileTypeValidator = $profileTypeValidator;
         $this->profileClassname = $profileClassname;
     }

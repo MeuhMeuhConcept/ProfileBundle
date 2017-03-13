@@ -29,7 +29,6 @@ services:
             - "@profile_bundle.user.manager"
             - '@form.factory'
             - '@router'
-            - '@profile_bundle.ramsey_uuid_generator'
             - '@profile_bundle.profile_type.validator'
             - '%mmc_profile.profile_class%'
 
@@ -44,6 +43,7 @@ services:
         class: MMC\Profile\Component\Manager\ProfileManager
         arguments:
             - '@doctrine.orm.entity_manager'
+            - '@profile_bundle.ramsey_uuid_generator'
 
     profile_bundle.user.manager:
         class: MMC\Profile\Component\Manager\UserManager
@@ -55,6 +55,8 @@ services:
         class: MMC\Profile\Component\Manager\UserProfileManager
         arguments:
             - '@doctrine.orm.entity_manager'
+            - '@profile_bundle.user.manager'
+            - '@profile_bundle.profile.manager'
 
     profile_bundle.ramsey_uuid_generator:
         class: MMC\Profile\Component\UuidGenerator\RamseyUuidGenerator
