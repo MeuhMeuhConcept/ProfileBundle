@@ -48,6 +48,14 @@ services:
         tags:
             - { name: form.type }
 
+    profile_bundle.handler_profile_create:
+        class: MMC\Profile\Component\Handler\Profile\CreateHandler
+        arguments:
+            - '@profile_bundle.profile_type.validator'
+            - '@profile_bundle.user_profile.securizing_manipulator'
+            - '@profile_bundle.user_profile.manager'
+
+
 # CONTROLLERS
 
     profile_bundle.profile_create_controller:
@@ -55,11 +63,9 @@ services:
         arguments:
             - '@templating'
             - "@security.token_storage"
-            - "@profile_bundle.user_profile.securizing_manipulator"
-            - "@profile_bundle.user_profile.manager"
             - '@form.factory'
             - '@router'
-            - '@profile_bundle.profile_type.validator'
+            - '@profile_bundle.handler_profile_create'
             - '%mmc_profile.profile_class%'
 
     profile_bundle.profile_show_controller:

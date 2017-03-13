@@ -4,11 +4,10 @@ namespace MMC\Profile\Bundle\ProfileBundle\Controller;
 
 use AppBundle\Form\ProfileTypeTest;
 use MMC\Profile\Bundle\ProfileBundle\Form\ProfileType;
-use MMC\Profile\Component\Manager\UserProfileManagerInterface;
+use MMC\Profile\Component\Handler\Profile\CreateHandler;
 use MMC\Profile\Component\Manipulator\Exception\InvalidProfileClassName;
-use MMC\Profile\Component\Manipulator\UserProfileManipulatorInterface;
 use MMC\Profile\Component\Model\ProfileInterface;
-use MMC\Profile\Component\Validator\ProfileTypeValidator;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Form\FormFactory;
@@ -24,22 +23,18 @@ class ProfileCreateController
 {
     private $templating;
     private $tokenStorage;
-    private $manipulator;
     private $upManager;
-    private $userManager;
     private $formFactory;
     private $router;
-    private $profileTypeValidator;
+    private $createHandler;
     private $profileClassname;
 
     public function __construct(
         EngineInterface $templating,
         TokenStorage $tokenStorage,
-        UserProfileManipulatorInterface $manipulator,
-        UserProfileManagerInterface $upManager,
         FormFactory $formFactory,
         Router $router,
-        ProfileTypeValidator $profileTypeValidator,
+        CreateHandler $createHandler,
         $profileClassname
     ) {
         if (!is_subclass_of($profileClassname, ProfileInterface::class)) {
@@ -48,27 +43,30 @@ class ProfileCreateController
 
         $this->templating = $templating;
         $this->tokenStorage = $tokenStorage;
-        $this->manipulator = $manipulator;
-        $this->upManager = $upManager;
         $this->formFactory = $formFactory;
         $this->router = $router;
-        $this->profileTypeValidator = $profileTypeValidator;
+        $this->createHandler = $createHandler;
         $this->profileClassname = $profileClassname;
     }
 
-    // public function form(Request $request)
-    // {
-    //     $profile = new $this->profileClassname();
+    /**
+     * @Route("", name="profile_bundle_create_profile_form")
+     * @Method({"GET"})
+     */
+    public function form(Request $request)
+    {
+        $profile = new $this->profileClassname();
 
-    //     $form = $this->formFactory->create(ProfileType::class, $profile);
-    //     $formTest = $this->formFactory->create(ProfileTypeTest::class, $profile);
+        $form = $this->formFactory->create(ProfileType::class, $profile);
+        $formTest = $this->formFactory->create(ProfileTypeTest::class, $profile);
 
-    //     return $this->templating->renderResponse('AppBundle:Profile:create.html.twig',
-    //         ['form' => $form->createView(), 'formTest' => $formTest->createView()]);
-    // }
+        return $this->templating->renderResponse('AppBundle:Profile:create.html.twig',
+            ['form' => $form->createView(), 'formTest' => $formTest->createView()]);
+    }
 
     /**
      * @Route("", name="profile_bundle_create_profile")
+     * @Method({"POST"})
      */
     public function create(Request $request)
     {
@@ -78,16 +76,8 @@ class ProfileCreateController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // $this->createHandler->create($profile, $this->tokenStorage->getToken()->getUser());
-
-            // A mettre dans le handler
-            $this->profileTypeValidator->validate($profile->getType());
-
             $user = $this->tokenStorage->getToken()->getUser();
-            $up = $this->manipulator->createUserProfile($user, $profile, true);
-
-            $this->upManager->saveUserProfile($up);
-            $this->upManager->flush();
+            $this->createHandler->create($profile, $user);
 
             return new RedirectResponse($this->router->generate('profile_bundle_show_profile',
                 ['uuid' => $profile->getUuid(), 'username' => $user->getUsername()]
