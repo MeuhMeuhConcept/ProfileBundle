@@ -7,7 +7,7 @@
         <h1 class="text-center alert alert-danger">Version de test</h1>
         <h1 class="text-center">Promouvoir un utilisateur</h1>
         {% for user in users %}
-            <a href="{{ path('profile_bundle_addPromotion', {'username': user.username, 'uuid': userProfile.profile.uuid }) }}">
+            <a href="{{ path('profile_bundle_promote_profile', {'username': user.username, 'uuid': userProfile.profile.uuid }) }}">
                 <div class="col-lg-6 col-lg-offset-3 thumbnail text-center alert alert-info">
                     <p>{{ user.username }}</p>
                 </div>

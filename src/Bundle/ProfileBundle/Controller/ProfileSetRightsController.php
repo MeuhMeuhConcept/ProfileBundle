@@ -8,10 +8,14 @@ use MMC\Profile\Component\Manipulator\UserProfileManipulatorInterface;
 use MMC\Profile\Component\Model\ProfileInterface;
 use MMC\Profile\Component\Model\UserInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Templating\EngineInterface;
 
+/**
+ * @Route("/profile", service="profile_bundle.profile_set_rights_controller")
+ */
 class ProfileSetRightsController
 {
     private $templating;
@@ -37,8 +41,9 @@ class ProfileSetRightsController
     /**
      * @ParamConverter("profile", class="AppBundle:Profile")
      * @ParamConverter("user", class="AppBundle:User")
+     * @Route("/promote/{uuid}/{username}", name="profile_bundle_show_promotions_profile")
      */
-    public function promote(ProfileInterface $profile, UserInterface $user)
+    public function showPromotions(ProfileInterface $profile, UserInterface $user)
     {
         $up = $this->manipulator->getUserProfile($user, $profile);
         $users = $this->userManager->findUsers();
@@ -50,8 +55,9 @@ class ProfileSetRightsController
     /**
      * @ParamConverter("profile", class="AppBundle:Profile")
      * @ParamConverter("user", class="AppBundle:User")
+     * @Route("/demote/{uuid}/{username}", name="profile_bundle_show_demotion_profile")
      */
-    public function demote(ProfileInterface $profile, UserInterface $user)
+    public function showDemotion(ProfileInterface $profile, UserInterface $user)
     {
         return $this->templating->renderResponse('AppBundle:Profile:demote.html.twig',
             ['profile' => $profile, 'user' => $user]);
@@ -60,8 +66,9 @@ class ProfileSetRightsController
     /**
      * @ParamConverter("profile", class="AppBundle:Profile")
      * @ParamConverter("user", class="AppBundle:User")
+     * @Route("/addPromotion/{uuid}/{username}", name="profile_bundle_promote_profile")
      */
-    public function addPromotion(ProfileInterface $profile, UserInterface $user)
+    public function promote(ProfileInterface $profile, UserInterface $user)
     {
         $up = $this->manipulator->promoteUserProfile($user, $profile);
 
@@ -74,8 +81,9 @@ class ProfileSetRightsController
     /**
      * @ParamConverter("profile", class="AppBundle:Profile")
      * @ParamConverter("user", class="AppBundle:User")
+     * @Route("/addDemotion/{uuid}/{username}", name="profile_bundle_demote_profile")
      */
-    public function addDemotion(ProfileInterface $profile, UserInterface $user)
+    public function demote(ProfileInterface $profile, UserInterface $user)
     {
         $up = $this->manipulator->demoteUserProfile($user, $profile);
 

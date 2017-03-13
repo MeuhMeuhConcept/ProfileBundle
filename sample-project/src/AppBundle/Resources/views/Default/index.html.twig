@@ -16,7 +16,7 @@
         {% if emptyProfiles == true %}
             <div class="alert alert-warning">
                 <h3> Vous n'avez pas de profil actuellement</h3>
-                <h3><a href="{{ path('profile_bundle_createProfile') }}">
+                <h3><a href="{{ path('profile_bundle_create_profile') }}">
                     Créer votre premier profil
                 </a></h3>
             </div>
@@ -25,7 +25,7 @@
             {% for user in users %}
                 <h3 class="col-lg-12 text-center">{{ user.username }}</h3>
                 {% for userProfile in user.userProfiles %}
-                    <a href="{{ path('profile_bundle_seeProfile', { 'uuid': userProfile.profile.uuid, 'username': user.username}) }}">
+                    <a href="{{ path('profile_bundle_show_profile', { 'uuid': userProfile.profile.uuid, 'username': user.username}) }}">
                     {% if userProfile.isActive %}
                         <div class="col-lg-4 thumbnail text-center alert alert-success">
                     {% else %}
@@ -48,7 +48,7 @@
                     </a>
                 {% endfor %}
             {% endfor %}
-            <a href="{{ path('profile_bundle_createProfile') }}">
+            <a href="{{ path('profile_bundle_create_profile') }}">
                 <div class="alert alert-warning col-lg-6 col-lg-offset-3 text-center">
                     <h3>Créer un nouveau profil</h3>
                 </div>

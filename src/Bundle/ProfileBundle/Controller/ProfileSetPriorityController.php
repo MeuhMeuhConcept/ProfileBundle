@@ -8,12 +8,16 @@ use MMC\Profile\Component\Manipulator\UserProfileManipulatorInterface;
 use MMC\Profile\Component\Model\ProfileInterface;
 use MMC\Profile\Component\Model\UserInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Templating\EngineInterface;
 
+/**
+ * @Route("/profile/set", service="profile_bundle.profile_set_priority_controller")
+ */
 class ProfileSetPriorityController
 {
     private $templating;
@@ -39,6 +43,7 @@ class ProfileSetPriorityController
     /**
      * @ParamConverter("profile", class="AppBundle:Profile")
      * @ParamConverter("user", class="AppBundle:User")
+     * @Route("/{uuid}/{username}", name="profile_bundle_set_priority_profile")
      */
     public function setPriority(Request $request, ProfileInterface $profile, UserInterface $user)
     {
@@ -56,7 +61,7 @@ class ProfileSetPriorityController
             $this->upManager->saveUserProfile($up);
             $this->upManager->flush();
 
-            return new RedirectResponse($this->router->generate('profile_bundle_seeProfile',
+            return new RedirectResponse($this->router->generate('profile_bundle_show_profile',
                 ['uuid' => $profile->getUuid(), 'username' => $user->getUsername()]
             ));
         }

@@ -9,6 +9,7 @@ use MMC\Profile\Component\Manipulator\Exception\InvalidProfileClassName;
 use MMC\Profile\Component\Manipulator\UserProfileManipulatorInterface;
 use MMC\Profile\Component\Model\ProfileInterface;
 use MMC\Profile\Component\Validator\ProfileTypeValidator;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -16,6 +17,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Templating\EngineInterface;
 
+/**
+ * @Route("/profile/create", service="profile_bundle.profile_create_controller")
+ */
 class ProfileCreateController
 {
     private $templating;
@@ -63,6 +67,9 @@ class ProfileCreateController
     //         ['form' => $form->createView(), 'formTest' => $formTest->createView()]);
     // }
 
+    /**
+     * @Route("", name="profile_bundle_create_profile")
+     */
     public function create(Request $request)
     {
         $profile = new $this->profileClassname();
@@ -82,7 +89,7 @@ class ProfileCreateController
             $this->upManager->saveUserProfile($up);
             $this->upManager->flush();
 
-            return new RedirectResponse($this->router->generate('profile_bundle_seeProfile',
+            return new RedirectResponse($this->router->generate('profile_bundle_show_profile',
                 ['uuid' => $profile->getUuid(), 'username' => $user->getUsername()]
             ));
         }

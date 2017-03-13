@@ -19,7 +19,7 @@
 
             {% if is_granted('CAN_ASSOCIATE_PROFILE', userProfile.profile) %}
                 {% if existingUp == false %}
-                    <a href="{{ path('profile_bundle_addAssociation', {'username': user.username, 'uuid': userProfile.profile.uuid }) }}">
+                    <a href="{{ path('profile_bundle_associate_profile', {'username': user.username, 'uuid': userProfile.profile.uuid }) }}">
                         <div class="col-lg-6 col-lg-offset-3 thumbnail text-center alert alert-info">
                             <p>{{ user.username }}</p>
                         </div>

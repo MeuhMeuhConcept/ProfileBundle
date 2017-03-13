@@ -25,13 +25,13 @@
                         <p>{{ user.username }} {{ 'promote.ever_owner'|trans({}, 'mmc_profile_bundle_messages') }}</p>
                     </div>
                 {% elseif upExist == false %}
-                    <a href="{{ path('profile_bundle_associateProfile', {'uuid': userProfile.profile.uuid, 'username': userProfile.user.username }) }}">
+                    <a href="{{ path('profile_bundle_show_associations_profile', {'uuid': userProfile.profile.uuid, 'username': userProfile.user.username }) }}">
                         <div class="col-lg-6 col-lg-offset-3 thumbnail text-center alert alert-warning">
                             <p>{{ user.username }} {{ 'promote.not_associated'|trans({}, 'mmc_profile_bundle_messages') }}</p>
                         </div>
                     </a>
                 {% else %}
-                    <a href="{{ path('profile_bundle_addPromotion', {'username': user.username, 'uuid': userProfile.profile.uuid }) }}">
+                    <a href="{{ path('profile_bundle_promote_profile', {'username': user.username, 'uuid': userProfile.profile.uuid }) }}">
                         <div class="col-lg-6 col-lg-offset-3 thumbnail text-center alert alert-info">
                             <p>{{ user.username }}</p>
                         </div>

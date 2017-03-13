@@ -6,7 +6,7 @@
         <hr style="border:solid 3px black">
         <h1 class="text-center alert alert-danger">Version de test</h1>
         <h1 class="text-center">Souhaitez vous vraiment ne plus être propriétaire du profil {{ profile.uuid }}?</h1>
-        <a href="{{ path('profile_bundle_addDemotion', {'username': user.username, 'uuid': profile.uuid }) }}">
+        <a href="{{ path('profile_bundle_demote_profile', {'username': user.username, 'uuid': profile.uuid }) }}">
             <div class="col-lg-4 col-lg-offset-4 thumbnail text-center alert alert-warning">
                 <p>Se destituer</p>
             </div>

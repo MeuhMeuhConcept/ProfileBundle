@@ -38,7 +38,8 @@ Add mmc profile user route :
 ```yaml
 # app/config/routing.yml
 mmc_profile:
-    resource: "@MMCProfileBundle/Resources/config/routing.yml"
+    resource: "@MMCProfileBundle/Controller"
+    type: annotation
 ```
 
 Create User, Profile and UserProfile entities:

@@ -3,9 +3,13 @@
 namespace MMC\Profile\Bundle\ProfileBundle\Controller;
 
 use MMC\Profile\Component\Manager\UserManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Templating\EngineInterface;
 
+/**
+ * @Route(service="profile_bundle.default_controller")
+ */
 class DefaultController
 {
     private $templating;
@@ -22,6 +26,9 @@ class DefaultController
         $this->userManager = $userManager;
     }
 
+    /**
+     * @Route("/", name="profile_bundle_homepage")
+     */
     public function index()
     {
         $users = $this->userManager->findUsers();

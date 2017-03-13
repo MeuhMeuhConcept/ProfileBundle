@@ -21,7 +21,7 @@
         </div>
         {% if is_granted('CAN_ACTIVATE_USERPROFILE', userProfile) %}
             {% if userProfile.isActive == false %}
-                <a href="{{ path('profile_bundle_activeProfile', {'username': user.username, 'uuid': userProfile.profile.uuid }) }}">
+                <a href="{{ path('profile_bundle_activate_profile', {'username': user.username, 'uuid': userProfile.profile.uuid }) }}">
                     <button class="btn btn-success d-block mx-auto col-lg-6"role="button">
                         {{ 'profile.activate'|trans({}, 'mmc_profile_bundle_messages') }}
                     </button>
@@ -29,35 +29,35 @@
             {% endif %}
         {% endif %}
         {% if is_granted('CAN_SET_PRIORITY_USERPROFILE', userProfile) %}
-            <a href="{{ path('profile_bundle_setPriorityProfile', {'username': user.username, 'uuid': userProfile.profile.uuid }) }}">
+            <a href="{{ path('profile_bundle_set_priority_profile', {'username': user.username, 'uuid': userProfile.profile.uuid }) }}">
                 <button class="btn btn-info d-block mx-auto col-lg-6"role="button">
                     {{ 'profile.set_priority'|trans({}, 'mmc_profile_bundle_messages') }}
                 </button>
             </a>
         {% endif %}
         {% if is_granted('CAN_DELETE_USERPROFILE', userProfile) %}
-            <a href="{{ path('profile_bundle_deleteProfile', {'uuid': userProfile.profile.uuid, 'username': user.username }) }}">
+            <a href="{{ path('profile_bundle_delete_profile', {'uuid': userProfile.profile.uuid, 'username': user.username }) }}">
                 <button class="btn btn-danger d-block mx-auto col-lg-6"role="button">
                     {{ 'profile.delete'|trans({}, 'mmc_profile_bundle_messages') }}
                 </button>
             </a>
         {% endif %}
         {% if is_granted('CAN_ASSOCIATE_PROFILE', userProfile.profile) %}
-            <a href="{{ path('profile_bundle_associateProfile', {'username': user.username, 'uuid': userProfile.profile.uuid }) }}">
+            <a href="{{ path('profile_bundle_show_associations_profile', {'username': user.username, 'uuid': userProfile.profile.uuid }) }}">
                 <button class="btn btn-warning d-block mx-auto col-lg-6"role="button">
                     {{ 'profile.associate'|trans({}, 'mmc_profile_bundle_messages') }}
                 </button>
             </a>
         {% endif %}
         {% if is_granted('CAN_PROMOTE_USERPROFILE', userProfile) %}
-            <a href="{{ path('profile_bundle_promote', {'uuid': userProfile.profile.uuid, 'username': user.username }) }}">
+            <a href="{{ path('profile_bundle_show_promotions_profile', {'uuid': userProfile.profile.uuid, 'username': user.username }) }}">
                 <button class="btn btn-primary d-block mx-auto col-lg-6"role="button">
                     {{ 'profile.promote'|trans({}, 'mmc_profile_bundle_messages') }}
                 </button>
             </a>
         {% endif %}
         {% if is_granted('CAN_DEMOTE_USERPROFILE', userProfile) %}
-            <a href="{{ path('profile_bundle_demote', {'uuid': userProfile.profile.uuid, 'username': user.username }) }}">
+            <a href="{{ path('profile_bundle_show_demotion_profile', {'uuid': userProfile.profile.uuid, 'username': user.username }) }}">
                 <button class="btn btn-secondary d-block mx-auto col-lg-6"role="button">
                     {{ 'profile.demote'|trans({}, 'mmc_profile_bundle_messages') }}
                 </button>

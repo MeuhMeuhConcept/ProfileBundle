@@ -67,7 +67,6 @@ services:
         arguments:
             - '@templating'
 
-
     profile_bundle.profile_delete_controller:
         class: MMC\Profile\Bundle\ProfileBundle\Controller\ProfileDeleteController
         arguments:

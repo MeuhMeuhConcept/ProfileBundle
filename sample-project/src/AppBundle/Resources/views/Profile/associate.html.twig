@@ -8,7 +8,7 @@
         <div class="container">
             <h1 class="text-center">Associer le profil {{ userProfile.profile.uuid }}</h1>
             {% for user in users %}
-                <a href="{{ path('profile_bundle_addAssociation', {'username': user.username, 'uuid': userProfile.profile.uuid }) }}">
+                <a href="{{ path('profile_bundle_associate_profile', {'username': user.username, 'uuid': userProfile.profile.uuid }) }}">
                     <div class="col-lg-6 col-lg-offset-3 thumbnail text-center alert alert-info">
                         <p>{{ user.username }}</p>
                     </div>

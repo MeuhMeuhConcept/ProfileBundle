@@ -8,10 +8,14 @@ use MMC\Profile\Component\Manipulator\UserProfileManipulatorInterface;
 use MMC\Profile\Component\Model\ProfileInterface;
 use MMC\Profile\Component\Model\UserInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Templating\EngineInterface;
 
+/**
+ * @Route("/profile/associate", service="profile_bundle.profile_associate_controller")
+ */
 class ProfileAssociateController
 {
     private $templating;
@@ -37,6 +41,7 @@ class ProfileAssociateController
     /**
      * @ParamConverter("profile", class="AppBundle:Profile")
      * @ParamConverter("user", class="AppBundle:User")
+     * @Route("/show/{uuid}/{username}", name="profile_bundle_show_associations_profile")
      */
     public function associate(ProfileInterface $profile, UserInterface $user)
     {
@@ -50,6 +55,7 @@ class ProfileAssociateController
     /**
      * @ParamConverter("profile", class="AppBundle:Profile")
      * @ParamConverter("user", class="AppBundle:User")
+     * @Route("/{uuid}/{username}", name="profile_bundle_associate_profile")
      */
     public function addAssociation(ProfileInterface $profile, UserInterface $user)
     {

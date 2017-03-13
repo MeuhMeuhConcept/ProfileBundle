@@ -10,14 +10,14 @@
         {% if user.userProfiles is empty %}
             <div class="alert alert-warning">
                 <h3>{{ 'home.no_profile'|trans({}, 'mmc_profile_bundle_messages') }}</h3>
-                <h3><a href="{{ path('profile_bundle_createProfile') }}">
+                <h3><a href="{{ path('profile_bundle_create_profile') }}">
                     {{ 'home.create_first_profile'|trans({}, 'mmc_profile_bundle_messages') }}
                 </a></h3>
             </div>
         {% else %}
             <h3>{{ 'home.profile_list'|trans({}, 'mmc_profile_bundle_messages') }}</h3>
             {% for userProfile in user.userProfiles %}
-                <a href="{{ path('profile_bundle_seeProfile', { 'uuid': userProfile.profile.uuid, 'username': user.username}) }}">
+                <a href="{{ path('profile_bundle_show_profile', { 'uuid': userProfile.profile.uuid, 'username': user.username}) }}">
                 {% if userProfile.isActive %}
                     <div class="col-lg-4 thumbnail text-center alert alert-success">
                 {% else %}
@@ -42,7 +42,7 @@
                     </div>
                 </a>
             {% endfor %}
-            <a href="{{ path('profile_bundle_createProfile') }}">
+            <a href="{{ path('profile_bundle_create_profile') }}">
                 <div class="alert alert-warning col-lg-6 col-lg-offset-3 text-center">
                     <h3>{{ 'home.create_new_profile'|trans({}, 'mmc_profile_bundle_messages') }}</h3>
                 </div>
