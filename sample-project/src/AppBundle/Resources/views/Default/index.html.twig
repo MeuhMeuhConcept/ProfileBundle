@@ -25,7 +25,7 @@
             {% for user in users %}
                 <h3 class="col-lg-12 text-center">{{ user.username }}</h3>
                 {% for userProfile in user.userProfiles %}
-                    <a href="{{ path('profile_bundle_show_profile', { 'uuid': userProfile.profile.uuid, 'username': user.username}) }}">
+                    <a href="{{ path('profile_bundle_show_profile', { 'uuid': userProfile.profile.uuid }) }}">
                     {% if userProfile.isActive %}
                         <div class="col-lg-4 thumbnail text-center alert alert-success">
                     {% else %}

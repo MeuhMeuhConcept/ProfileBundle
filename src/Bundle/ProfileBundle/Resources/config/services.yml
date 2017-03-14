@@ -72,6 +72,7 @@ services:
         class: MMC\Profile\Bundle\ProfileBundle\Controller\ProfileShowController
         arguments:
             - '@templating'
+            - "@security.token_storage"
 
     profile_bundle.profile_dissociate_controller:
         class: MMC\Profile\Bundle\ProfileBundle\Controller\ProfileDissociateController
