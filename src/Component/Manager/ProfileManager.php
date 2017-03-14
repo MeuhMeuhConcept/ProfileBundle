@@ -22,7 +22,11 @@ class ProfileManager implements ProfileManagerInterface
      */
     public function saveProfile(ProfileInterface $profile)
     {
-        $profile->setUuid($this->uuidGenerator->generate());
+        if ($profile->getUuid() == null) {
+            $profile->setUuid($this->uuidGenerator->generate());
+        }
+
+        $profile->setLabel();
         $this->em->persist($profile);
     }
 

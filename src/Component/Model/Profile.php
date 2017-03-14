@@ -24,6 +24,11 @@ class Profile implements ProfileInterface, UserProfileAccessorInterface
     protected $type;
 
     /**
+     * @var string
+     */
+    protected $label;
+
+    /**
      * @var ArrayCollection
      */
     protected $userProfiles;
@@ -99,6 +104,24 @@ class Profile implements ProfileInterface, UserProfileAccessorInterface
     /**
      * {@inheritdoc}
      */
+    public function getLabel()
+    {
+        return $this->label;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setLabel()
+    {
+        $this->label = $this->__toString();
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getUserProfile(UserInterface $user)
     {
         foreach ($this->getUserProfiles() as $userProfile) {
@@ -110,10 +133,21 @@ class Profile implements ProfileInterface, UserProfileAccessorInterface
         return null;
     }
 
+    /**
+     * {@inheridoc}.
+     */
     public function initializeRoles()
     {
         if ($this->roles == null) {
             $this->roles = new ArrayCollection();
         }
+    }
+
+    /**
+     * {@inheridoc}.
+     */
+    public function __toString()
+    {
+        return 'label_'.$this->getUuid();
     }
 }

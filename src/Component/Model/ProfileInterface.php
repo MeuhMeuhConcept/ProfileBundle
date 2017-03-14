@@ -58,6 +58,20 @@ interface ProfileInterface
     public function setType($type);
 
     /**
+     * Get the profile label.
+     *
+     * @return string
+     */
+    public function getLabel();
+
+    /**
+     * Set label.
+     *
+     * @return ProfileInterface
+     */
+    public function setLabel();
+
+    /**
      * Get userProfile.
      *
      * @return ArrayCollection
@@ -68,4 +82,9 @@ interface ProfileInterface
      * Initialize roles as ArrayCollection if null.
      */
     public function initializeRoles();
+
+    /**
+     * Define what is returned when this class is considered like a string.
+     */
+    public function __toString();
 }

@@ -7,7 +7,7 @@
 {% block body %}
     <div class="container">
         <div class="jumbotron text-center">
-            <h2>{{ 'profile'|trans({}, 'mmc_profile_bundle_profile') }} {{ userProfile.profile.uuid }}</h2>
+            <h2>{{ 'profile'|trans({}, 'mmc_profile_bundle_profile') }} {{ userProfile.profile.label }}</h2>
             <p>{{ 'type'|trans({}, 'mmc_profile_bundle_profile') }}: {{ userProfile.profile.type }}</p>
             {% if(userProfile.isOwner) %}
                 <p>{{ 'owner'|trans({}, 'mmc_profile_bundle_profile') }}</p>

@@ -8,7 +8,7 @@
         <div class="container">
             {{ dump(userProfile)}}
             <div class="jumbotron text-center">
-                <h2>Profil {{ userProfile.profile.uuid }}</h2>
+                <h2>Profil {{ userProfile.profile.label }}</h2>
                 <p>Type: {{ userProfile.profile.type }}</p>
                 {% if(userProfile.isOwner) %}
                     <p>Propriétaire</p>
