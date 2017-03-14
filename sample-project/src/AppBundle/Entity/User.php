@@ -20,6 +20,7 @@ class User extends BaseUser
 
     /**
      * @ORM\OneToMany(targetEntity="UserProfile", mappedBy="user")
+     * @ORM\OrderBy({"isActive" = "DESC", "priority" = "DESC"})
      */
     protected $userProfiles;
 }

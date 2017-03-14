@@ -58,10 +58,6 @@
                 <source>profile.activate</source>
                 <target>Rendre le profil actif</target>
             </trans-unit>
-            <trans-unit id="profile.set_priority">
-                <source>profile.set_priority</source>
-                <target>Modifier la priorité</target>
-            </trans-unit>
             <trans-unit id="profile.dissociate">
                 <source>profile.dissociate</source>
                 <target>Dissocier le profil d'un utilisateur</target>
@@ -129,18 +125,6 @@
             <trans-unit id="promote.not_authorized">
                 <source>promote.not_authorized</source>
                 <target>non autorisé à promouvoir</target>
-            </trans-unit>
-            <trans-unit id="priority.page_title">
-                <source>priority.page_title</source>
-                <target>Priorité</target>
-            </trans-unit>
-            <trans-unit id="priority.set_priority">
-                <source>priority.set_priority</source>
-                <target>Ajuster la priorité</target>
-            </trans-unit>
-            <trans-unit id="priority.submit_button">
-                <source>priority.submit_button</source>
-                <target>Modifier</target>
             </trans-unit>
             <trans-unit id="dissociate.page_title">
                 <source>dissociate.page_title</source>
