@@ -10,10 +10,9 @@
         </h1>
         {% for user in users %}
             {% set existingUp = false %}
-            {% set authorized = false %}
             {% for up in user.userProfiles %}
                 {% if up.profile == userProfile.profile %}
-                {% set existingUp = true %}
+                    {% set existingUp = true %}
                 {% endif %}
             {% endfor %}
 

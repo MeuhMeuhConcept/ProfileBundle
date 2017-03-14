@@ -73,11 +73,13 @@ services:
         arguments:
             - '@templating'
 
-    profile_bundle.profile_delete_controller:
-        class: MMC\Profile\Bundle\ProfileBundle\Controller\ProfileDeleteController
+    profile_bundle.profile_dissociate_controller:
+        class: MMC\Profile\Bundle\ProfileBundle\Controller\ProfileDissociateController
         arguments:
+            - '@templating'
             - "@profile_bundle.user_profile.securizing_manipulator"
             - "@profile_bundle.user_profile.manager"
+            - "@profile_bundle.user.manager"
             - '@router'
 
     profile_bundle.profile_set_priority_controller:

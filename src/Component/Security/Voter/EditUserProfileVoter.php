@@ -11,7 +11,7 @@ class EditUserProfileVoter extends Voter
 {
     const ACTIVATE = 'CAN_ACTIVATE_USERPROFILE';
     const PRIORITY = 'CAN_SET_PRIORITY_USERPROFILE';
-    const DELETE = 'CAN_DELETE_USERPROFILE';
+    const DISSOCIATE = 'CAN_DISSOCIATE_USERPROFILE';
     const PROMOTE = 'CAN_PROMOTE_USERPROFILE';
     const DEMOTE = 'CAN_DEMOTE_USERPROFILE';
     const GET_USER_PROFILE = 'CAN_GET_USER_PROFILE';
@@ -19,7 +19,7 @@ class EditUserProfileVoter extends Voter
 
     protected function supports($attribute, $subject)
     {
-        if (!in_array($attribute, [self::ACTIVATE, self::PRIORITY, self::DELETE, self::PROMOTE, self::DEMOTE, self::GET_USER_PROFILE, self::GET_IS_OWNER])) {
+        if (!in_array($attribute, [self::ACTIVATE, self::PRIORITY, self::DISSOCIATE, self::PROMOTE, self::DEMOTE, self::GET_USER_PROFILE, self::GET_IS_OWNER])) {
             return false;
         }
         if (!$subject instanceof UserProfileInterface) {
@@ -42,8 +42,8 @@ class EditUserProfileVoter extends Voter
                 return $this->canSetPriority($subject, $user);
             case self::ACTIVATE:
                 return $this->canActivate($subject, $user);
-            case self::DELETE:
-                return $this->canDelete($subject, $user);
+            case self::DISSOCIATE:
+                return $this->canDissociate($subject, $user);
             case self::PROMOTE:
                 return $this->canPromote($subject, $user);
             case self::DEMOTE:
@@ -65,7 +65,7 @@ class EditUserProfileVoter extends Voter
         return $up->getUser() == $user;
     }
 
-    private function canDelete(UserProfileInterface $up, UserInterface $user)
+    private function canDissociate(UserProfileInterface $up, UserInterface $user)
     {
         if ($up->getUser() == $user) {
             return !$up->getIsOwner();

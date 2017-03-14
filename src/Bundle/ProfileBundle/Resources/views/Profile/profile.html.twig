@@ -35,10 +35,16 @@
                 </button>
             </a>
         {% endif %}
-        {% if is_granted('CAN_DELETE_USERPROFILE', userProfile) %}
-            <a href="{{ path('profile_bundle_delete_profile', {'uuid': userProfile.profile.uuid, 'username': user.username }) }}">
+        {% set canDelete = false %}
+        {% for up in userProfile.profile.userProfiles %}
+            {% if is_granted('CAN_DISSOCIATE_USERPROFILE', up) %}
+                {% set canDelete = true %}
+            {% endif %}
+        {% endfor %}
+        {% if canDelete %}
+            <a href="{{ path('profile_bundle_show_dissociations_profile', {'uuid': userProfile.profile.uuid, 'username': user.username }) }}">
                 <button class="btn btn-danger d-block mx-auto col-lg-6"role="button">
-                    {{ 'profile.delete'|trans({}, 'mmc_profile_bundle_messages') }}
+                    {{ 'profile.dissociate'|trans({}, 'mmc_profile_bundle_messages') }}
                 </button>
             </a>
         {% endif %}

@@ -150,7 +150,7 @@ class SecurizingUserProfileManipulator implements UserProfileManipulatorInterfac
     public function removeProfileForUser(UserInterface $user, ProfileInterface $profile)
     {
         $up = $this->getUserProfile($user, $profile);
-        if (!$this->authorizationChecker->isGranted('CAN_DELETE_USERPROFILE', $up)) {
+        if (!$this->authorizationChecker->isGranted('CAN_DISSOCIATE_USERPROFILE', $up)) {
             throw new ManipulatorAccessDeniedHttpException();
         }
 

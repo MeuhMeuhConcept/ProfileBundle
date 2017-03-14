@@ -62,9 +62,9 @@
                 <source>profile.set_priority</source>
                 <target>Modifier la priorité</target>
             </trans-unit>
-            <trans-unit id="profile.delete">
-                <source>profile.delete</source>
-                <target>Supprimer le profil</target>
+            <trans-unit id="profile.dissociate">
+                <source>profile.dissociate</source>
+                <target>Dissocier le profil d'un utilisateur</target>
             </trans-unit>
             <trans-unit id="profile.associate">
                 <source>profile.associate</source>
@@ -141,6 +141,18 @@
             <trans-unit id="priority.submit_button">
                 <source>priority.submit_button</source>
                 <target>Modifier</target>
+            </trans-unit>
+            <trans-unit id="dissociate.page_title">
+                <source>dissociate.page_title</source>
+                <target>Dissocier</target>
+            </trans-unit>
+            <trans-unit id="dissociate.dissociate_profile">
+                <source>dissociate.dissociate_profile</source>
+                <target>Dissocier du profil</target>
+            </trans-unit>
+            <trans-unit id="dissociate.not_authorized">
+                <source>dissociate.not_authorized</source>
+                <target>Non autorisé à dissocier %username% de ce profil</target>
             </trans-unit>
         </body>
     </file>
