@@ -55,6 +55,11 @@ services:
             - '@profile_bundle.user_profile.securizing_manipulator'
             - '@profile_bundle.user_profile.manager'
 
+    profile_bundle.user_provider:
+        class: MMC\Profile\Component\Provider\UserProvider
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%mmc_profile.user_class%'
 
 # CONTROLLERS
 
