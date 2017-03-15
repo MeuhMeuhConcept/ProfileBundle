@@ -112,6 +112,8 @@ services:
             - "@profile_bundle.user_profile.manager"
             - "@profile_bundle.user.manager"
             - '@router'
+            - '@form.factory'
+            - '@profile_bundle.user_provider'
 
     profile_bundle.profile_set_rights_controller:
         class: MMC\Profile\Bundle\ProfileBundle\Controller\ProfileSetRightsController

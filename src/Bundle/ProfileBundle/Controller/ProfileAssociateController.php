@@ -6,15 +6,20 @@ use MMC\Profile\Component\Manager\UserManagerInterface;
 use MMC\Profile\Component\Manager\UserProfileManagerInterface;
 use MMC\Profile\Component\Manipulator\UserProfileManipulatorInterface;
 use MMC\Profile\Component\Model\ProfileInterface;
-use MMC\Profile\Component\Model\UserInterface;
+use MMC\Profile\Component\Provider\UserProviderInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Templating\EngineInterface;
 
 /**
- * @Route("/profile/associate", service="profile_bundle.profile_associate_controller")
+ * @Route("/profile/{uuid}/associate", service="profile_bundle.profile_associate_controller")
  */
 class ProfileAssociateController
 {
@@ -23,42 +28,55 @@ class ProfileAssociateController
     private $upManager;
     private $userManager;
     private $router;
+    private $formFactory;
+    private $userProvider;
 
     public function __construct(
         EngineInterface $templating,
         UserProfileManipulatorInterface $manipulator,
         UserProfileManagerInterface $upManager,
         UserManagerInterface $userManager,
-        Router $router
+        Router $router,
+        FormFactory $formFactory,
+        UserProviderInterface $userProvider
     ) {
         $this->templating = $templating;
         $this->manipulator = $manipulator;
         $this->upManager = $upManager;
         $this->userManager = $userManager;
         $this->router = $router;
+        $this->formFactory = $formFactory;
+        $this->userProvider = $userProvider;
     }
 
     /**
      * @ParamConverter("profile", class="AppBundle:Profile")
-     * @ParamConverter("user", class="AppBundle:User")
-     * @Route("/show/{uuid}/{username}", name="profile_bundle_show_associations_profile")
+     * @Route("", name="profile_bundle_show_associations_profile")
+     * @Method({"GET"})
      */
-    public function associate(ProfileInterface $profile, UserInterface $user)
+    public function form(ProfileInterface $profile)
     {
         $users = $this->userManager->findUsers();
-        $up = $this->manipulator->getUserProfile($user, $profile);
+
+        $form = $this->formFactory->createBuilder()
+            ->add('username', HiddenType::class)
+            ->add('save', SubmitType::class)
+            ->getForm()
+        ;
 
         return $this->templating->renderResponse('AppBundle:Profile:associate.html.twig',
-            ['users' => $users, 'userProfile' => $up]);
+            ['users' => $users, 'profile' => $profile, 'form' => $form->createView()]);
     }
 
     /**
      * @ParamConverter("profile", class="AppBundle:Profile")
-     * @ParamConverter("user", class="AppBundle:User")
-     * @Route("/{uuid}/{username}", name="profile_bundle_associate_profile")
+     * @Route("", name="profile_bundle_associate_profile")
+     * @Method({"POST"})
      */
-    public function addAssociation(ProfileInterface $profile, UserInterface $user)
+    public function associate(Request $request, ProfileInterface $profile)
     {
+        $username = $request->request->get('form')['username'];
+        $user = $this->userProvider->findUserByUsername($username);
         $up = $this->manipulator->createUserProfile($user, $profile);
 
         $this->upManager->saveUserProfile($up);

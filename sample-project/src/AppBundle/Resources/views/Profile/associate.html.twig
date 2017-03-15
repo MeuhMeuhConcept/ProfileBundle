@@ -6,13 +6,17 @@
         <hr style="border:solid 3px black">
         <h1 class="text-center alert alert-danger">Version de test</h1>
         <div class="container">
-            <h1 class="text-center">Associer le profil {{ userProfile.profile.uuid }}</h1>
+            <h1 class="text-center">Associer le profil {{ profile.uuid }}</h1>
             {% for user in users %}
-                <a href="{{ path('profile_bundle_associate_profile', {'username': user.username, 'uuid': userProfile.profile.uuid }) }}">
-                    <div class="col-lg-6 col-lg-offset-3 thumbnail text-center alert alert-info">
-                        <p>{{ user.username }}</p>
-                    </div>
-                </a>
+                {{ form_start(form) }}
+                    {{ form_errors(form) }}
+                        <p>{{ form_row(form.username, { 'attr': {'value': user.username } }) }}</p>
+                        <p>
+                            {{ form_row(form.save, { 'attr':
+                                {'value': user.username, 'class': 'col-lg-6 col-lg-offset-3 thumbnail text-center alert alert-info' }
+                            }) }}
+                        </p>
+                {{ form_end(form) }}
             {% endfor %}
         </div>
     </div>
