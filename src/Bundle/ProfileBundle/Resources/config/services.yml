@@ -1,62 +1,111 @@
+parameters:
+    profile_bundle.user_profile.manipulator.classname: MMC\Profile\Component\Manipulator\UserProfileManipulator
+
+    profile_bundle.user_profile.securizing_manipulator.classname: MMC\Profile\Component\Manipulator\SecurizingUserProfileManipulator
+
+    profile_bundle.profile_type.validator.classname: MMC\Profile\Component\Validator\ProfileTypeValidator
+
+    profile_bundle.profile_type.provider.classname: MMC\Profile\Component\Provider\ProfileTypeProvider
+
+    profile_bundle.profile.manager.classname: MMC\Profile\Component\Manager\ProfileManager
+
+    profile_bundle.user.manager.classname: MMC\Profile\Component\Manager\UserManager
+
+    profile_bundle.user_profile.manager.classname: MMC\Profile\Component\Manager\UserProfileManager
+
+    profile_bundle.ramsey_uuid_generator.classname: MMC\Profile\Component\UuidGenerator\RamseyUuidGenerator
+
+    profile_bundle.profile_type.create.classname: MMC\Profile\Bundle\ProfileBundle\Form\ProfileType
+
+    profile_bundle.handler_profile_create.classname: MMC\Profile\Component\Handler\Profile\CreateHandler
+
+    profile_bundle.user_provider.classname: MMC\Profile\Component\Provider\UserProvider
+
+# CONTROLLERS
+
+    profile_bundle.profile_create_controller.classname: MMC\Profile\Bundle\ProfileBundle\Controller\ProfileCreateController
+
+    profile_bundle.profile_show_controller.classname: MMC\Profile\Bundle\ProfileBundle\Controller\ProfileShowController
+
+    profile_bundle.profile_dissociate_controller.classname: MMC\Profile\Bundle\ProfileBundle\Controller\ProfileDissociateController
+
+    profile_bundle.profile_set_priority_controller.classname: MMC\Profile\Bundle\ProfileBundle\Controller\ProfileSetPriorityController
+
+    profile_bundle.profile_activate_controller.classname: MMC\Profile\Bundle\ProfileBundle\Controller\ProfileActivateController
+
+    profile_bundle.profile_associate_controller.classname: MMC\Profile\Bundle\ProfileBundle\Controller\ProfileAssociateController
+
+    profile_bundle.profile_set_rights_controller.classname: MMC\Profile\Bundle\ProfileBundle\Controller\ProfileSetRightsController
+
+    profile_bundle.default_controller.classname: MMC\Profile\Bundle\ProfileBundle\Controller\DefaultController
+
+# VOTERS
+
+    profile_bundle.security.voter.edit_user_profile.classname: MMC\Profile\Component\Security\Voter\EditUserProfileVoter
+
+    profile_bundle.security.voter.edit_profile.classname: MMC\Profile\Component\Security\Voter\EditProfileVoter
+
+    profile_bundle.security.voter.edit_user.classname: MMC\Profile\Component\Security\Voter\EditUserVoter
+
 services:
     profile_bundle.user_profile.manipulator:
-        class: MMC\Profile\Component\Manipulator\UserProfileManipulator
+        class: '%profile_bundle.user_profile.manipulator.classname%'
         arguments:
             - '%mmc_profile.profile_class%'
             - '%mmc_profile.userProfile_class%'
 
     profile_bundle.user_profile.securizing_manipulator:
-        class: MMC\Profile\Component\Manipulator\SecurizingUserProfileManipulator
+        class: '%profile_bundle.user_profile.securizing_manipulator.classname%'
         arguments:
-            - "@profile_bundle.user_profile.manipulator"
+            - '@profile_bundle.user_profile.manipulator'
             - '@security.authorization_checker'
 
     profile_bundle.profile_type.validator:
-        class: MMC\Profile\Component\Validator\ProfileTypeValidator
+        class: '%profile_bundle.profile_type.validator.classname%'
         arguments:
             - '@profile_bundle.profile_type.provider'
 
     profile_bundle.profile_type.provider:
-        class: MMC\Profile\Component\Provider\ProfileTypeProvider
+        class: '%profile_bundle.profile_type.provider.classname%'
 
 
     profile_bundle.profile.manager:
-        class: MMC\Profile\Component\Manager\ProfileManager
+        class: '%profile_bundle.profile.manager.classname%'
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@profile_bundle.ramsey_uuid_generator'
 
     profile_bundle.user.manager:
-        class: MMC\Profile\Component\Manager\UserManager
+        class: '%profile_bundle.user.manager.classname%'
         arguments:
             - '@doctrine.orm.entity_manager'
             - '%mmc_profile.user_class%'
 
     profile_bundle.user_profile.manager:
-        class: MMC\Profile\Component\Manager\UserProfileManager
+        class: '%profile_bundle.user_profile.manager.classname%'
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@profile_bundle.user.manager'
             - '@profile_bundle.profile.manager'
 
     profile_bundle.ramsey_uuid_generator:
-        class: MMC\Profile\Component\UuidGenerator\RamseyUuidGenerator
+        class: '%profile_bundle.ramsey_uuid_generator.classname%'
 
     profile_bundle.profile_type.create:
-        class: MMC\Profile\Bundle\ProfileBundle\Form\ProfileType
-        arguments: ["@profile_bundle.profile_type.provider"]
+        class: '%profile_bundle.profile_type.create.classname%'
+        arguments: ['@profile_bundle.profile_type.provider']
         tags:
             - { name: form.type }
 
     profile_bundle.handler_profile_create:
-        class: MMC\Profile\Component\Handler\Profile\CreateHandler
+        class: '%profile_bundle.handler_profile_create.classname%'
         arguments:
             - '@profile_bundle.profile_type.validator'
             - '@profile_bundle.user_profile.securizing_manipulator'
             - '@profile_bundle.user_profile.manager'
 
     profile_bundle.user_provider:
-        class: MMC\Profile\Component\Provider\UserProvider
+        class: '%profile_bundle.user_provider.classname%'
         arguments:
             - '@doctrine.orm.entity_manager'
             - '%mmc_profile.user_class%'
@@ -64,86 +113,86 @@ services:
 # CONTROLLERS
 
     profile_bundle.profile_create_controller:
-        class: MMC\Profile\Bundle\ProfileBundle\Controller\ProfileCreateController
+        class: '%profile_bundle.profile_create_controller.classname%'
         arguments:
             - '@templating'
-            - "@security.token_storage"
+            - '@security.token_storage'
             - '@form.factory'
             - '@router'
             - '@profile_bundle.handler_profile_create'
             - '%mmc_profile.profile_class%'
 
     profile_bundle.profile_show_controller:
-        class: MMC\Profile\Bundle\ProfileBundle\Controller\ProfileShowController
+        class: '%profile_bundle.profile_show_controller.classname%'
         arguments:
             - '@templating'
-            - "@security.token_storage"
+            - '@security.token_storage'
 
     profile_bundle.profile_dissociate_controller:
-        class: MMC\Profile\Bundle\ProfileBundle\Controller\ProfileDissociateController
+        class: '%profile_bundle.profile_dissociate_controller.classname%'
         arguments:
             - '@templating'
-            - "@profile_bundle.user_profile.securizing_manipulator"
-            - "@profile_bundle.user_profile.manager"
-            - "@profile_bundle.user.manager"
+            - '@profile_bundle.user_profile.securizing_manipulator'
+            - '@profile_bundle.user_profile.manager'
+            - '@profile_bundle.user.manager'
             - '@router'
 
     profile_bundle.profile_set_priority_controller:
-        class: MMC\Profile\Bundle\ProfileBundle\Controller\ProfileSetPriorityController
+        class: '%profile_bundle.profile_set_priority_controller.classname%'
         arguments:
             - '@templating'
-            - "@profile_bundle.user_profile.securizing_manipulator"
-            - "@profile_bundle.user_profile.manager"
+            - '@profile_bundle.user_profile.securizing_manipulator'
+            - '@profile_bundle.user_profile.manager'
             - '@form.factory'
             - '@router'
 
     profile_bundle.profile_activate_controller:
-        class: MMC\Profile\Bundle\ProfileBundle\Controller\ProfileActivateController
+        class: '%profile_bundle.profile_activate_controller.classname%'
         arguments:
-            - "@profile_bundle.user_profile.securizing_manipulator"
-            - "@profile_bundle.user_profile.manager"
+            - '@profile_bundle.user_profile.securizing_manipulator'
+            - '@profile_bundle.user_profile.manager'
             - '@router'
 
     profile_bundle.profile_associate_controller:
-        class: MMC\Profile\Bundle\ProfileBundle\Controller\ProfileAssociateController
+        class: '%profile_bundle.profile_associate_controller.classname%'
         arguments:
             - '@templating'
-            - "@profile_bundle.user_profile.securizing_manipulator"
-            - "@profile_bundle.user_profile.manager"
-            - "@profile_bundle.user.manager"
+            - '@profile_bundle.user_profile.securizing_manipulator'
+            - '@profile_bundle.user_profile.manager'
+            - '@profile_bundle.user.manager'
             - '@router'
             - '@form.factory'
             - '@profile_bundle.user_provider'
 
     profile_bundle.profile_set_rights_controller:
-        class: MMC\Profile\Bundle\ProfileBundle\Controller\ProfileSetRightsController
+        class: '%profile_bundle.profile_set_rights_controller.classname%'
         arguments:
             - '@templating'
-            - "@profile_bundle.user_profile.securizing_manipulator"
-            - "@profile_bundle.user_profile.manager"
-            - "@profile_bundle.user.manager"
+            - '@profile_bundle.user_profile.securizing_manipulator'
+            - '@profile_bundle.user_profile.manager'
+            - '@profile_bundle.user.manager'
             - '@router'
 
     profile_bundle.default_controller:
-        class: MMC\Profile\Bundle\ProfileBundle\Controller\DefaultController
+        class: '%profile_bundle.default_controller.classname%'
         arguments:
             - '@templating'
-            - "@security.token_storage"
-            - "@profile_bundle.user.manager"
+            - '@security.token_storage'
+            - '@profile_bundle.user.manager'
 
 # VOTERS
 
     profile_bundle.security.voter.edit_user_profile:
-        class: MMC\Profile\Component\Security\Voter\EditUserProfileVoter
+        class: '%profile_bundle.security.voter.edit_user_profile.classname%'
         tags:
             - { name: security.voter }
 
     profile_bundle.security.voter.edit_profile:
-        class: MMC\Profile\Component\Security\Voter\EditProfileVoter
+        class: '%profile_bundle.security.voter.edit_profile.classname%'
         tags:
             - { name: security.voter }
 
     profile_bundle.security.voter.edit_user:
-        class: MMC\Profile\Component\Security\Voter\EditUserVoter
+        class: '%profile_bundle.security.voter.edit_user.classname%'
         tags:
             - { name: security.voter }
