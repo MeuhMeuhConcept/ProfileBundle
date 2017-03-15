@@ -49,7 +49,11 @@ class ProfileDissociateController
         $up = $this->manipulator->getUserProfile($user, $profile);
 
         return $this->templating->renderResponse('AppBundle:Profile:dissociate.html.twig',
-            ['users' => $users, 'userProfile' => $up]);
+            [
+                'users' => $users,
+                'userProfile' => $up,
+            ]
+        );
     }
 
     /**

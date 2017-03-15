@@ -36,6 +36,10 @@ class DefaultController
         $user = $this->tokenStorage->getToken()->getUser();
 
         return $this->templating->renderResponse('AppBundle:Default:index.html.twig',
-            ['user' => $user, 'users' => $users]);
+            [
+                'user' => $user,
+                'users' => $users,
+            ]
+        );
     }
 }

@@ -61,7 +61,11 @@ class ProfileCreateController
         $formTest = $this->formFactory->create(ProfileTypeTest::class, $profile);
 
         return $this->templating->renderResponse('AppBundle:Profile:create.html.twig',
-            ['form' => $form->createView(), 'formTest' => $formTest->createView()]);
+            [
+                'form' => $form->createView(),
+                'formTest' => $formTest->createView(),
+            ]
+        );
     }
 
     /**
@@ -80,7 +84,10 @@ class ProfileCreateController
             $this->createHandler->create($profile, $user);
 
             return new RedirectResponse($this->router->generate('profile_bundle_show_profile',
-                ['uuid' => $profile->getUuid(), 'username' => $user->getUsername()]
+                [
+                    'uuid' => $profile->getUuid(),
+                    'username' => $user->getUsername(),
+                ]
             ));
         }
 
@@ -94,6 +101,10 @@ class ProfileCreateController
         }
 
         return $this->templating->renderResponse('AppBundle:Profile:create.html.twig',
-            ['form' => $form->createView(), 'formTest' => $formTest->createView()]);
+            [
+                'form' => $form->createView(),
+                'formTest' => $formTest->createView(),
+            ]
+        );
     }
 }

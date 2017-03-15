@@ -34,6 +34,10 @@ class ProfileShowController
         $up = $profile->getUserProfile($user);
 
         return $this->templating->renderResponse('AppBundle:Profile:profile.html.twig',
-            ['userProfile' => $up, 'user' => $user]);
+            [
+                'userProfile' => $up,
+                'user' => $user,
+            ]
+        );
     }
 }

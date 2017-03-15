@@ -65,7 +65,12 @@ class ProfileAssociateController
         ;
 
         return $this->templating->renderResponse('AppBundle:Profile:associate.html.twig',
-            ['users' => $users, 'profile' => $profile, 'form' => $form->createView()]);
+            [
+                'users' => $users,
+                'profile' => $profile,
+                'form' => $form->createView(),
+            ]
+        );
     }
 
     /**

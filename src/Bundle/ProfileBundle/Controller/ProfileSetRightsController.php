@@ -49,7 +49,11 @@ class ProfileSetRightsController
         $users = $this->userManager->findUsers();
 
         return $this->templating->renderResponse('AppBundle:Profile:promote.html.twig',
-            ['users' => $users, 'userProfile' => $up]);
+            [
+                'users' => $users,
+                'userProfile' => $up,
+            ]
+        );
     }
 
     /**
@@ -60,7 +64,11 @@ class ProfileSetRightsController
     public function showDemotion(ProfileInterface $profile, UserInterface $user)
     {
         return $this->templating->renderResponse('AppBundle:Profile:demote.html.twig',
-            ['profile' => $profile, 'user' => $user]);
+            [
+                'profile' => $profile,
+                'user' => $user,
+            ]
+        );
     }
 
     /**

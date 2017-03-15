@@ -43,7 +43,10 @@ class ProfileActivateController
         $this->upManager->flush();
 
         return new RedirectResponse($this->router->generate('profile_bundle_show_profile',
-            ['uuid' => $profile->getUuid(), 'username' => $user->getUsername()]
+            [
+                'uuid' => $profile->getUuid(),
+                'username' => $user->getUsername(),
+            ]
         ));
     }
 }
