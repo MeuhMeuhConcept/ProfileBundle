@@ -7,7 +7,7 @@ use MMC\Profile\Component\Model\UserInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
-class EditProfileVoter extends Voter
+class ProfileVoter extends Voter
 {
     const ASSOCIATE = 'CAN_ASSOCIATE_PROFILE';
     const GET_OWNERS = 'CAN_GET_OWNERS';

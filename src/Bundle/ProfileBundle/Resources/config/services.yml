@@ -45,11 +45,11 @@ parameters:
 
 # VOTERS
 
-    profile_bundle.security.voter.edit_user_profile.classname: MMC\Profile\Component\Security\Voter\EditUserProfileVoter
+    profile_bundle.security.voter.user_profile.classname: MMC\Profile\Component\Security\Voter\UserProfileVoter
 
-    profile_bundle.security.voter.edit_profile.classname: MMC\Profile\Component\Security\Voter\EditProfileVoter
+    profile_bundle.security.voter.profile.classname: MMC\Profile\Component\Security\Voter\ProfileVoter
 
-    profile_bundle.security.voter.edit_user.classname: MMC\Profile\Component\Security\Voter\EditUserVoter
+    profile_bundle.security.voter.user.classname: MMC\Profile\Component\Security\Voter\UserVoter
 
 services:
     profile_bundle.user_profile.manipulator:
@@ -198,17 +198,17 @@ services:
 
 # VOTERS
 
-    profile_bundle.security.voter.edit_user_profile:
-        class: '%profile_bundle.security.voter.edit_user_profile.classname%'
+    profile_bundle.security.voter.user_profile:
+        class: '%profile_bundle.security.voter.user_profile.classname%'
         tags:
             - { name: security.voter }
 
-    profile_bundle.security.voter.edit_profile:
-        class: '%profile_bundle.security.voter.edit_profile.classname%'
+    profile_bundle.security.voter.profile:
+        class: '%profile_bundle.security.voter.profile.classname%'
         tags:
             - { name: security.voter }
 
-    profile_bundle.security.voter.edit_user:
-        class: '%profile_bundle.security.voter.edit_user.classname%'
+    profile_bundle.security.voter.user:
+        class: '%profile_bundle.security.voter.user.classname%'
         tags:
             - { name: security.voter }

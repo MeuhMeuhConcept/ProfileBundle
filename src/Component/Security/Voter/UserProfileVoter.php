@@ -7,7 +7,7 @@ use MMC\Profile\Component\Model\UserProfileInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
-class EditUserProfileVoter extends Voter
+class UserProfileVoter extends Voter
 {
     const ACTIVATE = 'CAN_ACTIVATE_USERPROFILE';
     const DISSOCIATE = 'CAN_DISSOCIATE_USERPROFILE';
