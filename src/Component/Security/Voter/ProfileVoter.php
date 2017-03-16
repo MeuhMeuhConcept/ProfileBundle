@@ -11,10 +11,11 @@ class ProfileVoter extends Voter
 {
     const ASSOCIATE = 'CAN_ASSOCIATE_PROFILE';
     const GET_OWNERS = 'CAN_GET_OWNERS';
+    const BROWSE_USERS = 'CAN_BROWSE_USERS';
 
     protected function supports($attribute, $subject)
     {
-        if (!in_array($attribute, [self::ASSOCIATE, self::GET_OWNERS])) {
+        if (!in_array($attribute, [self::ASSOCIATE, self::GET_OWNERS, self::BROWSE_USERS])) {
             return false;
         }
         if (!$subject instanceof ProfileInterface) {
@@ -37,6 +38,8 @@ class ProfileVoter extends Voter
                 return $this->canAssociate($subject, $user);
             case self::GET_OWNERS:
                 return $this->canGetOwners();
+            case self::BROWSE_USERS:
+                return $this->canBrowseUsers($subject, $user);
         }
     }
 
@@ -54,5 +57,16 @@ class ProfileVoter extends Voter
     private function canGetOwners()
     {
         return true;
+    }
+
+    private function canBrowseUsers(ProfileInterface $profile, UserInterface $user)
+    {
+        foreach ($profile->getUserProfiles() as $up) {
+            if ($up->getUser() == $user && $up->getIsOwner()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

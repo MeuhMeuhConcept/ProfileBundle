@@ -7,6 +7,7 @@ use MMC\Profile\Component\Model\ProfileInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Serializer;
@@ -38,6 +39,7 @@ class UserBrowserController
     }
 
     /**
+     * @Security("is_granted('CAN_BROWSE_USERS', profile)")
      * @Route("/by_profile/{uuid}", name="profile_bundle_browse_get_users_by_profile_uuid")
      * @ParamConverter("profile", class="AppBundle:Profile")
      * @Method({"GET"})
