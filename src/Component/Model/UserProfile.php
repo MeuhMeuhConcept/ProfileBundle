@@ -2,6 +2,8 @@
 
 namespace MMC\Profile\Component\Model;
 
+use Symfony\Component\Serializer\Annotation\Groups;
+
 class UserProfile implements UserProfileInterface
 {
     /**
@@ -11,6 +13,7 @@ class UserProfile implements UserProfileInterface
 
     /**
      * @var bool
+     * @Groups({"browse"})
      */
     protected $isOwner;
 
@@ -21,11 +24,13 @@ class UserProfile implements UserProfileInterface
 
     /**
      * @var \User
+     * @Groups({"browse-with-user"})
      */
     protected $user;
 
     /**
      * @var \Profile
+     * @Groups({"browse-with-profile"})
      */
     protected $profile;
 

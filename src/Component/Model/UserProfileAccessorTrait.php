@@ -3,11 +3,13 @@
 namespace MMC\Profile\Component\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 trait UserProfileAccessorTrait
 {
     /**
      * @var ArrayCollection
+     * @Groups({"browse-with-user-profile"})
      */
     protected $userProfiles;
 

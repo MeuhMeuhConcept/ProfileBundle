@@ -3,6 +3,7 @@
 namespace MMC\Profile\Component\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 class Profile implements ProfileInterface, UserProfileAccessorInterface
 {
@@ -10,6 +11,7 @@ class Profile implements ProfileInterface, UserProfileAccessorInterface
 
     /**
      * @var string
+     * @Groups({"browse"})
      */
     protected $uuid;
 
