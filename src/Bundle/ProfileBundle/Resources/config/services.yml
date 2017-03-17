@@ -211,6 +211,7 @@ services:
         arguments:
             - '@profile_bundle.user_profile_browser'
             - '@serializer'
+            - '@security.authorization_checker'
 
 # VOTERS
 

@@ -12,10 +12,11 @@ class ProfileVoter extends Voter
     const ASSOCIATE = 'CAN_ASSOCIATE_PROFILE';
     const GET_OWNERS = 'CAN_GET_OWNERS';
     const BROWSE_USERS = 'CAN_BROWSE_USERS';
+    const BROWSE_USER_PROFILES_BY_PROFILE = 'CAN_BROWSE_USER_PROFILES_BY_PROFILE';
 
     protected function supports($attribute, $subject)
     {
-        if (!in_array($attribute, [self::ASSOCIATE, self::GET_OWNERS, self::BROWSE_USERS])) {
+        if (!in_array($attribute, [self::ASSOCIATE, self::GET_OWNERS, self::BROWSE_USERS, self::BROWSE_USER_PROFILES_BY_PROFILE])) {
             return false;
         }
         if (!$subject instanceof ProfileInterface) {
@@ -40,6 +41,8 @@ class ProfileVoter extends Voter
                 return $this->canGetOwners();
             case self::BROWSE_USERS:
                 return $this->canBrowseUsers($subject, $user);
+            case self::BROWSE_USER_PROFILES_BY_PROFILE:
+                return $this->canBrowseUserProfilesByProfile($subject, $user);
         }
     }
 
@@ -60,6 +63,17 @@ class ProfileVoter extends Voter
     }
 
     private function canBrowseUsers(ProfileInterface $profile, UserInterface $user)
+    {
+        foreach ($profile->getUserProfiles() as $up) {
+            if ($up->getUser() == $user && $up->getIsOwner()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function canBrowseUserProfilesByProfile(ProfileInterface $profile, UserInterface $user)
     {
         foreach ($profile->getUserProfiles() as $up) {
             if ($up->getUser() == $user && $up->getIsOwner()) {

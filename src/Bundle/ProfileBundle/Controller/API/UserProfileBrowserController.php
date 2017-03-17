@@ -8,8 +8,11 @@ use MMC\Profile\Component\Model\UserInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Serializer\Serializer;
 
 /**
@@ -19,14 +22,20 @@ class UserProfileBrowserController
 {
     private $userProfileBrowser;
     private $serializer;
+    private $authorizationChecker;
 
-    public function __construct(UserProfileBrowser $userProfileBrowser, Serializer $serializer)
+    public function __construct(
+        UserProfileBrowser $userProfileBrowser,
+        Serializer $serializer,
+        AuthorizationCheckerInterface $authorizationChecker)
     {
         $this->userProfileBrowser = $userProfileBrowser;
         $this->serializer = $serializer;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
+     * @Security("is_granted('CAN_BROWSE_USER_PROFILES_BY_PROFILE', profile)")
      * @Route("/by_profile/{uuid}", name="profile_bundle_browse_get_user_profiles_by_profile_uuid")
      * @ParamConverter("profile", class="AppBundle:Profile")
      * @Method({"GET"})
@@ -46,16 +55,17 @@ class UserProfileBrowserController
     }
 
     /**
+     * @Security("is_granted('CAN_BROWSE_USER_PROFILES_BY_USER', requestedUser)")
      * @Route("/by_user/{username}", name="profile_bundle_browse_get_user_profiles_by_user_username")
-     * @ParamConverter("user", class="AppBundle:User")
+     * @ParamConverter("requestedUser", class="AppBundle:User")
      * @Method({"GET"})
      */
-    public function browseWithUser(Request $request, UserInterface $user)
+    public function browseWithUser(Request $request, UserInterface $requestedUser)
     {
         $results = $this->userProfileBrowser->browse(array_merge(
             $request->query->all(),
             [
-                'user' => $user,
+                'user' => $requestedUser,
             ]
         ));
 
@@ -72,6 +82,10 @@ class UserProfileBrowserController
      */
     public function browseWithUserProfile(Request $request, UserInterface $user, ProfileInterface $profile)
     {
+        if (!$this->authorizationChecker->isGranted('CAN_BROWSE_USER_PROFILES_BY_USER', $user) && !$this->authorizationChecker->isGranted('CAN_BROWSE_USER_PROFILES_BY_PROFILE', $profile)) {
+            throw new AccessDeniedHttpException();
+        }
+
         $results = $this->userProfileBrowser->browse(array_merge(
             $request->query->all(),
             [
