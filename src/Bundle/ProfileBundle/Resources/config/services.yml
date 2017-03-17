@@ -23,6 +23,8 @@ parameters:
 
     profile_bundle.user_browser.classname: MMC\Profile\Component\Browser\UserBrowser
 
+    profile_bundle.user_profile_browser.classname: MMC\Profile\Component\Browser\UserProfileBrowser
+
 # CONTROLLERS
 
     profile_bundle.profile_create_controller.classname: MMC\Profile\Bundle\ProfileBundle\Controller\ProfileCreateController
@@ -42,6 +44,8 @@ parameters:
     profile_bundle.default_controller.classname: MMC\Profile\Bundle\ProfileBundle\Controller\DefaultController
 
     profile_bundle.api_user_browser_controller.classname: MMC\Profile\Bundle\ProfileBundle\Controller\API\UserBrowserController
+
+    profile_bundle.api_user_profile_browser_controller.classname: MMC\Profile\Bundle\ProfileBundle\Controller\API\UserProfileBrowserController
 
 # VOTERS
 
@@ -120,6 +124,12 @@ services:
             - '@doctrine.orm.entity_manager'
             - '%mmc_profile.user_class%'
 
+    profile_bundle.user_profile_browser:
+        class: '%profile_bundle.user_profile_browser.classname%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%mmc_profile.userProfile_class%'
+
 # CONTROLLERS
 
     profile_bundle.profile_create_controller:
@@ -194,6 +204,12 @@ services:
         class: '%profile_bundle.api_user_browser_controller.classname%'
         arguments:
             - '@profile_bundle.user_browser'
+            - '@serializer'
+
+    profile_bundle.api_user_profile_browser_controller:
+        class: '%profile_bundle.api_user_profile_browser_controller.classname%'
+        arguments:
+            - '@profile_bundle.user_profile_browser'
             - '@serializer'
 
 # VOTERS

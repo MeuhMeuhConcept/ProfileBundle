@@ -8,6 +8,7 @@ class UserProfile implements UserProfileInterface
 {
     /**
      * @var bool
+     * @Groups({"browse-with-user-profile"})
      */
     protected $isActive;
 
@@ -19,6 +20,7 @@ class UserProfile implements UserProfileInterface
 
     /**
      * @var int
+     * @Groups({"browse-with-user-profile"})
      */
     protected $priority;
 
