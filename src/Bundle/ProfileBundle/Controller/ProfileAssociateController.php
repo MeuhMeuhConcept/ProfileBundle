@@ -50,7 +50,7 @@ class ProfileAssociateController
     }
 
     /**
-     * @ParamConverter("profile", class="AppBundle:Profile")
+     * @ParamConverter("profile", class="MMC\Profile\Component\Model\ProfileInterface")
      * @Route("", name="profile_bundle_show_associations_profile")
      * @Method({"GET"})
      */
@@ -74,7 +74,7 @@ class ProfileAssociateController
     }
 
     /**
-     * @ParamConverter("profile", class="AppBundle:Profile")
+     * @ParamConverter("profile", class="MMC\Profile\Component\Model\ProfileInterface")
      * @Route("", name="profile_bundle_associate_profile")
      * @Method({"POST"})
      */

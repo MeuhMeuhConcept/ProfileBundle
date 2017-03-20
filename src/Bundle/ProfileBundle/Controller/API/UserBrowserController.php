@@ -39,7 +39,7 @@ class UserBrowserController
 
     /**
      * @Route("/by_profile/{uuid}", name="profile_bundle_browse_get_users_by_profile_uuid")
-     * @ParamConverter("profile", class="AppBundle:Profile")
+     * @ParamConverter("profile", class="MMC\Profile\Component\Model\ProfileInterface")
      * @Method({"GET"})
      */
     public function browseWithProfile(Request $request, ProfileInterface $profile)

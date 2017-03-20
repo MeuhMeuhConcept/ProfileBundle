@@ -5,8 +5,7 @@ namespace MMC\Profile\Bundle\ProfileBundle\Controller;
 use MMC\Profile\Component\Manager\UserManagerInterface;
 use MMC\Profile\Component\Manager\UserProfileManagerInterface;
 use MMC\Profile\Component\Manipulator\UserProfileManipulatorInterface;
-use MMC\Profile\Component\Model\ProfileInterface;
-use MMC\Profile\Component\Model\UserInterface;
+use MMC\Profile\Component\Model\UserProfileInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
@@ -39,31 +38,28 @@ class ProfileDissociateController
     }
 
     /**
-     * @ParamConverter("profile", class="AppBundle:Profile")
-     * @ParamConverter("user", class="AppBundle:User")
+     * @ParamConverter("userProfile", class="MMC\Profile\Component\Model\UserProfileInterface")
      * @Route("/show/{uuid}/{username}", name="profile_bundle_show_dissociations_profile")
      */
-    public function showDissociations(ProfileInterface $profile, UserInterface $user)
+    public function showDissociations(UserProfileInterface $userProfile)
     {
         $users = $this->userManager->findUsers();
-        $up = $this->manipulator->getUserProfile($user, $profile);
 
         return $this->templating->renderResponse('MMCProfileBundle:Profile:dissociate.html.twig',
             [
                 'users' => $users,
-                'userProfile' => $up,
+                'userProfile' => $userProfile,
             ]
         );
     }
 
     /**
-     * @ParamConverter("user", class="AppBundle:User")
-     * @ParamConverter("profile", class="AppBundle:Profile")
+     * @ParamConverter("userProfile", class="MMC\Profile\Component\Model\UserProfileInterface")
      * @Route("/{uuid}/{username}", name="profile_bundle_dissociate_profile")
      */
-    public function dissociate(ProfileInterface $profile, UserInterface $user)
+    public function dissociate(UserProfileInterface $userProfile)
     {
-        $up = $this->manipulator->removeProfileForUser($user, $profile);
+        $up = $this->manipulator->removeProfileForUser($userProfile->getUser(), $userProfile->getProfile());
 
         $this->upManager->removeUserProfile($up);
         $this->upManager->flush();

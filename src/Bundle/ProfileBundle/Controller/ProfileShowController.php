@@ -3,7 +3,7 @@
 namespace MMC\Profile\Bundle\ProfileBundle\Controller;
 
 use MMC\Profile\Component\Model\ProfileInterface;
-use MMC\Profile\Component\Model\UserInterface;
+use MMC\Profile\Component\Model\UserProfileInterface;
 use MMC\Profile\Component\Viewer\UserProfileViewerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -26,23 +26,22 @@ class ProfileShowController
     }
 
     /**
-     * @ParamConverter("profile", class="AppBundle:Profile")
+     * @ParamConverter("profile", class="MMC\Profile\Component\Model\ProfileInterface")
      * @Route("/{uuid}", name="profile_bundle_show_profile")
      */
     public function showForMe(ProfileInterface $profile)
     {
-        return $this->show($profile, $this->tokenStorage->getToken()->getUser());
+        $up = $profile->getUserProfile($this->tokenStorage->getToken()->getUser());
+
+        return $this->show($up);
     }
 
     /**
-     * @ParamConverter("profile", class="AppBundle:Profile")
-     * @ParamConverter("user", class="AppBundle:User")
+     * @ParamConverter("userProfile", class="MMC\Profile\Component\Model\UserProfileInterface")
      * @Route("/{uuid}/{username}", name="profile_bundle_show_profile_for_user")
      */
-    public function show(ProfileInterface $profile, UserInterface $user)
+    public function show(UserProfileInterface $userProfile)
     {
-        $up = $profile->getUserProfile($user);
-
-        return $this->userProfileViewer->show($up);
+        return $this->userProfileViewer->show($userProfile);
     }
 }
