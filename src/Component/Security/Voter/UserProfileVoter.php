@@ -15,10 +15,11 @@ class UserProfileVoter extends Voter
     const DEMOTE = 'CAN_DEMOTE_USERPROFILE';
     const GET_USER_PROFILE = 'CAN_GET_USER_PROFILE';
     const GET_IS_OWNER = 'CAN_GET_IS_OWNER_USERPROFILE';
+    const CAN_SHOW = 'CAN_SHOW';
 
     protected function supports($attribute, $subject)
     {
-        if (!in_array($attribute, [self::ACTIVATE, self::DISSOCIATE, self::PROMOTE, self::DEMOTE, self::GET_USER_PROFILE, self::GET_IS_OWNER])) {
+        if (!in_array($attribute, [self::ACTIVATE, self::DISSOCIATE, self::PROMOTE, self::DEMOTE, self::GET_USER_PROFILE, self::GET_IS_OWNER, self::CAN_SHOW])) {
             return false;
         }
         if (!$subject instanceof UserProfileInterface) {
@@ -49,6 +50,8 @@ class UserProfileVoter extends Voter
                 return $this->canGetUserProfile();
             case self::GET_IS_OWNER:
                 return $this->canGetIsOwner();
+            case self::CAN_SHOW:
+                return $this->canShow($subject, $user);
         }
     }
 
@@ -109,6 +112,21 @@ class UserProfileVoter extends Voter
         }
 
         return true;
+    }
+
+    private function canShow(UserProfileInterface $up, UserInterface $user)
+    {
+        foreach ($up->getProfile()->getUserProfiles() as $up) {
+            if ($up->getUser() == $user && $up->getIsOwner()) {
+                return true;
+            }
+        }
+
+        if ($up->getUser() == $user) {
+            return true;
+        }
+
+        return false;
     }
 
     private function canGetUserProfile()

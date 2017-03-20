@@ -147,6 +147,7 @@ services:
         arguments:
             - '@templating'
             - '@security.token_storage'
+            - '@security.authorization_checker'
 
     profile_bundle.profile_dissociate_controller:
         class: '%profile_bundle.profile_dissociate_controller.classname%'
