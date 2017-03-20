@@ -37,6 +37,12 @@ parameters:
 
     profile_bundle.securizing_user_profile_viewer.classname: MMC\Profile\Component\Viewer\SecurizingUserProfileViewer
 
+    profile_bundle.profile_param_converter.classname: MMC\Profile\Component\ParamConverter\ProfileParamConverter
+
+    profile_bundle.user_param_converter.classname: MMC\Profile\Component\ParamConverter\UserParamConverter
+
+    profile_bundle.user_profile_param_converter.classname: MMC\Profile\Component\ParamConverter\UserProfileParamConverter
+
 # CONTROLLERS
 
     profile_bundle.profile_create_controller.classname: MMC\Profile\Bundle\ProfileBundle\Controller\ProfileCreateController
@@ -178,6 +184,30 @@ services:
         arguments:
             - '@profile_bundle.user_profile_viewer'
             - '@security.authorization_checker'
+
+    profile_bundle.profile_param_converter:
+        class: '%profile_bundle.profile_param_converter.classname%'
+        arguments:
+            - '%mmc_profile.profile_class%'
+            - '@profile_bundle.profile_provider'
+        tags:
+            - { name: request.param_converter, priority: 2, converter: profile_param_converter }
+
+    profile_bundle.user_param_converter:
+        class: '%profile_bundle.user_param_converter.classname%'
+        arguments:
+            - '%mmc_profile.user_class%'
+            - '@profile_bundle.user_provider'
+        tags:
+            - { name: request.param_converter, priority: 2, converter: user_param_converter }
+
+    profile_bundle.user_profile_param_converter:
+        class: '%profile_bundle.user_profile_param_converter.classname%'
+        arguments:
+            - '%mmc_profile.userProfile_class%'
+            - '@profile_bundle.userProfile_provider'
+        tags:
+            - { name: request.param_converter, priority: 2, converter: user_profile_param_converter }
 
 # CONTROLLERS
 
