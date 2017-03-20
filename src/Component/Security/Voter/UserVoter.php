@@ -8,12 +8,12 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class UserVoter extends Voter
 {
-    const GET_ACTIVE = 'CAN_GET_ACTIVE_PROFILE';
-    const BROWSE_USER_PROFILES_BY_USER = 'CAN_BROWSE_USER_PROFILES_BY_USER';
+    const CAN_GET_ACTIVE_PROFILE = 'CAN_GET_ACTIVE_PROFILE';
+    const CAN_BROWSE_USER_PROFILES_BY_USER = 'CAN_BROWSE_USER_PROFILES_BY_USER';
 
     protected function supports($attribute, $subject)
     {
-        if (!in_array($attribute, [self::GET_ACTIVE, self::BROWSE_USER_PROFILES_BY_USER])) {
+        if (!in_array($attribute, [self::CAN_GET_ACTIVE_PROFILE, self::CAN_BROWSE_USER_PROFILES_BY_USER])) {
             return false;
         }
 
@@ -33,9 +33,9 @@ class UserVoter extends Voter
         }
 
         switch ($attribute) {
-            case self::GET_ACTIVE:
+            case self::CAN_GET_ACTIVE_PROFILE:
                 return $this->canGetActive();
-            case self::BROWSE_USER_PROFILES_BY_USER:
+            case self::CAN_BROWSE_USER_PROFILES_BY_USER:
                 return $this->canBrowseUserProfilesByUser($subject, $user);
         }
     }

@@ -9,14 +9,14 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class ProfileVoter extends Voter
 {
-    const ASSOCIATE = 'CAN_ASSOCIATE_PROFILE';
-    const GET_OWNERS = 'CAN_GET_OWNERS';
-    const BROWSE_USERS = 'CAN_BROWSE_USERS';
-    const BROWSE_USER_PROFILES_BY_PROFILE = 'CAN_BROWSE_USER_PROFILES_BY_PROFILE';
+    const CAN_ASSOCIATE_PROFILE = 'CAN_ASSOCIATE_PROFILE';
+    const CAN_GET_OWNERS = 'CAN_GET_OWNERS';
+    const CAN_BROWSE_USERS = 'CAN_BROWSE_USERS';
+    const CAN_BROWSE_USER_PROFILES_BY_PROFILE = 'CAN_BROWSE_USER_PROFILES_BY_PROFILE';
 
     protected function supports($attribute, $subject)
     {
-        if (!in_array($attribute, [self::ASSOCIATE, self::GET_OWNERS, self::BROWSE_USERS, self::BROWSE_USER_PROFILES_BY_PROFILE])) {
+        if (!in_array($attribute, [self::CAN_ASSOCIATE_PROFILE, self::CAN_GET_OWNERS, self::CAN_BROWSE_USERS, self::CAN_BROWSE_USER_PROFILES_BY_PROFILE])) {
             return false;
         }
         if (!$subject instanceof ProfileInterface) {
@@ -35,13 +35,13 @@ class ProfileVoter extends Voter
         }
 
         switch ($attribute) {
-            case self::ASSOCIATE:
+            case self::CAN_ASSOCIATE_PROFILE:
                 return $this->canAssociate($subject, $user);
-            case self::GET_OWNERS:
+            case self::CAN_GET_OWNERS:
                 return $this->canGetOwners();
-            case self::BROWSE_USERS:
+            case self::CAN_BROWSE_USERS:
                 return $this->canBrowseUsers($subject, $user);
-            case self::BROWSE_USER_PROFILES_BY_PROFILE:
+            case self::CAN_BROWSE_USER_PROFILES_BY_PROFILE:
                 return $this->canBrowseUserProfilesByProfile($subject, $user);
         }
     }

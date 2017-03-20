@@ -9,19 +9,28 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class UserProfileVoter extends Voter
 {
-    const ACTIVATE = 'CAN_ACTIVATE_USERPROFILE';
-    const DISSOCIATE = 'CAN_DISSOCIATE_USERPROFILE';
-    const PROMOTE = 'CAN_PROMOTE_USERPROFILE';
-    const DEMOTE = 'CAN_DEMOTE_USERPROFILE';
-    const GET_USER_PROFILE = 'CAN_GET_USER_PROFILE';
-    const GET_IS_OWNER = 'CAN_GET_IS_OWNER_USERPROFILE';
-    const CAN_SHOW = 'CAN_SHOW';
+    const CAN_ACTIVATE_USERPROFILE = 'CAN_ACTIVATE_USERPROFILE';
+    const CAN_DISSOCIATE_USERPROFILE = 'CAN_DISSOCIATE_USERPROFILE';
+    const CAN_PROMOTE_USERPROFILE = 'CAN_PROMOTE_USERPROFILE';
+    const CAN_DEMOTE_USERPROFILE = 'CAN_DEMOTE_USERPROFILE';
+    const CAN_GET_USER_PROFILE = 'CAN_GET_USER_PROFILE';
+    const CAN_GET_IS_OWNER_USERPROFILE = 'CAN_GET_IS_OWNER_USERPROFILE';
+    const CAN_SHOW_USERPROFILE = 'CAN_SHOW_USERPROFILE';
 
     protected function supports($attribute, $subject)
     {
-        if (!in_array($attribute, [self::ACTIVATE, self::DISSOCIATE, self::PROMOTE, self::DEMOTE, self::GET_USER_PROFILE, self::GET_IS_OWNER, self::CAN_SHOW])) {
+        if (!in_array($attribute, [
+            self::CAN_ACTIVATE_USERPROFILE,
+            self::CAN_DISSOCIATE_USERPROFILE,
+            self::CAN_PROMOTE_USERPROFILE,
+            self::CAN_DEMOTE_USERPROFILE,
+            self::CAN_GET_USER_PROFILE,
+            self::CAN_GET_IS_OWNER_USERPROFILE,
+            self::CAN_SHOW_USERPROFILE,
+        ])) {
             return false;
         }
+
         if (!$subject instanceof UserProfileInterface) {
             return false;
         }
@@ -38,19 +47,19 @@ class UserProfileVoter extends Voter
         }
 
         switch ($attribute) {
-            case self::ACTIVATE:
+            case self::CAN_ACTIVATE_USERPROFILE:
                 return $this->canActivate($subject, $user);
-            case self::DISSOCIATE:
+            case self::CAN_DISSOCIATE_USERPROFILE:
                 return $this->canDissociate($subject, $user);
-            case self::PROMOTE:
+            case self::CAN_PROMOTE_USERPROFILE:
                 return $this->canPromote($subject, $user);
-            case self::DEMOTE:
+            case self::CAN_DEMOTE_USERPROFILE:
                 return $this->canDemote($subject, $user);
-            case self::GET_USER_PROFILE:
+            case self::CAN_GET_USER_PROFILE:
                 return $this->canGetUserProfile();
-            case self::GET_IS_OWNER:
+            case self::CAN_GET_IS_OWNER_USERPROFILE:
                 return $this->canGetIsOwner();
-            case self::CAN_SHOW:
+            case self::CAN_SHOW_USERPROFILE:
                 return $this->canShow($subject, $user);
         }
     }
