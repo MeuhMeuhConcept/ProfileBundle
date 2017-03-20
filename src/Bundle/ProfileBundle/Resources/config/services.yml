@@ -21,6 +21,10 @@ parameters:
 
     profile_bundle.user_provider.classname: MMC\Profile\Component\Provider\UserProvider
 
+    profile_bundle.profile_provider.classname: MMC\Profile\Component\Provider\ProfileProvider
+
+    profile_bundle.userProfile_provider.classname: MMC\Profile\Component\Provider\UserProfileProvider
+
     profile_bundle.user_browser.classname: MMC\Profile\Component\Browser\UserBrowser
 
     profile_bundle.securizing_user_browser.classname: MMC\Profile\Component\Browser\SecurizingUserBrowser
@@ -125,6 +129,20 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '%mmc_profile.user_class%'
+
+    profile_bundle.profile_provider:
+        class: '%profile_bundle.profile_provider.classname%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%mmc_profile.profile_class%'
+
+    profile_bundle.userProfile_provider:
+        class: '%profile_bundle.userProfile_provider.classname%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%mmc_profile.userProfile_class%'
+            - '%mmc_profile.user_class%'
+            - '%mmc_profile.profile_class%'
 
     profile_bundle.user_browser:
         class: '%profile_bundle.user_browser.classname%'
