@@ -4,30 +4,25 @@ namespace MMC\Profile\Bundle\ProfileBundle\Controller;
 
 use MMC\Profile\Component\Model\ProfileInterface;
 use MMC\Profile\Component\Model\UserInterface;
+use MMC\Profile\Component\Viewer\UserProfileViewerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Templating\EngineInterface;
 
 /**
  * @Route("/profile", service="profile_bundle.profile_show_controller")
  */
 class ProfileShowController
 {
-    private $templating;
     private $tokenStorage;
-    private $authorizationChecker;
+    private $userProfileViewer;
 
     public function __construct(
-        EngineInterface $templating,
         TokenStorage $tokenStorage,
-        AuthorizationCheckerInterface $authorizationChecker
+        UserProfileViewerInterface $userProfileViewer
     ) {
-        $this->templating = $templating;
         $this->tokenStorage = $tokenStorage;
-        $this->authorizationChecker = $authorizationChecker;
+        $this->userProfileViewer = $userProfileViewer;
     }
 
     /**
@@ -48,15 +43,6 @@ class ProfileShowController
     {
         $up = $profile->getUserProfile($user);
 
-        if (!$this->authorizationChecker->isGranted('CAN_SHOW_USERPROFILE', $up)) {
-            throw new AccessDeniedHttpException();
-        }
-
-        return $this->templating->renderResponse('AppBundle:Profile:profile.html.twig',
-            [
-                'userProfile' => $up,
-                'user' => $user,
-            ]
-        );
+        return $this->userProfileViewer->show($up);
     }
 }

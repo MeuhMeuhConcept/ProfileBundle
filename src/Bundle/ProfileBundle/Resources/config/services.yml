@@ -29,6 +29,10 @@ parameters:
 
     profile_bundle.securizing_user_profile_browser.classname: MMC\Profile\Component\Browser\SecurizingUserProfileBrowser
 
+    profile_bundle.user_profile_viewer.classname: MMC\Profile\Component\Viewer\UserProfileViewer
+
+    profile_bundle.securizing_user_profile_viewer.classname: MMC\Profile\Component\Viewer\SecurizingUserProfileViewer
+
 # CONTROLLERS
 
     profile_bundle.profile_create_controller.classname: MMC\Profile\Bundle\ProfileBundle\Controller\ProfileCreateController
@@ -146,6 +150,17 @@ services:
             - '@profile_bundle.user_profile_browser'
             - '@security.authorization_checker'
 
+    profile_bundle.user_profile_viewer:
+        class: '%profile_bundle.user_profile_viewer.classname%'
+        arguments:
+            - '@templating'
+
+    profile_bundle.securizing_user_profile_viewer:
+        class: '%profile_bundle.securizing_user_profile_viewer.classname%'
+        arguments:
+            - '@profile_bundle.user_profile_viewer'
+            - '@security.authorization_checker'
+
 # CONTROLLERS
 
     profile_bundle.profile_create_controller:
@@ -161,9 +176,8 @@ services:
     profile_bundle.profile_show_controller:
         class: '%profile_bundle.profile_show_controller.classname%'
         arguments:
-            - '@templating'
             - '@security.token_storage'
-            - '@security.authorization_checker'
+            - '@profile_bundle.securizing_user_profile_viewer'
 
     profile_bundle.profile_dissociate_controller:
         class: '%profile_bundle.profile_dissociate_controller.classname%'
