@@ -64,7 +64,7 @@ class ProfileAssociateController
             ->getForm()
         ;
 
-        return $this->templating->renderResponse('AppBundle:Profile:associate.html.twig',
+        return $this->templating->renderResponse('MMCProfileBundle:Profile:associate.html.twig',
             [
                 'users' => $users,
                 'profile' => $profile,

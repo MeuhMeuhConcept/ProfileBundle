@@ -48,7 +48,7 @@ class ProfileSetRightsController
         $up = $this->manipulator->getUserProfile($user, $profile);
         $users = $this->userManager->findUsers();
 
-        return $this->templating->renderResponse('AppBundle:Profile:promote.html.twig',
+        return $this->templating->renderResponse('MMCProfileBundle:Profile:promote.html.twig',
             [
                 'users' => $users,
                 'userProfile' => $up,
@@ -63,7 +63,7 @@ class ProfileSetRightsController
      */
     public function showDemotion(ProfileInterface $profile, UserInterface $user)
     {
-        return $this->templating->renderResponse('AppBundle:Profile:demote.html.twig',
+        return $this->templating->renderResponse('MMCProfileBundle:Profile:demote.html.twig',
             [
                 'profile' => $profile,
                 'user' => $user,

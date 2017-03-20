@@ -48,7 +48,7 @@ class ProfileDissociateController
         $users = $this->userManager->findUsers();
         $up = $this->manipulator->getUserProfile($user, $profile);
 
-        return $this->templating->renderResponse('AppBundle:Profile:dissociate.html.twig',
+        return $this->templating->renderResponse('MMCProfileBundle:Profile:dissociate.html.twig',
             [
                 'users' => $users,
                 'userProfile' => $up,

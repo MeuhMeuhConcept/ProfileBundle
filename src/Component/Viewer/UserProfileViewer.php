@@ -16,7 +16,7 @@ class UserProfileViewer implements UserProfileViewerInterface
 
     public function show(UserProfileInterface $up)
     {
-        return $this->templating->renderResponse('AppBundle:Profile:profile.html.twig',
+        return $this->templating->renderResponse('MMCProfileBundle:Profile:profile.html.twig',
             [
                 'userProfile' => $up,
                 'user' => $up->getUser(),

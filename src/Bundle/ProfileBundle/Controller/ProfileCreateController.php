@@ -60,7 +60,7 @@ class ProfileCreateController
         $form = $this->formFactory->create(ProfileType::class, $profile);
         $formTest = $this->formFactory->create(ProfileTypeTest::class, $profile);
 
-        return $this->templating->renderResponse('AppBundle:Profile:create.html.twig',
+        return $this->templating->renderResponse('MMCProfileBundle:Profile:create.html.twig',
             [
                 'form' => $form->createView(),
                 'formTest' => $formTest->createView(),
@@ -100,7 +100,7 @@ class ProfileCreateController
             return new RedirectResponse($this->router->generate('profile_bundle_homepage'));
         }
 
-        return $this->templating->renderResponse('AppBundle:Profile:create.html.twig',
+        return $this->templating->renderResponse('MMCProfileBundle:Profile:create.html.twig',
             [
                 'form' => $form->createView(),
                 'formTest' => $formTest->createView(),
