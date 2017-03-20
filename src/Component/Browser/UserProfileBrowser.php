@@ -9,7 +9,7 @@ use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class UserProfileBrowser implements UserBrowserInterface
+class UserProfileBrowser implements UserProfileBrowserInterface
 {
     private $em;
     private $userProfileClassname;
