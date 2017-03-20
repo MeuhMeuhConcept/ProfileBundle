@@ -23,6 +23,8 @@ parameters:
 
     profile_bundle.user_browser.classname: MMC\Profile\Component\Browser\UserBrowser
 
+    profile_bundle.securizing_user_browser.classname: MMC\Profile\Component\Browser\SecurizingUserBrowser
+
     profile_bundle.user_profile_browser.classname: MMC\Profile\Component\Browser\UserProfileBrowser
 
 # CONTROLLERS
@@ -124,6 +126,12 @@ services:
             - '@doctrine.orm.entity_manager'
             - '%mmc_profile.user_class%'
 
+    profile_bundle.securizing_user_browser:
+        class: '%profile_bundle.securizing_user_browser.classname%'
+        arguments:
+            - '@profile_bundle.user_browser'
+            - '@security.authorization_checker'
+
     profile_bundle.user_profile_browser:
         class: '%profile_bundle.user_profile_browser.classname%'
         arguments:
@@ -204,7 +212,7 @@ services:
     profile_bundle.api_user_browser_controller:
         class: '%profile_bundle.api_user_browser_controller.classname%'
         arguments:
-            - '@profile_bundle.user_browser'
+            - '@profile_bundle.securizing_user_browser'
             - '@serializer'
 
     profile_bundle.api_user_profile_browser_controller:

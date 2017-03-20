@@ -2,12 +2,11 @@
 
 namespace MMC\Profile\Bundle\ProfileBundle\Controller\API;
 
-use MMC\Profile\Component\Browser\UserBrowser;
+use MMC\Profile\Component\Browser\UserBrowserInterface;
 use MMC\Profile\Component\Model\ProfileInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Serializer;
@@ -20,14 +19,14 @@ class UserBrowserController
     private $userBrowser;
     private $serializer;
 
-    public function __construct(UserBrowser $userBrowser, Serializer $serializer)
+    public function __construct(UserBrowserInterface $userBrowser, Serializer $serializer)
     {
         $this->userBrowser = $userBrowser;
         $this->serializer = $serializer;
     }
 
     /**
-     * @Route("", name="profile_bundle_browse_get_users")
+     * @Route(name="profile_bundle_browse_get_users")
      * @Method({"GET"})
      */
     public function browse(Request $request)
@@ -39,7 +38,6 @@ class UserBrowserController
     }
 
     /**
-     * @Security("is_granted('CAN_BROWSE_USERS', profile)")
      * @Route("/by_profile/{uuid}", name="profile_bundle_browse_get_users_by_profile_uuid")
      * @ParamConverter("profile", class="AppBundle:Profile")
      * @Method({"GET"})
