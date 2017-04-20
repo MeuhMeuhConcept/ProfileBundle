@@ -1,0 +1,43 @@
+default:
+    extensions:
+        Behat\Symfony2Extension:
+            kernel:
+                env: "test"
+                debug: "true"
+                path: src/Bundle/ProfileBundle/Features/Fixtures/app/AppKernel.php
+                bootstrap: src/Bundle/ProfileBundle/Features/Fixtures/app/bootstrap.php
+        Knp\FriendlyContexts\Extension: ~
+        Behat\MinkExtension:
+            sessions:
+                my_session:
+                    symfony2: ~
+
+    suites:
+        user:
+            type: symfony_bundle
+            bundle: MMCProfileBundle
+            contexts:
+                - MMC\Profile\Bundle\ProfileBundle\Features\Context\UserContext:
+                    userProfileManipulator: '@profile_bundle.user_profile.manipulator'
+            paths:
+                - src/Bundle/ProfileBundle/Features/user.feature
+
+        userProfileManipulator:
+            type: symfony_bundle
+            bundle: MMCProfileBundle
+            contexts:
+                - MMC\Profile\Bundle\ProfileBundle\Features\Context\UserProfileManipulatorContext:
+                    userProfileManipulator: '@profile_bundle.user_profile.manipulator'
+                    profileTypeValidator: '@profile_bundle.profile_type.validator'
+            paths:
+                - src/Bundle/ProfileBundle/Features/userProfileManipulator.feature
+
+        userProfileSecurizingManipulator:
+            type: symfony_bundle
+            bundle: MMCProfileBundle
+            contexts:
+                - MMC\Profile\Bundle\ProfileBundle\Features\Context\UserProfileSecurizingManipulatorContext:
+                    userProfileSecurizingManipulator: '@profile_bundle.user_profile.securizing_manipulator'
+                    tokenStorage: '@security.token_storage'
+            paths:
+                - src/Bundle/ProfileBundle/Features/userProfileSecurizingManipulator.feature

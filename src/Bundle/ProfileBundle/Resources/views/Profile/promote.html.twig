@@ -1,0 +1,47 @@
+{% extends 'MMCProfileBundle::layout.html.twig' %}
+
+{% block title %}
+    {{ parent() }} | {{ 'promote.page_title'|trans({}, 'mmc_profile_bundle_messages') }}
+{% endblock %}
+{% block body %}
+    <div class="container">
+        <h1 class="text-center">{{ 'promote.promote_user'|trans({}, 'mmc_profile_bundle_messages') }}</h1>
+
+        {% for user in users %}
+            {% set upExist = false %}
+            {% set owner = false %}
+            {% for up in user.userProfiles %}
+                {% if up.profile == userProfile.profile %}
+                    {% set upExist = true %}
+                    {% if up.isOwner == true %}
+                        {% set owner = true %}
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+
+            {% if is_granted('CAN_PROMOTE_USERPROFILE', userProfile) %}
+                {% if owner %}
+                    <div class="alert alert-warning col-lg-6 col-lg-offset-3 text-center">
+                        <p>{{ user.username }} {{ 'promote.ever_owner'|trans({}, 'mmc_profile_bundle_messages') }}</p>
+                    </div>
+                {% elseif upExist == false %}
+                    <a href="{{ path('profile_bundle_show_associations_profile', {'uuid': userProfile.profile.uuid, 'username': userProfile.user.username }) }}">
+                        <div class="col-lg-6 col-lg-offset-3 thumbnail text-center alert alert-warning">
+                            <p>{{ user.username }} {{ 'promote.not_associated'|trans({}, 'mmc_profile_bundle_messages') }}</p>
+                        </div>
+                    </a>
+                {% else %}
+                    <a href="{{ path('profile_bundle_promote_profile', {'username': user.username, 'uuid': userProfile.profile.uuid }) }}">
+                        <div class="col-lg-6 col-lg-offset-3 thumbnail text-center alert alert-info">
+                            <p>{{ user.username }}</p>
+                        </div>
+                    </a>
+                {% endif %}
+            {% else %}
+                <div class="col-lg-6 col-lg-offset-3 thumbnail text-center alert alert-danger">
+                    <p>{{ 'promote.not_authorized'|trans({}, 'mmc_profile_bundle_messages') }} {{ user.username }}</p>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}

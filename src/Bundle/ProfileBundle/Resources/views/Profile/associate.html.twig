@@ -1,0 +1,42 @@
+{% extends 'MMCProfileBundle::layout.html.twig' %}
+
+{% block title %}
+    {{ parent() }} | {{ 'associate.page_title'|trans({}, 'mmc_profile_bundle_messages') }}
+{% endblock %}
+{% block body %}
+    <div class="container">
+        <h1 class="text-center">
+            {{ 'associate.associate_profile'|trans({}, 'mmc_profile_bundle_messages') }} {{ profile.uuid }}
+        </h1>
+                    {{ form_start(form) }}
+        {% for user in users %}
+            {% set existingUp = false %}
+            {% for up in user.userProfiles %}
+                {% if up.profile == profile %}
+                    {% set existingUp = true %}
+                {% endif %}
+            {% endfor %}
+
+            {% if is_granted('CAN_ASSOCIATE_PROFILE', profile) %}
+                {% if existingUp == false %}
+                        {{ form_errors(form) }}
+                            <p>{{ form_row(form.username, { 'attr': {'value': user.username } }) }}</p>
+                            <p>
+                                {{ form_row(form.save, { 'attr':
+                                    { 'class': 'col-lg-6 col-lg-offset-3 thumbnail text-center alert alert-info' }
+                                }) }}
+                            </p>
+                    {{ form_end(form) }}
+                {% else %}
+                    <div class="alert alert-warning text-center col-lg-6 col-lg-offset-3">
+                        <p>{{ user.username }} {{ 'associate.existing'|trans({}, 'mmc_profile_bundle_messages') }}</p>
+                    </div>
+                {% endif %}
+            {% else  %}
+                <div class="col-lg-6 col-lg-offset-3 thumbnail text-center alert alert-danger">
+                    <p>{{ 'associate.not_authorized'|trans({'%username%': user.username}, 'mmc_profile_bundle_messages') }}</p>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}

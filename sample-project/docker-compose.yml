@@ -1,0 +1,58 @@
+data:
+    image: busybox
+    container_name: profile-bundle-sample_data
+    volumes:
+        - .:/srv
+        - ..:/srv/profile-bundle
+        - ./docker/conf/nginx_vhost.conf:/etc/nginx/sites-enabled/my_app.conf
+        - ./docker/.home-developer:/home/developer
+        - /var/lib/mysql
+
+webserver:
+    image: greg0ire/nginx
+    container_name: profile-bundle-sample_webserver
+    volumes_from:
+        - data
+    links:
+        - appserver
+    env_file:
+        - ./docker/docker-compose.env
+    environment:
+        - DNSDOCK_IMAGE=web
+
+appserver:
+    image: meuhmeuhconcept/php-fpm
+    container_name: profile-bundle-sample_appserver
+    volumes_from:
+        - data
+    links:
+        - database
+    env_file:
+        - ./docker/docker-compose.env
+    environment:
+        - DNSDOCK_IMAGE=app
+
+console:
+    image: meuhmeuhconcept/php-console
+    container_name: profile-bundle-sample_console
+    volumes_from:
+        - data
+    links:
+        - database
+    env_file:
+        - ./docker/docker-compose.env
+    environment:
+        - DNSDOCK_IMAGE=console
+        - SSH_AUTH_SOCK=/tmp/agent.sock
+    working_dir: /srv
+
+database:
+    image: mariadb:10.0
+    container_name: profile-bundle-sample_database
+    volumes_from:
+        - data
+    env_file:
+        - ./docker/docker-compose.env
+    environment:
+        - DNSDOCK_IMAGE=db
+    restart: always

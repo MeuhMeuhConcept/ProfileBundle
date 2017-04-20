@@ -7,3 +7,6 @@
 
 # PHP CS
 .php_cs.cache
+
+src/Bundle/ProfileBundle/Features/Fixtures/app/logs/*
+src/Bundle/ProfileBundle/Features/Fixtures/app/cache/*

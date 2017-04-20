@@ -1,0 +1,143 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="global.page_title">
+                <source>global.page_title</source>
+                <target>MMCProfileBundle</target>
+            </trans-unit>
+            <trans-unit id="global.layout_brand">
+                <source>global.layout_brand</source>
+                <target>MMCProfileBundle</target>
+            </trans-unit>
+            <trans-unit id="global.layout_disconnection">
+                <source>global.layout_disconnection</source>
+                <target>Déconnexion</target>
+            </trans-unit>
+            <trans-unit id="home.page_title">
+                <source>home.page_title</source>
+                <target>Accueil</target>
+            </trans-unit>
+            <trans-unit id="home.welcome">
+                <source>home.welcome</source>
+                <target>Bienvenue</target>
+            </trans-unit>
+            <trans-unit id="home.no_profile">
+                <source>home.no_profile</source>
+                <target>Vous n'avez pas de profil actuellement</target>
+            </trans-unit>
+            <trans-unit id="home.create_first_profile">
+                <source>home.create_first_profile</source>
+                <target>Créer votre premier profil</target>
+            </trans-unit>
+            <trans-unit id="home.create_new_profile">
+                <source>home.create_new_profile</source>
+                <target>Créer un nouveau profil</target>
+            </trans-unit>
+            <trans-unit id="home.profile_list">
+                <source>home.profile_list</source>
+                <target>Liste des profils liés à votre compte</target>
+            </trans-unit>
+            <trans-unit id="create.page_title">
+                <source>create.page_title</source>
+                <target>Nouveau profil</target>
+            </trans-unit>
+            <trans-unit id="create.new_profile">
+                <source>create.new_profile</source>
+                <target>Ajout d'un nouveau profil</target>
+            </trans-unit>
+            <trans-unit id="create.submit_button">
+                <source>create.submit_button</source>
+                <target>Créer</target>
+            </trans-unit>
+            <trans-unit id="profile.page_title">
+                <source>profile.page_title</source>
+                <target>Profil</target>
+            </trans-unit>
+            <trans-unit id="profile.activate">
+                <source>profile.activate</source>
+                <target>Rendre le profil actif</target>
+            </trans-unit>
+            <trans-unit id="profile.dissociate">
+                <source>profile.dissociate</source>
+                <target>Dissocier le profil d'un utilisateur</target>
+            </trans-unit>
+            <trans-unit id="profile.associate">
+                <source>profile.associate</source>
+                <target>Associer le profil à un utilisateur</target>
+            </trans-unit>
+            <trans-unit id="profile.promote">
+                <source>profile.promote</source>
+                <target>Promouvoir un utilisateur</target>
+            </trans-unit>
+            <trans-unit id="profile.demote">
+                <source>profile.demote</source>
+                <target>Se destituer</target>
+            </trans-unit>
+            <trans-unit id="associate.page_title">
+                <source>associate.page_title</source>
+                <target>Associer</target>
+            </trans-unit>
+            <trans-unit id="associate.associate_profile">
+                <source>associate.associate_profile</source>
+                <target>Associer le profil</target>
+            </trans-unit>
+            <trans-unit id="associate.existing">
+                <source>associate.existing</source>
+                <target>a déjà un accès à ce profil</target>
+            </trans-unit>
+            <trans-unit id="associate.not_authorized">
+                <source>associate.not_authorized</source>
+                <target>non autorisé à associer %username% à ce profil</target>
+            </trans-unit>
+            <trans-unit id="demote.page_title">
+                <source>demote.page_title</source>
+                <target>Se destituer</target>
+            </trans-unit>
+            <trans-unit id="demote.confirmation">
+                <source>demote.confirmation</source>
+                <target>Si vous continuez, vous ne serez plus propriétaire du profil</target>
+            </trans-unit>
+            <trans-unit id="demote.submit_button">
+                <source>demote.submit_button</source>
+                <target>Se destituer</target>
+            </trans-unit>
+            <trans-unit id="demote.not_authorized">
+                <source>demote.not_authorized</source>
+                <target>Vous n'êtes pas autorisé à destituer</target>
+            </trans-unit>
+            <trans-unit id="promote.page_title">
+                <source>promote.page_title</source>
+                <target>Promouvoir</target>
+            </trans-unit>
+            <trans-unit id="promote.promote_user">
+                <source>promote.promote_user</source>
+                <target>Promouvoir un utilisateur</target>
+            </trans-unit>
+            <trans-unit id="promote.ever_owner">
+                <source>promote.ever_owner</source>
+                <target>est déjà propriétaire de ce profil</target>
+            </trans-unit>
+            <trans-unit id="promote.not_associated">
+                <source>promote.not_associated</source>
+                <target>n'est pas lié ce profil, cliquer ici pour faire l'association</target>
+            </trans-unit>
+            <trans-unit id="promote.not_authorized">
+                <source>promote.not_authorized</source>
+                <target>non autorisé à promouvoir</target>
+            </trans-unit>
+            <trans-unit id="dissociate.page_title">
+                <source>dissociate.page_title</source>
+                <target>Dissocier</target>
+            </trans-unit>
+            <trans-unit id="dissociate.dissociate_profile">
+                <source>dissociate.dissociate_profile</source>
+                <target>Dissocier du profil</target>
+            </trans-unit>
+            <trans-unit id="dissociate.not_authorized">
+                <source>dissociate.not_authorized</source>
+                <target>Non autorisé à dissocier %username% de ce profil</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

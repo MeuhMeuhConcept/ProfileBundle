@@ -1,0 +1,29 @@
+{% extends 'MMCProfileBundle::layout.html.twig' %}
+
+{% block title %}
+    {{ parent() }} | {{ 'demote.page_title'|trans({}, 'mmc_profile_bundle_messages') }}
+{% endblock %}
+{% block body %}
+    <div class="container">
+        <h1 class="text-center">{{ 'demote.confirmation'|trans({}, 'mmc_profile_bundle_messages') }} {{ profile.uuid }}?</h1>
+        {% set authorized = false %}
+            {% for up in user.userProfiles %}
+                {% if up.profile.uuid == profile.uuid and up.isOwner %}
+                        {% if is_granted('CAN_DEMOTE_USERPROFILE', up) %}
+                            {% set authorized = true %}
+                        {% endif %}
+                {% endif %}
+            {% endfor %}
+            {% if authorized == true %}
+                 <a href="{{ path('profile_bundle_demote_profile', {'username': user.username, 'uuid': profile.uuid }) }}">
+                     <div class="col-lg-4 col-lg-offset-4 thumbnail text-center alert alert-warning">
+                         <p>{{ 'demote.submit_button'|trans({}, 'mmc_profile_bundle_messages') }}</p>
+                      </div>
+                   </a>
+            {% else %}
+                 <div class="alert alert-danger text-center col-lg-12">
+                     <p>{{ 'demote.not_authorized'|trans({}, 'mmc_profile_bundle_messages') }} {{ user.username }}</p>
+                  </div>
+            {% endif %}
+        </div>
+    {% endblock %}
