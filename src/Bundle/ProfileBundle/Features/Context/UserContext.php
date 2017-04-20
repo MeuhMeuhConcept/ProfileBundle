@@ -35,7 +35,7 @@ class UserContext extends GlobalContext implements Context, SnippetAcceptingCont
     /**
      * @Given :arg1 use profile :arg2
      */
-    public function tintinUseProfile($arg1, $arg2)
+    public function userUseProfile($arg1, $arg2)
     {
         foreach ($this->store['profiles'] as $profile) {
             if ($profile->getUuid() == $arg2) {
@@ -45,7 +45,11 @@ class UserContext extends GlobalContext implements Context, SnippetAcceptingCont
 
         foreach ($this->store['users'] as $user) {
             if ($user->getUsername() == $arg1) {
-                $this->userProfileManipulator->setActiveProfile($user, $selectedProfile);
+                try {
+                    $this->userProfileManipulator->setActiveProfile($user, $selectedProfile);
+                } catch (\Exception $e) {
+                    $this->lastException = $e;
+                }
             }
         }
     }

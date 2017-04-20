@@ -37,7 +37,7 @@ class UserProfileManipulatorContext extends GlobalContext implements Context, Sn
     /**
      * @Given :arg1 use profile :arg2
      */
-    public function UseProfile($arg1, $arg2)
+    public function userUseProfile($arg1, $arg2)
     {
         foreach ($this->store['profiles'] as $profile) {
             if ($profile->getUuid() == $arg2) {

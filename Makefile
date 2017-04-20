@@ -25,7 +25,11 @@ vendor/autoload.php: ## Install composer dependencies
 unit-test: vendor/autoload.php
 	${bin_dir}/phpunit --configuration .
 
-test: unit-test ## Launch tests
+behat-test: vendor/autoload.php
+	@ ${bin_dir}/behat --format=progress --no-interaction \
+		--config=/srv/behat.yml --stop-on-failure
+
+test: unit-test behat-test ## Launch tests
 
 cs-check: vendor/autoload.php ## Check PHP CS
 	${bin_dir}/php-cs-fixer --version
