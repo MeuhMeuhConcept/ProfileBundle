@@ -13,14 +13,6 @@ default:
                     symfony2: ~
 
     suites:
-        user:
-            type: symfony_bundle
-            bundle: MMCProfileBundle
-            contexts:
-                - MMC\Profile\Bundle\ProfileBundle\Features\Context\UserContext:
-                    userProfileManipulator: '@profile_bundle.user_profile.manipulator'
-            paths:
-                - src/Bundle/ProfileBundle/Features/user.feature
 
         userProfileManipulator:
             type: symfony_bundle
