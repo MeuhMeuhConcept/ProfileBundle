@@ -86,13 +86,61 @@ abstract class GlobalContext implements Context, SnippetAcceptingContext
     }
 
     /**
-     * @Then I should see exception :arg1
+     * @Then I should not see exception
      */
-    public function iShouldSeeException($arg1)
+    public function iShouldNotSeeException()
+    {
+        \PHPUnit_Framework_Assert::assertNull(
+            $this->lastException
+        );
+    }
+
+    /**
+     * @Then I should see exception :exception
+     */
+    public function iShouldSeeException($exception)
     {
         \PHPUnit_Framework_Assert::assertEquals(
-            explode('Exception\\', get_class($this->lastException))[1],
-            $arg1
+            $exception,
+            get_class($this->lastException)
         );
+    }
+
+    /**
+     * @Then I should see exception :exception with message :message
+     */
+    public function iShouldSeeExceptionAndMessage($exception, $message)
+    {
+        \PHPUnit_Framework_Assert::assertEquals(
+            $exception,
+            get_class($this->lastException)
+        );
+
+        \PHPUnit_Framework_Assert::assertEquals(
+            $message,
+            $this->lastException->getMessage()
+        );
+    }
+
+    protected function getProfile($uuid)
+    {
+        foreach ($this->store['profiles'] as $profile) {
+            if ($profile->getUuid() == $uuid) {
+                return $profile;
+            }
+        }
+
+        throw new \Exception('Profile not found');
+    }
+
+    protected function getUser($username)
+    {
+        foreach ($this->store['users'] as $user) {
+            if ($user->getUsername() == $username) {
+                return $user;
+            }
+        }
+
+        throw new \Exception('User not found');
     }
 }

@@ -36,33 +36,33 @@ Feature: UserProfileManipulator
 
         # tutu has no userProfile
         Given I remove profile 000000000 to tutu
-        Then I should see exception NoUserProfileException
+        Then I should see exception 'MMC\Profile\Component\Manipulator\Exception\NoUserProfileException'
         Then I should see 0 userProfiles for tutu
         Given tutu use profile 000000000
-        Then I should see exception NoUserProfileException
+        Then I should see exception 'MMC\Profile\Component\Manipulator\Exception\NoUserProfileException'
 
         # try to use removed userProfile
         Given I remove profile 987654321 to tintin
-        Then I should see exception UnableToDeleteOwnerUserProfileException
+        Then I should see exception 'MMC\Profile\Component\Manipulator\Exception\UnableToDeleteOwnerUserProfileException'
         Then I remove profile 123456789 to tintin
         Then I should see 2 userProfiles for tintin
         And tintin use profile 123456789
-        And I should see exception UserProfileNotFoundException
+        And I should see exception 'MMC\Profile\Component\Manipulator\Exception\UserProfileNotFoundException'
 
         # tintin is owner of 987654321 profile
         Given I remove profile 987654321 to toto
-        Then I should see exception UnableToDeleteOwnerUserProfileException
+        Then I should see exception 'MMC\Profile\Component\Manipulator\Exception\UnableToDeleteOwnerUserProfileException'
 
         # tintin is owner of 000000000 profile
         Given I remove profile 000000000 to tintin
-        And I should see exception UnableToDeleteOwnerUserProfileException
+        And I should see exception 'MMC\Profile\Component\Manipulator\Exception\UnableToDeleteOwnerUserProfileException'
 
         Then I should see that profile 123456789 has 1 owners
         And I should see that profile 454545454 has 0 owners
 
         # userProfile tintin - 454545454 not exists
         Given  tintin use profile 454545454
-        Then I should see exception UserProfileNotFoundException
+        Then I should see exception 'MMC\Profile\Component\Manipulator\Exception\UserProfileNotFoundException'
         And I create the userProfile tintin 454545454
         And tintin use profile 454545454
         And I should see tintin active profile is 454545454
@@ -72,15 +72,16 @@ Feature: UserProfileManipulator
 
         # TYPE3 is not a valid value for profile type
         Given I set type of profile 123456789 to TYPE3
-        Then I should see exception InvalidProfileTypeException
+        Then I should see exception 'MMC\Profile\Component\Validator\Exception\InvalidProfileTypeException'
         Then I should see profile 123456789 type is TYPE2
+        Then I should not see exception
 
         # tutu has no userProfile
         Given I promote tutu for profile 987654321
-        Then I should see exception NoUserProfileException
+        Then I should see exception 'MMC\Profile\Component\Manipulator\Exception\NoUserProfileException'
         Then I remove profile 454545454 to tintin
         Then I promote tintin for profile 454545454
-        And I should see exception UserProfileNotFoundException
+        And I should see exception 'MMC\Profile\Component\Manipulator\Exception\UserProfileNotFoundException'
 
         Given I promote toto for profile 000000000
         Then I should see that toto is owner of profile 000000000
@@ -88,9 +89,9 @@ Feature: UserProfileManipulator
 
         # userProfile tintin - 123465789 not exists and tutu has no userProfile
         Given I demote tutu for profile 987654321
-        Then I should see exception NoUserProfileException
+        Then I should see exception 'MMC\Profile\Component\Manipulator\Exception\NoUserProfileException'
         Then I demote tintin for profile 454545454
-        And I should see exception UserProfileNotFoundException
+        And I should see exception 'MMC\Profile\Component\Manipulator\Exception\UserProfileNotFoundException'
 
         Given I demote toto for profile 000000000
         Then I should see that profile 000000000 has 1 owners
