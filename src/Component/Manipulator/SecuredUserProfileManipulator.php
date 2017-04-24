@@ -7,7 +7,7 @@ use MMC\Profile\Component\Model\ProfileInterface;
 use MMC\Profile\Component\Model\UserInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
-class SecurizingUserProfileManipulator implements UserProfileManipulatorInterface
+class SecuredUserProfileManipulator implements UserProfileManipulatorInterface
 {
     private $manipulator;
     private $authorizationChecker;

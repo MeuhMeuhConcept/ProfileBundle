@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Serializer;
 
 /**
- * @Route("api/userProfiles/browse", service="profile_bundle.api_user_profile_browser_controller")
+ * @Route("api/userProfiles", service="profile_bundle.api_user_profile_browser_controller")
  */
 class UserProfileBrowserController
 {

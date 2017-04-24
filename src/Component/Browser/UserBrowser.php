@@ -19,7 +19,7 @@ class UserBrowser implements UserBrowserInterface
         $this->userClassname = $userClassname;
     }
 
-    public function browse(array $options)
+    public function browse(array $options):BrowserResponse
     {
         $resolver = $this->createOptionsResolver();
         $options = $resolver->resolve($options);
@@ -64,7 +64,7 @@ class UserBrowser implements UserBrowserInterface
             'term' => null,
             'order_by' => 'username',
             'sort' => 'ASC',
-       ]);
+        ]);
 
         $resolver->setAllowedTypes('profile', ['null', ProfileInterface::class]);
         $resolver->setAllowedTypes('term', ['null', 'string']);

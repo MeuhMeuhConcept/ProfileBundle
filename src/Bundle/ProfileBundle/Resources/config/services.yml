@@ -1,7 +1,7 @@
 parameters:
     profile_bundle.user_profile.manipulator.classname: MMC\Profile\Component\Manipulator\UserProfileManipulator
 
-    profile_bundle.user_profile.securizing_manipulator.classname: MMC\Profile\Component\Manipulator\SecurizingUserProfileManipulator
+    profile_bundle.user_profile.secured_manipulator.classname: MMC\Profile\Component\Manipulator\SecuredUserProfileManipulator
 
     profile_bundle.profile_type.validator.classname: MMC\Profile\Component\Validator\ProfileTypeValidator
 
@@ -27,15 +27,15 @@ parameters:
 
     profile_bundle.user_browser.classname: MMC\Profile\Component\Browser\UserBrowser
 
-    profile_bundle.securizing_user_browser.classname: MMC\Profile\Component\Browser\SecurizingUserBrowser
+    profile_bundle.secured_user_browser.classname: MMC\Profile\Component\Browser\SecuredUserBrowser
 
     profile_bundle.user_profile_browser.classname: MMC\Profile\Component\Browser\UserProfileBrowser
 
-    profile_bundle.securizing_user_profile_browser.classname: MMC\Profile\Component\Browser\SecurizingUserProfileBrowser
+    profile_bundle.secured_user_profile_browser.classname: MMC\Profile\Component\Browser\SecuredUserProfileBrowser
 
     profile_bundle.user_profile_viewer.classname: MMC\Profile\Component\Viewer\UserProfileViewer
 
-    profile_bundle.securizing_user_profile_viewer.classname: MMC\Profile\Component\Viewer\SecurizingUserProfileViewer
+    profile_bundle.secured_user_profile_viewer.classname: MMC\Profile\Component\Viewer\SecuredUserProfileViewer
 
     profile_bundle.profile_param_converter.classname: MMC\Profile\Component\ParamConverter\ProfileParamConverter
 
@@ -80,8 +80,8 @@ services:
             - '%mmc_profile.profile_class%'
             - '%mmc_profile.userProfile_class%'
 
-    profile_bundle.user_profile.securizing_manipulator:
-        class: '%profile_bundle.user_profile.securizing_manipulator.classname%'
+    profile_bundle.user_profile.secured_manipulator:
+        class: '%profile_bundle.user_profile.secured_manipulator.classname%'
         arguments:
             - '@profile_bundle.user_profile.manipulator'
             - '@security.authorization_checker'
@@ -127,7 +127,7 @@ services:
         class: '%profile_bundle.handler_profile_create.classname%'
         arguments:
             - '@profile_bundle.profile_type.validator'
-            - '@profile_bundle.user_profile.securizing_manipulator'
+            - '@profile_bundle.user_profile.secured_manipulator'
             - '@profile_bundle.user_profile.manager'
 
     profile_bundle.user_provider:
@@ -156,8 +156,8 @@ services:
             - '@doctrine.orm.entity_manager'
             - '%mmc_profile.user_class%'
 
-    profile_bundle.securizing_user_browser:
-        class: '%profile_bundle.securizing_user_browser.classname%'
+    profile_bundle.secured_user_browser:
+        class: '%profile_bundle.secured_user_browser.classname%'
         arguments:
             - '@profile_bundle.user_browser'
             - '@security.authorization_checker'
@@ -168,8 +168,8 @@ services:
             - '@doctrine.orm.entity_manager'
             - '%mmc_profile.userProfile_class%'
 
-    profile_bundle.securizing_user_profile_browser:
-        class: '%profile_bundle.securizing_user_profile_browser.classname%'
+    profile_bundle.secured_user_profile_browser:
+        class: '%profile_bundle.secured_user_profile_browser.classname%'
         arguments:
             - '@profile_bundle.user_profile_browser'
             - '@security.authorization_checker'
@@ -179,8 +179,8 @@ services:
         arguments:
             - '@templating'
 
-    profile_bundle.securizing_user_profile_viewer:
-        class: '%profile_bundle.securizing_user_profile_viewer.classname%'
+    profile_bundle.secured_user_profile_viewer:
+        class: '%profile_bundle.secured_user_profile_viewer.classname%'
         arguments:
             - '@profile_bundle.user_profile_viewer'
             - '@security.authorization_checker'
@@ -225,13 +225,13 @@ services:
         class: '%profile_bundle.profile_show_controller.classname%'
         arguments:
             - '@security.token_storage'
-            - '@profile_bundle.securizing_user_profile_viewer'
+            - '@profile_bundle.secured_user_profile_viewer'
 
     profile_bundle.profile_dissociate_controller:
         class: '%profile_bundle.profile_dissociate_controller.classname%'
         arguments:
             - '@templating'
-            - '@profile_bundle.user_profile.securizing_manipulator'
+            - '@profile_bundle.user_profile.secured_manipulator'
             - '@profile_bundle.user_profile.manager'
             - '@profile_bundle.user.manager'
             - '@router'
@@ -240,7 +240,7 @@ services:
         class: '%profile_bundle.profile_set_priority_controller.classname%'
         arguments:
             - '@templating'
-            - '@profile_bundle.user_profile.securizing_manipulator'
+            - '@profile_bundle.user_profile.secured_manipulator'
             - '@profile_bundle.user_profile.manager'
             - '@form.factory'
             - '@router'
@@ -248,7 +248,7 @@ services:
     profile_bundle.profile_activate_controller:
         class: '%profile_bundle.profile_activate_controller.classname%'
         arguments:
-            - '@profile_bundle.user_profile.securizing_manipulator'
+            - '@profile_bundle.user_profile.secured_manipulator'
             - '@profile_bundle.user_profile.manager'
             - '@router'
 
@@ -256,7 +256,7 @@ services:
         class: '%profile_bundle.profile_associate_controller.classname%'
         arguments:
             - '@templating'
-            - '@profile_bundle.user_profile.securizing_manipulator'
+            - '@profile_bundle.user_profile.secured_manipulator'
             - '@profile_bundle.user_profile.manager'
             - '@profile_bundle.user.manager'
             - '@router'
@@ -267,7 +267,7 @@ services:
         class: '%profile_bundle.profile_set_rights_controller.classname%'
         arguments:
             - '@templating'
-            - '@profile_bundle.user_profile.securizing_manipulator'
+            - '@profile_bundle.user_profile.secured_manipulator'
             - '@profile_bundle.user_profile.manager'
             - '@profile_bundle.user.manager'
             - '@router'
@@ -282,13 +282,13 @@ services:
     profile_bundle.api_user_browser_controller:
         class: '%profile_bundle.api_user_browser_controller.classname%'
         arguments:
-            - '@profile_bundle.securizing_user_browser'
+            - '@profile_bundle.secured_user_browser'
             - '@serializer'
 
     profile_bundle.api_user_profile_browser_controller:
         class: '%profile_bundle.api_user_profile_browser_controller.classname%'
         arguments:
-            - '@profile_bundle.securizing_user_profile_browser'
+            - '@profile_bundle.secured_user_profile_browser'
             - '@serializer'
             - '@security.authorization_checker'
 

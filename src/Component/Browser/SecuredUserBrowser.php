@@ -5,7 +5,7 @@ namespace MMC\Profile\Component\Browser;
 use MMC\Profile\Component\Browser\Exception\BrowserAccessDeniedHttpException;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
-class SecurizingUserBrowser implements UserBrowserInterface
+class SecuredUserBrowser implements UserBrowserInterface
 {
     private $userBrowser;
     private $authorizationChecker;
@@ -18,7 +18,7 @@ class SecurizingUserBrowser implements UserBrowserInterface
         $this->authorizationChecker = $authorizationChecker;
     }
 
-    public function browse(array $options)
+    public function browse(array $options):BrowserResponse
     {
         if (isset($options['profile'])) {
             if (!$this->authorizationChecker->isGranted('CAN_BROWSE_USERS', $options['profile'])) {

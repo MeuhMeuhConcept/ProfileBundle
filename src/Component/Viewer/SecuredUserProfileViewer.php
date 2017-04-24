@@ -6,7 +6,7 @@ use MMC\Profile\Component\Model\UserProfileInterface;
 use MMC\Profile\Component\Viewer\Exception\ViewerAccessDeniedHttpException;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
-class SecurizingUserProfileViewer implements UserProfileViewerInterface
+class SecuredUserProfileViewer implements UserProfileViewerInterface
 {
     private $userProfileViewer;
     private $authorizationChecker;

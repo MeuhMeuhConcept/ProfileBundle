@@ -8,15 +8,15 @@ use MMC\Profile\Component\Manipulator\UserProfileManipulatorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
-class UserProfileSecurizingManipulatorContext extends GlobalContext implements Context, SnippetAcceptingContext
+class UserProfileSecuredManipulatorContext extends GlobalContext implements Context, SnippetAcceptingContext
 {
-    protected $userProfileSecurizingManipulator;
+    protected $userProfileSecuredManipulator;
 
     public function __construct(
-        UserProfileManipulatorInterface $userProfileSecurizingManipulator,
+        UserProfileManipulatorInterface $userProfileSecuredManipulator,
         TokenStorage $tokenStorage
     ) {
-        $this->userProfileSecurizingManipulator = $userProfileSecurizingManipulator;
+        $this->userProfileSecuredManipulator = $userProfileSecuredManipulator;
         $this->tokenStorage = $tokenStorage;
     }
 
@@ -33,7 +33,10 @@ class UserProfileSecurizingManipulatorContext extends GlobalContext implements C
 
         if ($selectedUser) {
             $token = new UsernamePasswordToken(
-                $selectedUser, null, 'main', $user->getRoles()
+                $selectedUser,
+                null,
+                'main',
+                $user->getRoles()
             );
             $this->tokenStorage->setToken($token);
         }
@@ -42,7 +45,7 @@ class UserProfileSecurizingManipulatorContext extends GlobalContext implements C
     /**
      * @Given :arg1 use profile :arg2
      */
-    public function UseProfile($arg1, $arg2)
+    public function userUseProfile($arg1, $arg2)
     {
         foreach ($this->store['profiles'] as $profile) {
             if ($profile->getUuid() == $arg2) {
@@ -53,7 +56,7 @@ class UserProfileSecurizingManipulatorContext extends GlobalContext implements C
         foreach ($this->store['users'] as $user) {
             if ($user->getUsername() == $arg1) {
                 try {
-                    $this->userProfileSecurizingManipulator->setActiveProfile($user, $selectedProfile);
+                    $this->userProfileSecuredManipulator->setActiveProfile($user, $selectedProfile);
                 } catch (\Exception $e) {
                     $this->lastException = $e;
                 }
@@ -68,7 +71,7 @@ class UserProfileSecurizingManipulatorContext extends GlobalContext implements C
     {
         foreach ($this->store['users'] as $user) {
             if ($user->getUsername() == $arg1) {
-                $activeProfileUuid = $this->userProfileSecurizingManipulator->getActiveProfile($user)->getUuid();
+                $activeProfileUuid = $this->userProfileSecuredManipulator->getActiveProfile($user)->getUuid();
                 \PHPUnit_Framework_Assert::assertEquals(
                     $arg2,
                     $activeProfileUuid
@@ -92,7 +95,7 @@ class UserProfileSecurizingManipulatorContext extends GlobalContext implements C
             if ($user->getUsername() == $arg1) {
                 \PHPUnit_Framework_Assert::assertEquals(
                     true,
-                    $this->userProfileSecurizingManipulator->isOwner($user, $selectedProfile)
+                    $this->userProfileSecuredManipulator->isOwner($user, $selectedProfile)
                 );
             }
         }
@@ -112,7 +115,7 @@ class UserProfileSecurizingManipulatorContext extends GlobalContext implements C
         foreach ($this->store['users'] as $user) {
             if ($user->getUsername() == $arg2) {
                 try {
-                    $this->userProfileSecurizingManipulator->setProfilePriority($user, $selectedProfile);
+                    $this->userProfileSecuredManipulator->setProfilePriority($user, $selectedProfile);
                 } catch (\Exception $e) {
                     $this->lastException = $e;
                 }
@@ -123,7 +126,7 @@ class UserProfileSecurizingManipulatorContext extends GlobalContext implements C
     /**
      * @Then :arg1 associate :arg2 to :arg3
      */
-    public function AssociateTo($arg2, $arg3)
+    public function userAssociateTo($arg2, $arg3)
     {
         foreach ($this->store['profiles'] as $profile) {
             if ($profile->getUuid() == $arg3) {
@@ -134,7 +137,7 @@ class UserProfileSecurizingManipulatorContext extends GlobalContext implements C
         foreach ($this->store['users'] as $user) {
             if ($user->getUsername() == $arg2) {
                 try {
-                    $this->userProfileSecurizingManipulator->createUserProfile($user, $selectedProfile);
+                    $this->userProfileSecuredManipulator->createUserProfile($user, $selectedProfile);
                 } catch (\Exception $e) {
                     $this->lastException = $e;
                 }
@@ -169,7 +172,7 @@ class UserProfileSecurizingManipulatorContext extends GlobalContext implements C
     /**
      * @Given :arg1 promote :arg2 for profile :arg3
      */
-    public function PromoteForProfile($arg2, $arg3)
+    public function userPromoteOtherForProfile($arg2, $arg3)
     {
         foreach ($this->store['profiles'] as $profile) {
             if ($profile->getUuid() == $arg3) {
@@ -180,7 +183,7 @@ class UserProfileSecurizingManipulatorContext extends GlobalContext implements C
         foreach ($this->store['users'] as $user) {
             if ($user->getUsername() == $arg2) {
                 try {
-                    $this->userProfileSecurizingManipulator->promoteUserProfile($user, $selectedProfile);
+                    $this->userProfileSecuredManipulator->promoteUserProfile($user, $selectedProfile);
                 } catch (\Exception $e) {
                     $this->lastException = $e;
                 }
@@ -191,7 +194,7 @@ class UserProfileSecurizingManipulatorContext extends GlobalContext implements C
     /**
      * @Given :arg1 demote :arg2 for profile :arg3
      */
-    public function tutuDemoteTotoForProfile($arg2, $arg3)
+    public function userDemoteOtherForProfile($arg2, $arg3)
     {
         foreach ($this->store['profiles'] as $profile) {
             if ($profile->getUuid() == $arg3) {
@@ -202,7 +205,7 @@ class UserProfileSecurizingManipulatorContext extends GlobalContext implements C
         foreach ($this->store['users'] as $user) {
             if ($user->getUsername() == $arg2) {
                 try {
-                    $this->userProfileSecurizingManipulator->demoteUserProfile($user, $selectedProfile);
+                    $this->userProfileSecuredManipulator->demoteUserProfile($user, $selectedProfile);
                 } catch (\Exception $e) {
                     $this->lastException = $e;
                 }
@@ -219,7 +222,7 @@ class UserProfileSecurizingManipulatorContext extends GlobalContext implements C
             if ($profile->getUuid() == $arg1) {
                 \PHPUnit_Framework_Assert::assertCount(
                     intval($arg2),
-                    $this->userProfileSecurizingManipulator->getOwners($profile)
+                    $this->userProfileSecuredManipulator->getOwners($profile)
                 );
             }
         }
@@ -228,7 +231,7 @@ class UserProfileSecurizingManipulatorContext extends GlobalContext implements C
     /**
      * @Given :arg1 remove profile :arg2 to :arg3
      */
-    public function RemoveProfileTo($arg2, $arg3)
+    public function userRemoveProfileTo($arg2, $arg3)
     {
         foreach ($this->store['profiles'] as $profile) {
             if ($profile->getUuid() == $arg2) {
@@ -239,7 +242,7 @@ class UserProfileSecurizingManipulatorContext extends GlobalContext implements C
         foreach ($this->store['users'] as $user) {
             if ($user->getUsername() == $arg3) {
                 try {
-                    $this->userProfileSecurizingManipulator->removeProfileForUser($user, $selectedProfile);
+                    $this->userProfileSecuredManipulator->removeProfileForUser($user, $selectedProfile);
                 } catch (\Exception $e) {
                     $this->lastException = $e;
                 }
@@ -250,7 +253,7 @@ class UserProfileSecurizingManipulatorContext extends GlobalContext implements C
     /**
      * @Given :arg1 is logged out
      */
-    public function IsLoggedOut()
+    public function userIsLoggedOut()
     {
         $this->tokenStorage->setToken(null);
     }

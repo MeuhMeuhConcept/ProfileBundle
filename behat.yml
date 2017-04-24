@@ -32,12 +32,12 @@ default:
             paths:
                 - src/Bundle/ProfileBundle/Features/userProfileManipulator.feature
 
-        userProfileSecurizingManipulator:
+        userProfileSecuredManipulator:
             type: symfony_bundle
             bundle: MMCProfileBundle
             contexts:
-                - MMC\Profile\Bundle\ProfileBundle\Features\Context\UserProfileSecurizingManipulatorContext:
-                    userProfileSecurizingManipulator: '@profile_bundle.user_profile.securizing_manipulator'
+                - MMC\Profile\Bundle\ProfileBundle\Features\Context\UserProfileSecuredManipulatorContext:
+                    userProfileSecuredManipulator: '@profile_bundle.user_profile.secured_manipulator'
                     tokenStorage: '@security.token_storage'
             paths:
-                - src/Bundle/ProfileBundle/Features/userProfileSecurizingManipulator.feature
+                - src/Bundle/ProfileBundle/Features/userProfileSecuredManipulator.feature

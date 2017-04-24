@@ -1,6 +1,6 @@
-Feature: UserProfileSecurizingManipulator
+Feature: UserProfileSecuredManipulator
 @reset-schema
-    Scenario: test UserProfileSecurizingManipulator functions
+    Scenario: test UserProfileSecuredManipulator functions
         Given there are the following profiles
             | uuid      |roles      | type  |
             | 123456789 |ROLE_USER  | TYPE1 |

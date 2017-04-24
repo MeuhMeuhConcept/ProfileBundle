@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Serializer;
 
 /**
- * @Route("api/users/browse", service="profile_bundle.api_user_browser_controller")
+ * @Route("api/users", service="profile_bundle.api_user_browser_controller")
  */
 class UserBrowserController
 {
