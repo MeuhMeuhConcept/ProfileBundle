@@ -2,14 +2,7 @@
 
 namespace MMC\Profile\Component\Manipulator;
 
-use MMC\Profile\Component\Manipulator\Exception\ExistingOwnerUserProfileException;
-use MMC\Profile\Component\Manipulator\Exception\ExistingUserProfileException;
-use MMC\Profile\Component\Manipulator\Exception\InvalidProfileClassName;
-use MMC\Profile\Component\Manipulator\Exception\InvalidUserProfileClassName;
-use MMC\Profile\Component\Manipulator\Exception\NoUserProfileException;
-use MMC\Profile\Component\Manipulator\Exception\UnableToDeleteOwnerUserProfileException;
-use MMC\Profile\Component\Manipulator\Exception\UnableToDemoteLastOwnerUserProfileException;
-use MMC\Profile\Component\Manipulator\Exception\UserProfileNotFoundException;
+use MMC\Profile\Component\Manipulator\Exception as ManipulatorException;
 use MMC\Profile\Component\Model\ProfileInterface;
 use MMC\Profile\Component\Model\UserInterface;
 use MMC\Profile\Component\Model\UserProfileInterface;
@@ -24,11 +17,11 @@ class UserProfileManipulator implements UserProfileManipulatorInterface
         $userProfileClassname
     ) {
         if (!is_subclass_of($profileClassname, ProfileInterface::class)) {
-            throw new InvalidProfileClassName();
+            throw new ManipulatorException\InvalidProfileClassName();
         }
 
         if (!is_subclass_of($userProfileClassname, UserProfileInterface::class)) {
-            throw new InvalidUserProfileClassName();
+            throw new ManipulatorException\InvalidUserProfileClassName();
         }
 
         $this->profileClassname = $profileClassname;
@@ -40,11 +33,17 @@ class UserProfileManipulator implements UserProfileManipulatorInterface
      */
     public function getUserProfile(UserInterface $user, ProfileInterface $profile)
     {
-        foreach ($profile->getUserProfiles() as $userProfile) {
-            if ($userProfile->getUser() == $user) {
-                return $up = $userProfile;
+        if ($user->getUserProfiles()->isEmpty()) {
+            throw new ManipulatorException\NoUserProfileException();
+        }
+
+        foreach ($user->getUserProfiles() as $up) {
+            if ($profile == $up->getProfile()) {
+                return $up;
             }
         }
+
+        throw new ManipulatorException\UserProfileNotFoundException();
     }
 
     /**
@@ -53,7 +52,7 @@ class UserProfileManipulator implements UserProfileManipulatorInterface
     public function getActiveProfile(UserInterface $user)
     {
         if ($user->getUserProfiles()->isEmpty()) {
-            throw new NoUserProfileException();
+            throw new ManipulatorException\NoUserProfileException();
         }
 
         foreach ($user->getUserProfiles() as $up) {
@@ -61,6 +60,8 @@ class UserProfileManipulator implements UserProfileManipulatorInterface
                 return $up->getProfile();
             }
         }
+
+        throw new ManipulatorException\NoActiveProfileException();
     }
 
     /**
@@ -68,29 +69,9 @@ class UserProfileManipulator implements UserProfileManipulatorInterface
      */
     public function isOwner(UserInterface $user, ProfileInterface $profile)
     {
-        if ($user->getUserProfiles()->isEmpty()) {
-            throw new NoUserProfileException();
-        }
+        $up = $this->getUserProfile($user, $profile);
 
-        $profileMatches = false;
-
-        foreach ($user->getUserProfiles() as $up) {
-            if ($profile == $up->getProfile()) {
-                $profileMatches = true;
-            }
-        }
-
-        if ($profileMatches == false) {
-            throw new UserProfileNotFoundException();
-        }
-
-        foreach ($user->getUserProfiles() as $up) {
-            if ($up->getProfile() == $profile && $up->getIsOwner() == true) {
-                return true;
-            }
-        }
-
-        return false;
+        return $up->getIsOwner();
     }
 
     /**
@@ -98,23 +79,15 @@ class UserProfileManipulator implements UserProfileManipulatorInterface
      */
     public function setActiveProfile(UserInterface $user, ProfileInterface $profile)
     {
-        if ($user->getUserProfiles()->isEmpty()) {
-            throw new NoUserProfileException();
-        }
+        $up = $this->getUserProfile($user, $profile);
 
-        $isSet = false;
-        foreach ($user->getUserProfiles() as $up) {
-            if ($up->getProfile() == $profile) {
-                $up->setIsActive(true);
-                $isSet = true;
-            } else {
-                $up->setIsActive(false);
+        foreach ($user->getUserProfiles() as $otherUp) {
+            if ($up != $otherUp) {
+                $otherUp->setIsActive(false);
             }
         }
 
-        if ($isSet == false) {
-            throw new UserProfileNotFoundException();
-        }
+        $up->setIsActive(true);
 
         return $up;
     }
@@ -122,22 +95,11 @@ class UserProfileManipulator implements UserProfileManipulatorInterface
     /**
      *{@inheritdoc}
      */
-    public function setProfilePriority(UserInterface $user, ProfileInterface $profile)
+    public function setProfilePriority(UserInterface $user, ProfileInterface $profile, $priority)
     {
-        if ($user->getUserProfiles()->isEmpty()) {
-            throw new NoUserProfileException();
-        }
+        $up = $this->getUserProfile($user, $profile);
 
-        $isSet = false;
-        foreach ($user->getUserProfiles() as $up) {
-            if ($up->getProfile() == $profile) {
-                $isSet = true;
-            }
-        }
-
-        if ($isSet == false) {
-            throw new UserProfileNotFoundException();
-        }
+        $up->setPriority($priority);
 
         return $up;
     }
@@ -145,7 +107,7 @@ class UserProfileManipulator implements UserProfileManipulatorInterface
     /**
      * {@inheritdoc}
      */
-    public function createUserProfile(UserInterface $user, ProfileInterface $profile, $association = true)
+    public function createUserProfile(UserInterface $user, ProfileInterface $profile)
     {
         $existingUP = false;
 
@@ -156,7 +118,7 @@ class UserProfileManipulator implements UserProfileManipulatorInterface
         }
 
         if ($existingUP) {
-            throw new ExistingUserProfileException();
+            throw new ManipulatorException\ExistingUserProfileException();
         }
 
         $class = $this->userProfileClassname;
@@ -171,12 +133,6 @@ class UserProfileManipulator implements UserProfileManipulatorInterface
         $up->setPriority(0);
         $up->setUser($user);
         $up->setProfile($profile);
-
-        if ($association) {
-            $up->setIsActive(false);
-        } else {
-            $this->setActiveProfile($user, $profile);
-        }
 
         return $up;
     }
@@ -202,30 +158,15 @@ class UserProfileManipulator implements UserProfileManipulatorInterface
      */
     public function promoteUserProfile(UserInterface $user, ProfileInterface $profile)
     {
-        $profileMatches = false;
+        $up = $this->getUserProfile($user, $profile);
 
-        if ($user->getUserProfiles()->isEmpty()) {
-            throw new NoUserProfileException();
+        if ($up->getIsOwner()) {
+            throw new ManipulatorException\ExistingOwnerUserProfileException();
         }
 
-        foreach ($user->getUserProfiles() as $up) {
-            if ($profile == $up->getProfile()) {
-                $selectedUserProfile = $up;
-                $profileMatches = true;
-            }
-        }
+        $up->setIsOwner(true);
 
-        if ($profileMatches == false) {
-            throw new UserProfileNotFoundException();
-        }
-
-        if ($selectedUserProfile->getIsOwner()) {
-            throw new ExistingOwnerUserProfileException();
-        }
-
-        $selectedUserProfile->setIsOwner(true);
-
-        return $selectedUserProfile;
+        return $up;
     }
 
     /**
@@ -233,30 +174,15 @@ class UserProfileManipulator implements UserProfileManipulatorInterface
      */
     public function demoteUserProfile(UserInterface $user, ProfileInterface $profile)
     {
-        $profileMatches = false;
-
-        if ($user->getUserProfiles()->isEmpty()) {
-            throw new NoUserProfileException();
-        }
-
-        foreach ($user->getUserProfiles() as $up) {
-            if ($profile == $up->getProfile()) {
-                $selectedUserProfile = $up;
-                $profileMatches = true;
-            }
-        }
-
-        if ($profileMatches == false) {
-            throw new UserProfileNotFoundException();
-        }
+        $up = $this->getUserProfile($user, $profile);
 
         if ($this->getOwners($profile) <= 1) {
-            throw new UnableToDemoteLastOwnerUserProfileException();
+            throw new ManipulatorException\UnableToDemoteLastOwnerUserProfileException();
         }
 
-        $selectedUserProfile->setIsOwner(false);
+        $up->setIsOwner(false);
 
-        return $selectedUserProfile;
+        return $up;
     }
 
     /**
@@ -264,31 +190,15 @@ class UserProfileManipulator implements UserProfileManipulatorInterface
      */
     public function removeProfileForUser(UserInterface $user, ProfileInterface $profile)
     {
-        $profileMatches = false;
-        $selectedUserProfile;
-
-        if ($user->getUserProfiles()->isEmpty()) {
-            throw new NoUserProfileException();
-        }
-
-        foreach ($user->getUserProfiles() as $up) {
-            if ($profile == $up->getProfile()) {
-                $selectedUserProfile = $up;
-                $profileMatches = true;
-            }
-        }
-
-        if ($profileMatches == false) {
-            throw new UserProfileNotFoundException();
-        }
-
         if ($this->isOwner($user, $profile)) {
-            throw new UnableToDeleteOwnerUserProfileException();
+            throw new ManipulatorException\UnableToDeleteOwnerUserProfileException();
         }
 
-        $profile->removeUserProfile($selectedUserProfile);
-        $user->removeUserProfile($selectedUserProfile);
+        $up = $this->getUserProfile($user, $profile);
 
-        return $selectedUserProfile;
+        $profile->removeUserProfile($up);
+        $user->removeUserProfile($up);
+
+        return $up;
     }
 }

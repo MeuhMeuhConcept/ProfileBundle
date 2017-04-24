@@ -10,5 +10,5 @@ interface CreateHandlerInterface
     /*
      * Validate, create and persist an userProfile
      */
-    public function create(ProfileInterface $profile, UserInterface $user);
+    public function create(ProfileInterface $profile, UserInterface $user, $andActive = false);
 }

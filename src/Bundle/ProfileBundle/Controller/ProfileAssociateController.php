@@ -64,7 +64,8 @@ class ProfileAssociateController
             ->getForm()
         ;
 
-        return $this->templating->renderResponse('MMCProfileBundle:Profile:associate.html.twig',
+        return $this->templating->renderResponse(
+            'MMCProfileBundle:Profile:associate.html.twig',
             [
                 'users' => $users,
                 'profile' => $profile,
@@ -82,7 +83,7 @@ class ProfileAssociateController
     {
         $username = $request->request->get('form')['username'];
         $user = $this->userProvider->findUserByUsername($username);
-        $up = $this->manipulator->createUserProfile($user, $profile);
+        $up = $this->manipulator->createUserProfile($user, $profile, true);
 
         $this->upManager->saveUserProfile($up);
         $this->upManager->flush();

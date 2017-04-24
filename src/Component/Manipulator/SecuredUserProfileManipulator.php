@@ -25,18 +25,13 @@ class SecuredUserProfileManipulator implements UserProfileManipulatorInterface
      */
     public function getUserProfile(UserInterface $user, ProfileInterface $profile)
     {
-        $up = [];
-        foreach ($profile->getUserProfiles() as $userProfile) {
-            if ($userProfile->getUser() == $user) {
-                $up = $userProfile;
-            }
-        }
+        $up = $this->manipulator->getUserProfile($user, $profile);
 
         if (!$this->authorizationChecker->isGranted('CAN_GET_USER_PROFILE', $up)) {
             throw new ManipulatorAccessDeniedHttpException();
         }
 
-        return $this->manipulator->getUserProfile($user, $profile);
+        return $up;
     }
 
     /**
@@ -56,7 +51,7 @@ class SecuredUserProfileManipulator implements UserProfileManipulatorInterface
      */
     public function isOwner(UserInterface $user, ProfileInterface $profile)
     {
-        $up = $this->getUserProfile($user, $profile);
+        $up = $this->manipulator->getUserProfile($user, $profile);
         if (!$this->authorizationChecker->isGranted('CAN_GET_IS_OWNER_USERPROFILE', $up)) {
             throw new ManipulatorAccessDeniedHttpException();
         }
@@ -69,7 +64,7 @@ class SecuredUserProfileManipulator implements UserProfileManipulatorInterface
      */
     public function setActiveProfile(UserInterface $user, ProfileInterface $profile)
     {
-        $up = $this->getUserProfile($user, $profile);
+        $up = $this->manipulator->getUserProfile($user, $profile);
         if (!$this->authorizationChecker->isGranted('CAN_ACTIVATE_USERPROFILE', $up)) {
             throw new ManipulatorAccessDeniedHttpException();
         }
@@ -80,30 +75,26 @@ class SecuredUserProfileManipulator implements UserProfileManipulatorInterface
     /**
      * {@inheritdoc}
      */
-    public function setProfilePriority(UserInterface $user, ProfileInterface $profile)
+    public function setProfilePriority(UserInterface $user, ProfileInterface $profile, $priority)
     {
-        $up = $this->getUserProfile($user, $profile);
+        $up = $this->manipulator->getUserProfile($user, $profile);
         if (!$this->authorizationChecker->isGranted('CAN_SET_PRIORITY_USERPROFILE', $up)) {
             throw new ManipulatorAccessDeniedHttpException();
         }
 
-        return $this->manipulator->setProfilePriority($user, $profile);
+        return $this->manipulator->setProfilePriority($user, $profile, $priority);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function createUserProfile(UserInterface $user, ProfileInterface $profile, $creation = false)
+    public function createUserProfile(UserInterface $user, ProfileInterface $profile)
     {
-        $association = false;
-        if (!$creation) {
-            $association = true;
-            if (!$this->authorizationChecker->isGranted('CAN_ASSOCIATE_PROFILE', $profile)) {
-                throw new ManipulatorAccessDeniedHttpException();
-            }
+        if (!$this->authorizationChecker->isGranted('CAN_ASSOCIATE_PROFILE', $profile)) {
+            throw new ManipulatorAccessDeniedHttpException();
         }
 
-        return $this->manipulator->createUserProfile($user, $profile, $association);
+        return $this->manipulator->createUserProfile($user, $profile);
     }
 
     /**
@@ -123,7 +114,7 @@ class SecuredUserProfileManipulator implements UserProfileManipulatorInterface
      */
     public function promoteUserProfile(UserInterface $user, ProfileInterface $profile)
     {
-        $up = $this->getUserProfile($user, $profile);
+        $up = $this->manipulator->getUserProfile($user, $profile);
         if (!$this->authorizationChecker->isGranted('CAN_PROMOTE_USERPROFILE', $up)) {
             throw new ManipulatorAccessDeniedHttpException();
         }
@@ -136,7 +127,7 @@ class SecuredUserProfileManipulator implements UserProfileManipulatorInterface
      */
     public function demoteUserProfile(UserInterface $user, ProfileInterface $profile)
     {
-        $up = $this->getUserProfile($user, $profile);
+        $up = $this->manipulator->getUserProfile($user, $profile);
         if (!$this->authorizationChecker->isGranted('CAN_DEMOTE_USERPROFILE', $up)) {
             throw new ManipulatorAccessDeniedHttpException();
         }
@@ -149,7 +140,7 @@ class SecuredUserProfileManipulator implements UserProfileManipulatorInterface
      */
     public function removeProfileForUser(UserInterface $user, ProfileInterface $profile)
     {
-        $up = $this->getUserProfile($user, $profile);
+        $up = $this->manipulator->getUserProfile($user, $profile);
         if (!$this->authorizationChecker->isGranted('CAN_DISSOCIATE_USERPROFILE', $up)) {
             throw new ManipulatorAccessDeniedHttpException();
         }

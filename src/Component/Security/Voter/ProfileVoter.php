@@ -48,6 +48,10 @@ class ProfileVoter extends Voter
 
     private function canAssociate(ProfileInterface $profile, UserInterface $user)
     {
+        if (count($profile->getUserProfiles()) == 0) {
+            return true;
+        }
+
         foreach ($profile->getUserProfiles() as $up) {
             if ($up->getUser() == $user && $up->getIsOwner()) {
                 return true;

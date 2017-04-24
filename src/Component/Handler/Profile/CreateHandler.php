@@ -23,11 +23,15 @@ class CreateHandler implements CreateHandlerInterface
     /**
      * {@inheritdoc}
      */
-    public function create(ProfileInterface $profile, UserInterface $user)
+    public function create(ProfileInterface $profile, UserInterface $user, $andActive = false)
     {
         $this->profileTypeValidator->validate($profile->getType());
 
-        $up = $this->manipulator->createUserProfile($user, $profile, true);
+        $up = $this->manipulator->createUserProfile($user, $profile);
+
+        if ($andActive) {
+            $this->manipulator->setActiveProfile($user, $profile);
+        }
 
         $this->upManager->saveUserProfile($up);
         $this->upManager->flush();

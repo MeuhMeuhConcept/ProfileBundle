@@ -36,6 +36,13 @@ interface UserProfileManipulatorInterface
     public function setActiveProfile(UserInterface $user, ProfileInterface $profile);
 
     /**
+     * Set userProfile priority
+     *
+     * @return UserProfileInterface
+     */
+    public function setProfilePriority(UserInterface $user, ProfileInterface $profile, $priority);
+
+    /**
      * Create a userProfile.
      *
      * @return UserProfileInterface
