@@ -30,52 +30,52 @@ Feature: UserProfileSecuredManipulator
             | 999999999 | tutu   | true     | true    |
 
             # userProfile tutu-000000000 not exists
-            Given tutu is logged in
-            Then tutu use profile 000000000
-            And I should see exception ManipulatorAccessDeniedHttpException
+            Given I'm logged in with 'tutu' account
+            Then I use profile 000000000
+            And I should see exception 'MMC\Profile\Component\Manipulator\Exception\UserProfileNotFoundException'
 
-            Given tutu use profile 333333333
+            Given I use profile 333333333
             Then I should see tutu active profile is 333333333
 
             # can't set priority to an other user profile
-            Given tutu set priority of userProfile tintin 000000000
-            And I should see exception ManipulatorAccessDeniedHttpException
+            Given I set priority of userProfile tintin 000000000 to 2
+            And I should see exception 'MMC\Profile\Component\Manipulator\Exception\ManipulatorAccessDeniedHttpException'
 
             # tutu is not owner of 123456789
-            Given tutu associate tintin to 123456789
-            Then I should see exception ManipulatorAccessDeniedHttpException
-            Then tutu promote tintin for profile 123456789
-            And I should see exception ManipulatorAccessDeniedHttpException
+            Given I associate tintin to 123456789
+            Then I should see exception 'MMC\Profile\Component\Manipulator\Exception\ManipulatorAccessDeniedHttpException'
+            Then I promote tintin for profile 123456789
+            And I should see exception 'MMC\Profile\Component\Manipulator\Exception\UserProfileNotFoundException'
 
-            Given tutu associate toto to 333333333
+            Given I associate toto to 333333333
             Then I should see 6 userProfiles for toto
-            Then tutu promote toto for profile 333333333
+            Then I promote toto for profile 333333333
             And I should see that toto is owner of profile 333333333
 
             # tutu is not owner of 123456789
-            Given tutu demote toto for profile 123456789
-            Then I should see exception ManipulatorAccessDeniedHttpException
+            Given I demote toto for profile 123456789
+            Then I should see exception 'MMC\Profile\Component\Manipulator\Exception\ManipulatorAccessDeniedHttpException'
 
             # can't demote an other user - only personal demotion
-            Given tutu demote toto for profile 123456789
-            Then I should see exception ManipulatorAccessDeniedHttpException
+            Given I demote toto for profile 123456789
+            Then I should see exception 'MMC\Profile\Component\Manipulator\Exception\ManipulatorAccessDeniedHttpException'
             And I should see that profile 123456789 has 1 owners
 
             # can't demote if it's the last owner
-            Given tutu demote tutu for profile 999999999
-            Then I should see exception ManipulatorAccessDeniedHttpException
+            Given I demote tutu for profile 999999999
+            Then I should see exception 'MMC\Profile\Component\Manipulator\Exception\ManipulatorAccessDeniedHttpException'
             And I should see that profile 999999999 has 1 owners
 
             # must promote an other user before to demote himself
-            Given tutu promote toto for profile 999999999
+            Given I promote toto for profile 999999999
             And I should see that profile 999999999 has 2 owners
-            Then tutu demote tutu for profile 999999999
+            Then I demote tutu for profile 999999999
             And I should see that profile 999999999 has 1 owners
 
             # can't remove an other use profile
-            Given tutu remove profile 123456789 to toto
-            Then I should see exception ManipulatorAccessDeniedHttpException
+            Given I remove profile 123456789 to toto
+            Then I should see exception 'MMC\Profile\Component\Manipulator\Exception\ManipulatorAccessDeniedHttpException'
 
             Then I should see 3 userProfiles for tutu
-            Given tutu remove profile 999999999 to tutu
+            Given I remove profile 999999999 to tutu
             Then I should see 2 userProfiles for tutu

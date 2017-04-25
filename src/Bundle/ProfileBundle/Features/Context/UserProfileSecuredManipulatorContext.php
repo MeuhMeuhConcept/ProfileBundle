@@ -21,237 +21,206 @@ class UserProfileSecuredManipulatorContext extends GlobalContext implements Cont
     }
 
     /**
-     * @Given :arg1 is logged in
+     * @Given I'm logged in with :username account
      */
-    public function loggedIn($arg1)
+    public function loggedIn($username)
     {
-        foreach ($this->store['users'] as $user) {
-            if ($user->getUsername() == $arg1) {
-                $selectedUser = $user;
-            }
-        }
+        $this->lastException = null;
+        try {
+            $user = $this->getUser($username);
 
-        if ($selectedUser) {
-            $token = new UsernamePasswordToken(
-                $selectedUser,
-                null,
-                'main',
-                $user->getRoles()
+            if ($user) {
+                $token = new UsernamePasswordToken(
+                    $user,
+                    null,
+                    'main',
+                    $user->getRoles()
+                );
+                $this->tokenStorage->setToken($token);
+            }
+        } catch (\Exception $e) {
+            $this->lastException = $e;
+        }
+    }
+
+    /**
+     * @Given I use profile :profile_id
+     */
+    public function iUseProfile($profile_id)
+    {
+        $this->lastException = null;
+        try {
+            $user = $this->tokenStorage->getToken()->getUser();
+
+            $profile = $this->getProfile($profile_id);
+
+            $this->userProfileSecuredManipulator->setActiveProfile($user, $profile);
+        } catch (\Exception $e) {
+            $this->lastException = $e;
+        }
+    }
+
+    /**
+     * @Then I should see :username active profile is :profile_id
+     */
+    public function iShouldSeeActiveProfileIs($username, $profile_id)
+    {
+        $this->lastException = null;
+        try {
+            $user = $this->getUser($username);
+
+            $activeProfileUuid = $this->userProfileSecuredManipulator->getActiveProfile($user)->getUuid();
+            \PHPUnit_Framework_Assert::assertEquals(
+                $profile_id,
+                $activeProfileUuid
             );
-            $this->tokenStorage->setToken($token);
+        } catch (\Exception $e) {
+            $this->lastException = $e;
         }
     }
 
     /**
-     * @Given :arg1 use profile :arg2
+     * @Then I should see that :username is owner of profile :profile_id
      */
-    public function userUseProfile($arg1, $arg2)
+    public function iShouldSeeThatIsOwnerOfProfile($username, $profile_id)
     {
-        foreach ($this->store['profiles'] as $profile) {
-            if ($profile->getUuid() == $arg2) {
-                $selectedProfile = $profile;
-            }
-        }
+        $this->lastException = null;
+        try {
+            $user = $this->getUser($username);
 
-        foreach ($this->store['users'] as $user) {
-            if ($user->getUsername() == $arg1) {
-                try {
-                    $this->userProfileSecuredManipulator->setActiveProfile($user, $selectedProfile);
-                } catch (\Exception $e) {
-                    $this->lastException = $e;
-                }
-            }
+            $profile = $this->getProfile($profile_id);
+
+            \PHPUnit_Framework_Assert::assertTrue(
+                $this->userProfileSecuredManipulator->isOwner($user, $profile)
+            );
+        } catch (\Exception $e) {
+            $this->lastException = $e;
         }
     }
 
     /**
-     * @Then I should see :arg1 active profile is :arg2
+     * @Then I set priority of userProfile :username :profile_id to :priority
      */
-    public function iShouldSeeActiveProfileIs($arg1, $arg2)
+    public function iSetPriorityOfUserProfile($username, $profile_id, $priority)
     {
-        foreach ($this->store['users'] as $user) {
-            if ($user->getUsername() == $arg1) {
-                $activeProfileUuid = $this->userProfileSecuredManipulator->getActiveProfile($user)->getUuid();
-                \PHPUnit_Framework_Assert::assertEquals(
-                    $arg2,
-                    $activeProfileUuid
-                );
-            }
+        $this->lastException = null;
+        try {
+            $user = $this->getUser($username);
+
+            $profile = $this->getProfile($profile_id);
+
+            $this->userProfileSecuredManipulator->setProfilePriority($user, $profile, $priority);
+        } catch (\Exception $e) {
+            $this->lastException = $e;
         }
     }
 
     /**
-     * @Then I should see that :arg1 is owner of profile :arg2
+     * @Then I associate :username to :profile_id
      */
-    public function iShouldSeeThatIsOwnerOfProfile($arg1, $arg2)
+    public function iAssociateUserToProfile($username, $profile_id)
     {
-        foreach ($this->store['profiles'] as $profile) {
-            if ($profile->getUuid() == $arg2) {
-                $selectedProfile = $profile;
-            }
-        }
+        $this->lastException = null;
+        try {
+            $user = $this->getUser($username);
 
-        foreach ($this->store['users'] as $user) {
-            if ($user->getUsername() == $arg1) {
-                \PHPUnit_Framework_Assert::assertEquals(
-                    true,
-                    $this->userProfileSecuredManipulator->isOwner($user, $selectedProfile)
-                );
-            }
+            $profile = $this->getProfile($profile_id);
+
+            $this->userProfileSecuredManipulator->createUserProfile($user, $profile);
+        } catch (\Exception $e) {
+            $this->lastException = $e;
         }
     }
 
     /**
-     * @Given :arg1 set priority of userProfile :arg2 :arg3
+     * @Then I should see :nb userProfiles for :username
      */
-    public function tutuSetPriorityOfUserprofileTintin($arg2, $arg3)
+    public function iShouldSeeUserprofilesFor($nb, $username)
     {
-        foreach ($this->store['profiles'] as $profile) {
-            if ($profile->getUuid() == $arg3) {
-                $selectedProfile = $profile;
-            }
-        }
+        $this->lastException = null;
+        try {
+            $user = $this->getUser($username);
 
-        foreach ($this->store['users'] as $user) {
-            if ($user->getUsername() == $arg2) {
-                try {
-                    $this->userProfileSecuredManipulator->setProfilePriority($user, $selectedProfile);
-                } catch (\Exception $e) {
-                    $this->lastException = $e;
-                }
-            }
+            \PHPUnit_Framework_Assert::assertCount(
+                intval($nb),
+                $user->getUserProfiles()
+            );
+        } catch (\Exception $e) {
+            $this->lastException = $e;
         }
     }
 
     /**
-     * @Then :arg1 associate :arg2 to :arg3
+     * @Given I promote :username for profile :profile_id
      */
-    public function userAssociateTo($arg2, $arg3)
+    public function iPromoteUserForProfile($username, $profile_id)
     {
-        foreach ($this->store['profiles'] as $profile) {
-            if ($profile->getUuid() == $arg3) {
-                $selectedProfile = $profile;
-            }
-        }
+        $this->lastException = null;
+        try {
+            $user = $this->getUser($username);
 
-        foreach ($this->store['users'] as $user) {
-            if ($user->getUsername() == $arg2) {
-                try {
-                    $this->userProfileSecuredManipulator->createUserProfile($user, $selectedProfile);
-                } catch (\Exception $e) {
-                    $this->lastException = $e;
-                }
-            }
+            $profile = $this->getProfile($profile_id);
+
+            $this->userProfileSecuredManipulator->promoteUserProfile($user, $profile);
+        } catch (\Exception $e) {
+            $this->lastException = $e;
         }
     }
 
     /**
-     * @Then I should see :arg1 userProfiles for :arg2
+     * @Given I demote :username for profile :profile_id
      */
-    public function iShouldSeeUserprofilesFor($arg1, $arg2)
+    public function iDemoteUserForProfile($username, $profile_id)
     {
-        foreach ($this->store['users'] as $user) {
-            if ($user->getUsername() == $arg2) {
-                if ($user->getUserProfiles() != null) {
-                    foreach ($user->getUserProfiles() as $up) {
-                        \PHPUnit_Framework_Assert::assertCount(
-                            intval($arg1),
-                            $user->getUserProfiles()
-                        );
-                    }
-                } else {
-                    \PHPUnit_Framework_Assert::assertCount(
-                        intval($arg1),
-                        []
-                    );
-                }
-            }
+        $this->lastException = null;
+        try {
+            $user = $this->getUser($username);
+
+            $profile = $this->getProfile($profile_id);
+
+            $this->userProfileSecuredManipulator->demoteUserProfile($user, $profile);
+        } catch (\Exception $e) {
+            $this->lastException = $e;
         }
     }
 
     /**
-     * @Given :arg1 promote :arg2 for profile :arg3
+     * @Then I should see that profile :profile_id has :nb owners
      */
-    public function userPromoteOtherForProfile($arg2, $arg3)
+    public function iShouldSeeThatProfileHasOwners($profile_id, $nb)
     {
-        foreach ($this->store['profiles'] as $profile) {
-            if ($profile->getUuid() == $arg3) {
-                $selectedProfile = $profile;
-            }
-        }
+        $this->lastException = null;
+        try {
+            $profile = $this->getProfile($profile_id);
 
-        foreach ($this->store['users'] as $user) {
-            if ($user->getUsername() == $arg2) {
-                try {
-                    $this->userProfileSecuredManipulator->promoteUserProfile($user, $selectedProfile);
-                } catch (\Exception $e) {
-                    $this->lastException = $e;
-                }
-            }
+            \PHPUnit_Framework_Assert::assertCount(
+                intval($nb),
+                $this->userProfileSecuredManipulator->getOwners($profile)
+            );
+        } catch (\Exception $e) {
+            $this->lastException = $e;
         }
     }
 
     /**
-     * @Given :arg1 demote :arg2 for profile :arg3
+     * @Given I remove profile :profile_id to :username
      */
-    public function userDemoteOtherForProfile($arg2, $arg3)
+    public function iRemoveProfileTo($profile_id, $username)
     {
-        foreach ($this->store['profiles'] as $profile) {
-            if ($profile->getUuid() == $arg3) {
-                $selectedProfile = $profile;
-            }
-        }
+        $this->lastException = null;
+        try {
+            $user = $this->getUser($username);
 
-        foreach ($this->store['users'] as $user) {
-            if ($user->getUsername() == $arg2) {
-                try {
-                    $this->userProfileSecuredManipulator->demoteUserProfile($user, $selectedProfile);
-                } catch (\Exception $e) {
-                    $this->lastException = $e;
-                }
-            }
+            $profile = $this->getProfile($profile_id);
+
+            $this->userProfileSecuredManipulator->removeProfileForUser($user, $profile);
+        } catch (\Exception $e) {
+            $this->lastException = $e;
         }
     }
 
     /**
-     * @Then I should see that profile :arg1 has :arg2 owners
-     */
-    public function iShouldSeeThatProfileHasOwners($arg1, $arg2)
-    {
-        foreach ($this->store['profiles'] as $profile) {
-            if ($profile->getUuid() == $arg1) {
-                \PHPUnit_Framework_Assert::assertCount(
-                    intval($arg2),
-                    $this->userProfileSecuredManipulator->getOwners($profile)
-                );
-            }
-        }
-    }
-
-    /**
-     * @Given :arg1 remove profile :arg2 to :arg3
-     */
-    public function userRemoveProfileTo($arg2, $arg3)
-    {
-        foreach ($this->store['profiles'] as $profile) {
-            if ($profile->getUuid() == $arg2) {
-                $selectedProfile = $profile;
-            }
-        }
-
-        foreach ($this->store['users'] as $user) {
-            if ($user->getUsername() == $arg3) {
-                try {
-                    $this->userProfileSecuredManipulator->removeProfileForUser($user, $selectedProfile);
-                } catch (\Exception $e) {
-                    $this->lastException = $e;
-                }
-            }
-        }
-    }
-
-    /**
-     * @Given :arg1 is logged out
+     * @Given I am logged out
      */
     public function userIsLoggedOut()
     {
